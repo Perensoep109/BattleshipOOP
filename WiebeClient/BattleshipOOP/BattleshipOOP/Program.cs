@@ -1,4 +1,4 @@
-﻿using BattleshipOOP.Engine;
+﻿using Battleship.Engine;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BattleshipOOP
+namespace Battleship
 {
     class Program
     {

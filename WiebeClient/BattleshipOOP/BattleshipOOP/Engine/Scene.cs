@@ -1,5 +1,5 @@
 ﻿using BattleshipOOP.Engine.Events;
-using BattleshipOOP.Engine.Events.EventObservers;
+using BattleshipOOP.Engine.Events.EventListeners;
 using System;
 using System.Collections.Generic;
 using System.Linq;

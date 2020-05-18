@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using BattleshipOOP.Engine;
-using BattleshipOOP.Engine.Events;
-using BattleshipOOP.Engine.Graphics;
+using Battleship.Engine;
+using Battleship.Engine.Events;
+using Battleship.Engine.Graphics;
 
 using Microsoft.Xna.Framework;
 
-namespace BattleshipOOP
+namespace Battleship
 {
     class TestObject : GameObject, IClickable
     {

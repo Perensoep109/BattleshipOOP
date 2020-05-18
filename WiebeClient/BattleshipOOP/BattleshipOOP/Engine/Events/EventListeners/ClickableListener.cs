@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BattleshipOOP.Engine.Events.EventListeners
+namespace Battleship.Engine.Events.EventListeners
 {
     class ClickableListener : BaseEventListener<IClickable>
     {
@@ -30,10 +30,8 @@ namespace BattleshipOOP.Engine.Events.EventListeners
         {
             if(a_state.LeftButton == ButtonState.Pressed)
                 foreach(IClickable obj in m_listeners)
-                {
                     if (obj.Bounds.Value.Contains(new Point(a_state.X, a_state.Y)))
                         obj.OnClick();
-                }
         }
     }
 }

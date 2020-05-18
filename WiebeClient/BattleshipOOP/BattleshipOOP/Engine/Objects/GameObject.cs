@@ -1,6 +1,6 @@
-﻿using BattleshipOOP.Engine.Events;
-using BattleshipOOP.Engine.Events.EventListeners;
-using BattleshipOOP.Engine.Graphics;
+﻿using Battleship.Engine.Events;
+using Battleship.Engine.Events.EventListeners;
+using Battleship.Engine.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BattleshipOOP.Engine
+namespace Battleship.Engine
 {
     class GameObject : IDisposable
     {

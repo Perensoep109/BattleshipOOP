@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BattleshipOOP.Engine.Graphics
+namespace Battleship.Engine.Graphics
 {
 
 
