@@ -1,12 +1,12 @@
-﻿using BattleshipOOP.Engine.Events;
-using BattleshipOOP.Engine.Events.EventListeners;
+﻿using Battleship.Engine.Events;
+using Battleship.Engine.Events.EventListeners;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BattleshipOOP.Engine
+namespace Battleship.Engine
 {
     class Scene
     {

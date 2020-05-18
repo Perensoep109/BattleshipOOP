@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BattleshipOOP.Engine.Events.EventListeners
+namespace Battleship.Engine.Events.EventListeners
 {
     abstract class BaseEventListener<IObservesEvent> where IObservesEvent : IBaseEvent
     {

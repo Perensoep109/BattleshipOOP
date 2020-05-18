@@ -1,4 +1,4 @@
-﻿using BattleshipOOP.Engine.Graphics;
+﻿using Battleship.Engine.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -9,9 +9,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework.Input;
-using BattleshipOOP.Engine;
+using Battleship.Engine;
 
-namespace BattleshipOOP
+namespace Battleship.MainGame
 {
     class BattleshipGame : BaseGame
     {

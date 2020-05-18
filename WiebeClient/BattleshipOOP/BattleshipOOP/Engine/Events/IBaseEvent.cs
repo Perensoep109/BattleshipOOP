@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BattleshipOOP.Engine.Events
+namespace Battleship.Engine.Events
 {
     interface IBaseEvent
     {

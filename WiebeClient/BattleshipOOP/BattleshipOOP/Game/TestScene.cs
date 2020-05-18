@@ -1,5 +1,5 @@
-﻿using BattleshipOOP.Engine;
-using BattleshipOOP.Engine.Graphics;
+﻿using Battleship.Engine;
+using Battleship.Engine.Graphics;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BattleshipOOP
+namespace Battleship.MainGame
 {
     class TestScene : Scene
     {

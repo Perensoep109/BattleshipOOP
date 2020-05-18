@@ -1,5 +1,5 @@
-﻿using BattleshipOOP.Engine.Events.EventListeners;
-using BattleshipOOP.Engine.Rendering;
+﻿using Battleship.Engine.Events.EventListeners;
+using Battleship.Engine.Rendering;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BattleshipOOP.Engine
+namespace Battleship.Engine
 {
     class BaseGame : Game
     {

@@ -10,7 +10,7 @@ using Battleship.Engine.Graphics;
 
 using Microsoft.Xna.Framework;
 
-namespace Battleship
+namespace Battleship.MainGame
 {
     class TestObject : GameObject, IClickable
     {
