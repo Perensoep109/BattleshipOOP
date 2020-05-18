@@ -48,12 +48,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BattleshipGame.cs" />
+    <Compile Include="Engine\BaseGame.cs" />
+    <Compile Include="Engine\Events\EventListeners\BaseEventListener.cs" />
+    <Compile Include="Engine\Events\EventListeners\ClickableListener.cs" />
+    <Compile Include="Engine\Events\IBaseEvent.cs" />
+    <Compile Include="Game\BattleshipGame.cs" />
     <Compile Include="Engine\Events\IClickable.cs" />
-    <Compile Include="Engine\GameObject.cs" />
+    <Compile Include="Engine\Objects\GameObject.cs" />
     <Compile Include="Engine\Graphics\ResourcePool.cs" />
     <Compile Include="Engine\Graphics\SpriteResource.cs" />
+    <Compile Include="Engine\Rendering\SceneRenderer.cs" />
+    <Compile Include="Engine\Scene.cs" />
     <Compile Include="Game\TestObject.cs" />
+    <Compile Include="Game\TestScene.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -62,7 +69,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Engine\Rendering\" />
+    <Folder Include="Engine\Networking\" />
     <Folder Include="Game\Art\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

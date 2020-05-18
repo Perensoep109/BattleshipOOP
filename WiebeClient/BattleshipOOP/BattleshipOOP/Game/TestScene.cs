@@ -1,4 +1,5 @@
 ﻿using BattleshipOOP.Engine;
+using BattleshipOOP.Engine.Graphics;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -8,14 +9,11 @@ using System.Threading.Tasks;
 
 namespace BattleshipOOP
 {
-    class Program
+    class TestScene : Scene
     {
-        static void Main(string[] args)
+        public TestScene()
         {
-            using(Game game = new BattleshipGame())
-            {
-                game.Run();
-            }
+            AddGameObject(new TestObject(new Vector2(0, 0), ResourcePool.GetSprite("love")));
         }
     }
 }

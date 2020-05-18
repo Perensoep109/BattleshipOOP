@@ -23,7 +23,7 @@ namespace BattleshipOOP
 
         public void OnClick()
         {
-            
+            Console.WriteLine("GEKLIKT!");
         }
     }
 }
