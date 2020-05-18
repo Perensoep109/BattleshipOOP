@@ -10,6 +10,10 @@ namespace BattleshipOOP
     {
         static void Main(string[] args)
         {
+            using(BattleshipGame game = new BattleshipGame())
+            {
+                game.Run();
+            }
         }
     }
 }
