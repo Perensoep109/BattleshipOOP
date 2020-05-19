@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,13 @@ namespace Battleship.Engine.Events
     /// </summary>
     interface IClickable : IBaseEvent
     {
+        /// <summary>
+        /// The bounds of the clickable area
+        /// </summary>
         Rectangle? Bounds { get; set; }
-        void OnClick();
+        /// <summary>
+        /// The method to execute when this object is clicked
+        /// </summary>
+        void OnClick(MouseState a_state);
     }
 }

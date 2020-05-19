@@ -13,7 +13,7 @@ namespace Battleship.MainGame
     {
         public TestScene()
         {
-            AddGameObject(new TestObject(new Vector2(0, 0), ResourcePool.GetSprite("love")));
+            AddGameObject(new TestObject(new Vector2(0, 0), ResourcePool.GetSprite("tile")));
         }
     }
 }

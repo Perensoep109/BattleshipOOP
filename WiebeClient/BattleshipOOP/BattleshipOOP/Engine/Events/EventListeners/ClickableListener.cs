@@ -27,17 +27,12 @@ namespace Battleship.Engine.Events.EventListeners
 
         }
 
-        public override void Update()
-        {
-            
-        }
-
         public void Update(object a_sender, MouseState a_state)
         {
             if(a_state.LeftButton == ButtonState.Pressed)
                 foreach(IClickable obj in m_listeners)
                     if (obj.Bounds.Value.Contains(new Point(a_state.X, a_state.Y)))
-                        obj.OnClick();
+                        obj.OnClick(a_state);
         }
     }
 }

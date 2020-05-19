@@ -15,12 +15,10 @@ namespace Battleship.MainGame
 {
     class BattleshipGame : BaseGame
     {
-        TestObject m_obj;
-
         protected override void BeginRun()
         {
             base.BeginRun();
-            m_obj = new TestObject(new Vector2(0, 0), ResourcePool.GetSprite("love"));
+            m_currentScene = new TestScene();
         }
 
         protected override void Draw(GameTime gameTime)
@@ -35,7 +33,7 @@ namespace Battleship.MainGame
 
         protected override void LoadContent()
         {
-            ResourcePool.LoadSprite(Texture2D.FromStream(m_graphics.GraphicsDevice, File.OpenRead("love.png")), "love");
+            ResourcePool.LoadSprite(Texture2D.FromStream(m_graphics.GraphicsDevice, File.OpenRead("tile.png")), "tile");
         }
 
         protected override void Update(GameTime gameTime)

@@ -14,7 +14,7 @@ namespace Battleship.Engine
     /// <summary>
     /// A GameObject is the base class for every game object.
     /// </summary>
-    class GameObject : IDisposable
+    abstract class GameObject : IDisposable
     {
         /// <summary>
         /// The position of this object

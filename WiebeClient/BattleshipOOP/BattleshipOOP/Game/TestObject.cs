@@ -9,6 +9,7 @@ using Battleship.Engine.Events;
 using Battleship.Engine.Graphics;
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 
 namespace Battleship.MainGame
 {
@@ -21,9 +22,9 @@ namespace Battleship.MainGame
             Bounds = Sprite.Area;
         }
 
-        public void OnClick()
+        public void OnClick(MouseState a_state)
         {
-            Console.WriteLine("GEKLIKT!");
+            Console.WriteLine(a_state.LeftButton);
         }
     }
 }

@@ -19,11 +19,6 @@ namespace Battleship.Engine.Events.EventListeners
         /// </summary>
         public static BaseEventListener<IObservesEvent> Instance { get; protected set; }
 
-        protected BaseEventListener()
-        {
-
-        }
-
         /// <summary>
         /// All the subscribed (attached) event listeners
         /// </summary>
@@ -46,10 +41,5 @@ namespace Battleship.Engine.Events.EventListeners
         {
             m_listeners.Remove(a_observable);
         }
-
-        /// <summary>
-        /// The method to use to notify all subscribed observers
-        /// </summary>
-        public abstract void Update();
     }
 }

@@ -32,7 +32,7 @@ namespace Battleship.Engine
         #region Base class overrides
         protected override void Update(GameTime a_gameTime)
         {
-            if (m_lastMouseState != Mouse.GetState())
+            if (m_lastMouseState.LeftButton != Mouse.GetState().LeftButton)
                 OnMouseInput(Mouse.GetState());
             base.Update(a_gameTime);
         }
@@ -55,7 +55,8 @@ namespace Battleship.Engine
         {
             base.Draw(a_gameTime);
             m_graphics.GraphicsDevice.Clear(Color.Teal);
-            m_sceneRenderer.Draw(m_currentScene, m_graphics);
+            if(m_currentScene != null)
+                m_sceneRenderer.Draw(m_currentScene, m_graphics);
         }
         #endregion
 
