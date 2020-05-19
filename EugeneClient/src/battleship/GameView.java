@@ -1,6 +1,7 @@
 package battleship;
 
 
+import Networking.client;
 import Objects.BaseGameObject;
 import Objects.Grid;
 import Objects.IClickable;
@@ -22,8 +23,10 @@ public class GameView extends GridPane implements IEventPane
     List<BaseGameObject> gameObjects;
     Grid grid;
     Render render;
+
     public GameView()
     {
+
 
         //create the canvas
         canvas = new Canvas( 1000,1000 );
@@ -60,6 +63,7 @@ public class GameView extends GridPane implements IEventPane
 
     @Override
     public void onStop() {
+        System.out.println();
         //TODO i guess i can put network closing stuff here
     }
 
