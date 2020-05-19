@@ -2,19 +2,14 @@ package battleship;
 
 
 import Objects.BaseGameObject;
-import Objects.Boat;
 import Objects.Grid;
 import Objects.IClickable;
 import Renderer.Render;
 import javafx.scene.canvas.Canvas;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
 import sceneswitcher.IEventPane;
 
 import java.util.ArrayList;
@@ -35,14 +30,15 @@ public class GameView extends GridPane implements IEventPane
         gc = canvas.getGraphicsContext2D();
         //create a renderer
         render = new Render(gc);
+        //create a grid
         grid = new Grid(0,0,20,20);
-        //create a boat this will be the first boat
-//        Boat boat1 = new Boat(1,1,new Image("ship1.png"),2,1);
+        //greate the arraylist with gameobjects
         gameObjects = new ArrayList<>();
-//        gameObjects.add(boat1);
+        //add the grid to the gameobjects to be rendered
         gameObjects.add(grid);
-        //draw the boat
+        //draw the gameobjects
         render.draw(gameObjects);
+        //add the canvas to the panel
         this.add(canvas,0,0);
 
 
@@ -64,7 +60,7 @@ public class GameView extends GridPane implements IEventPane
 
     @Override
     public void onStop() {
-
+        //TODO i guess i can put network closing stuff here
     }
 
 
