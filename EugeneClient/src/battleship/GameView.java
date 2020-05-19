@@ -35,7 +35,7 @@ public class GameView extends GridPane implements IEventPane
         gc = canvas.getGraphicsContext2D();
         //create a renderer
         render = new Render(gc);
-        grid = new Grid(0,0);
+        grid = new Grid(0,0,20,20);
         //create a boat this will be the first boat
 //        Boat boat1 = new Boat(1,1,new Image("ship1.png"),2,1);
         gameObjects = new ArrayList<>();
@@ -75,26 +75,16 @@ public class GameView extends GridPane implements IEventPane
       boolean _clickedObject = false;
       //loop though all gameobjects to test for colissions
         for (BaseGameObject gameObject : gameObjects) {
-            //save the gameobject
-            //BaseGameObject _yee = gameObject.clickedOn((float)a_event.getX(),(float)a_event.getY());
             //test if it is clickable
             if(gameObject instanceof IClickable){
                 //if so run the function onclick
                 if(gameObject.clickedOn(a_event.getX(), a_event.getY())) {
                     ((IClickable) gameObject).onClick();
-                    //set the variable on true
-                    _clickedObject = true;
                 }
             }
         }
-        //if _clickedObject is false create new boat
-//        if(!_clickedObject){
-//            Boat a_boat = new Boat(a_event.getY()/5,a_event.getX()/5,new Image("ship1.png"),2,0);
-//            gameObjects.add(a_boat);
-//
-//        }
 
-//        gameObjects.get(1).drawRotated(gc);
+        grid.getClickedCell(a_event.getX(), a_event.getY());
 
         //draw the gameobjects
         render.draw(gameObjects);

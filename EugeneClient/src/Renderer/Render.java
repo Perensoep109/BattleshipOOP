@@ -15,7 +15,7 @@ public class Render {
 //        set the Graphics contexts
         this.gc = gc;
 //        initialize the todelete array
-        toDelete = new ArrayList<BaseGameObject>();
+        toDelete = new ArrayList<>();
     }
 
     public void clearCanvas(){
@@ -25,9 +25,9 @@ public class Render {
 
     public void draw(List<BaseGameObject> gameObjects){
         //clear the canvas
-        clearCanvas();
+//        clearCanvas();
         //print the total gameobjects in the array
-        System.out.println("total gameobjects: " + gameObjects.size());
+//        System.out.println("total gameobjects: " + gameObjects.size());
         //iterate though all gameobjects
         for (BaseGameObject gameObject : gameObjects) {
 //            test if gameobject needs to be deleted

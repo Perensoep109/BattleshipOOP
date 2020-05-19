@@ -2,6 +2,7 @@ package Objects;
 
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -79,19 +80,20 @@ public class BaseGameObject {
 
 //draw the object
 
-    protected void drawImage(GraphicsContext gc, double xPos, double yPos)
+    protected void drawImage(GraphicsContext gc)
     {
+
         ImageView iv = new ImageView(sprite);
         iv.setRotate(rotation * 90);
         SnapshotParameters params = new SnapshotParameters();
         params.setFill(Color.TRANSPARENT);
         Image rotatedImage = iv.snapshot(params, null);
-        gc.drawImage(rotatedImage, xPos, yPos );
+        gc.drawImage(rotatedImage, posX, posY );
     }
 
     public void draw(GraphicsContext gc ) {
         if(sprite != null)
-            drawImage(gc, posX, posY);
+            drawImage(gc);
     }
 
 }
