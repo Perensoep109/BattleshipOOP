@@ -28,7 +28,7 @@ namespace BattleshipOOP.Game.Scenes
             AddGameObject(new TestObject(new Vector2(0, 0), ResourcePool.GetSprite("tile")));
         }
 
-        public void ProcessPacket(object a_sender, byte[] a_packet)
+        public void ProcessPacket(object a_sender, Packet a_packet)
         {
             GameObjects[0].m_pos += new Vector2(10, 10);
             NetworkResync = true;
@@ -37,8 +37,6 @@ namespace BattleshipOOP.Game.Scenes
 
         public void Sync()
         {
-            //int i = 0;
-            //NetworkScene.GameObjects.ForEach(obj => GameObjects[i++] = obj);
             for(int i = 0; i < NetworkScene.GameObjects.Count; i++)
             {
                 GameObjects[i] = NetworkScene.GameObjects[i];

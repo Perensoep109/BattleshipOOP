@@ -29,7 +29,7 @@ namespace Battleship.MainGame
             Console.WriteLine(GameObjects[0].m_pos);
         }
 
-        private void OnPacketReceived(object sender, byte[] a_packet)
+        private void OnPacketReceived(object sender, Packet a_packet)
         {
             GameObjects[0].m_pos += new Vector2(100, 100);
         }

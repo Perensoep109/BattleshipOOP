@@ -56,6 +56,8 @@
     <Compile Include="Engine\Events\EventListeners\ClickableListener.cs" />
     <Compile Include="Engine\Events\IBaseEvent.cs" />
     <Compile Include="Engine\Networking\INetworkScene.cs" />
+    <Compile Include="Engine\Networking\Packet.cs" />
+    <Compile Include="Engine\Networking\PacketInterpreter.cs" />
     <Compile Include="Engine\Networking\ServerConnection.cs" />
     <Compile Include="Engine\Objects\IRenderable.cs" />
     <Compile Include="Game\BattleshipGame.cs" />

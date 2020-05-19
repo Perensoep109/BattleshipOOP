@@ -17,7 +17,7 @@ namespace BattleshipOOP.Engine.Networking
             public byte[] m_buffer = new byte[m_bufferSize];
         }
 
-        public event EventHandler<byte[]> ReceivedPacket;
+        public event EventHandler<Packet> ReceivedPacket;
 
         Socket m_client;
 
@@ -26,9 +26,9 @@ namespace BattleshipOOP.Engine.Networking
             m_client = new Socket(SocketType.Stream, ProtocolType.Tcp);
         }
 
-        public void Send(byte[] a_packet)
+        public void Send(Packet a_packet)
         {
-            m_client.BeginSend(a_packet, 0, a_packet.Length, 0, SendCallback, m_client);
+            m_client.BeginSend(a_packet.m_buffer, 0, a_packet.m_buffer.Length, 0, SendCallback, m_client);
         }
 
         public void Connect(IPAddress a_to, int a_port)
@@ -56,7 +56,7 @@ namespace BattleshipOOP.Engine.Networking
                 Console.WriteLine("NETWORK::CONNECTION Read {0} bytes from {1}", bytesRead, client.RemoteEndPoint.ToString());
 #endif
                 if(bytesRead > 0)
-                    ReceivedPacket?.Invoke(this, state.m_buffer);
+                    ReceivedPacket?.Invoke(this, PacketInterpreter.InterpretPacket(state.m_buffer));
                 m_client.BeginReceive(state.m_buffer, 0, StateObject.m_bufferSize, 0, ReceiveCallback, state);
             }
             catch (Exception a_e)

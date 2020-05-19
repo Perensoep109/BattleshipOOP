@@ -11,8 +11,7 @@ namespace BattleshipOOP.Engine.Networking
     {
         bool NetworkResync { get; set; }
         Scene NetworkScene { get; set; }
-
         void Sync();
-        void ProcessPacket(object a_sender, byte[] a_packet);
+        void ProcessPacket(object a_sender, Packet a_packet);
     }
 }
