@@ -3,6 +3,7 @@ package battleship;
 
 import Objects.BaseGameObject;
 import Objects.Boat;
+import Objects.Grid;
 import Objects.IClickable;
 import Renderer.Render;
 import javafx.scene.canvas.Canvas;
@@ -24,6 +25,7 @@ public class GameView extends GridPane implements IEventPane
     Canvas canvas;
     GraphicsContext gc;
     List<BaseGameObject> gameObjects;
+    Grid grid;
     Render render;
     public GameView()
     {
@@ -33,11 +35,12 @@ public class GameView extends GridPane implements IEventPane
         gc = canvas.getGraphicsContext2D();
         //create a renderer
         render = new Render(gc);
-
+        grid = new Grid(0,0);
         //create a boat this will be the first boat
-        Boat boat1 = new Boat(100,100,new Image("ship1.png"),2,2);
+//        Boat boat1 = new Boat(1,1,new Image("ship1.png"),2,1);
         gameObjects = new ArrayList<>();
-        gameObjects.add(boat1);
+//        gameObjects.add(boat1);
+        gameObjects.add(grid);
         //draw the boat
         render.draw(gameObjects);
         this.add(canvas,0,0);
@@ -73,21 +76,26 @@ public class GameView extends GridPane implements IEventPane
       //loop though all gameobjects to test for colissions
         for (BaseGameObject gameObject : gameObjects) {
             //save the gameobject
-            BaseGameObject _yee = gameObject.clickedOn((float)a_event.getX(),(float)a_event.getY());
+            //BaseGameObject _yee = gameObject.clickedOn((float)a_event.getX(),(float)a_event.getY());
             //test if it is clickable
-            if(_yee instanceof IClickable){
+            if(gameObject instanceof IClickable){
                 //if so run the function onclick
-                ((IClickable) _yee).onClick();
-                //set the variable on true
-                _clickedObject = true;
+                if(gameObject.clickedOn(a_event.getX(), a_event.getY())) {
+                    ((IClickable) gameObject).onClick();
+                    //set the variable on true
+                    _clickedObject = true;
+                }
             }
         }
         //if _clickedObject is false create new boat
-        if(!_clickedObject){
-            Boat a_boat = new Boat(a_event.getY(),a_event.getX(),new Image("ship1.png"),2,2);
-            gameObjects.add(a_boat);
+//        if(!_clickedObject){
+//            Boat a_boat = new Boat(a_event.getY()/5,a_event.getX()/5,new Image("ship1.png"),2,0);
+//            gameObjects.add(a_boat);
+//
+//        }
 
-        }
+//        gameObjects.get(1).drawRotated(gc);
+
         //draw the gameobjects
         render.draw(gameObjects);
 

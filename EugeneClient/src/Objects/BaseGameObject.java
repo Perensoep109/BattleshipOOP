@@ -1,19 +1,34 @@
 package Objects;
 
+import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 
 public class BaseGameObject {
     public double posY;
     public double posX;
     public Image sprite;
-    public boolean clickable = true;
     public boolean deleteOnNextDraw = false;
-
-    public BaseGameObject(double posY, double posX, Image sprite) {
+    public int rotation;
+    public BaseGameObject(double posY, double posX, Image sprite, int rotation) {
         this.posY = posY;
         this.posX = posX;
         this.sprite = sprite;
+        this.rotation = rotation;
+    }
+
+    public BaseGameObject(double posY, double posX) {
+        this.posY = posY;
+        this.posX = posX;
+    }
+    public int getRotation() {
+        return rotation;
+    }
+
+    public void setRotation(int rotation) {
+        this.rotation = rotation;
     }
 
     public double getPosY() {
@@ -40,14 +55,6 @@ public class BaseGameObject {
         this.sprite = sprite;
     }
 
-    public boolean isClickable() {
-        return clickable;
-    }
-
-    public void setClickable(boolean clickable) {
-        this.clickable = clickable;
-    }
-
     public boolean isDeleteOnNextDraw() {
         return deleteOnNextDraw;
     }
@@ -56,21 +63,10 @@ public class BaseGameObject {
         this.deleteOnNextDraw = deleteOnNextDraw;
     }
 
-    public BaseGameObject clickedOn(float clickposX, float clickposY){
-        // test if a object is clicked on
-        if(posY < clickposY && posY + sprite.getHeight() > clickposY){
-            if(posX < clickposX && posX + sprite.getWidth() > clickposX) {
-//                test if the object is actually clickable
-                if(clickable){
-//                    return the object
-                    return this;
-                }
-                return null;
-
-            }
-        }
-        return null;
+    public boolean clickedOn(double clickposX, double clickposY){
+        return (posY < clickposY && posY + sprite.getHeight() > clickposY && posX < clickposX && posX + sprite.getWidth() > clickposX);
     }
+
 
     //set the bool to delete it on the next draw to prevent it from drawing before deleting it will be drawn off screen
     public void deleteOnNextDraw(){
@@ -80,8 +76,22 @@ public class BaseGameObject {
     }
 
 
+
 //draw the object
-    public void draw(GraphicsContext gc) {
-        gc.drawImage( sprite, posX, posY );
+
+    protected void drawImage(GraphicsContext gc, double xPos, double yPos)
+    {
+        ImageView iv = new ImageView(sprite);
+        iv.setRotate(rotation * 90);
+        SnapshotParameters params = new SnapshotParameters();
+        params.setFill(Color.TRANSPARENT);
+        Image rotatedImage = iv.snapshot(params, null);
+        gc.drawImage(rotatedImage, xPos, yPos );
     }
+
+    public void draw(GraphicsContext gc ) {
+        if(sprite != null)
+            drawImage(gc, posX, posY);
+    }
+
 }

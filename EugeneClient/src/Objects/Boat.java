@@ -7,7 +7,7 @@ public class Boat extends BaseGameObject implements IClickable{
     public int rotation;
 //    the constructor
     public Boat(double posY, double posX, Image sprite, int length, int rotation) {
-        super(posY, posX, sprite);
+        super(posY, posX, sprite,rotation);
         this.length = length;
         this.rotation = rotation;
     }
