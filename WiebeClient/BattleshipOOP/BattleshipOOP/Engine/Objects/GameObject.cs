@@ -1,6 +1,7 @@
 ﻿using Battleship.Engine.Events;
 using Battleship.Engine.Events.EventListeners;
 using Battleship.Engine.Graphics;
+using BattleshipOOP.Engine.Events;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -20,24 +21,10 @@ namespace Battleship.Engine
         /// The position of this object
         /// </summary>
         public Vector2 Pos { get; protected set; }
-        /// <summary>
-        /// The sprite of this object
-        /// </summary>
-        public SpriteResource Sprite { get; protected set; }
 
-        public GameObject(Vector2 a_pos, SpriteResource a_sprite)
+        public GameObject(Vector2 a_pos)
         {
             Pos = a_pos;
-            Sprite = a_sprite;
-        }
-
-        /// <summary>
-        /// Draw this object
-        /// </summary>
-        /// <param name="a_sprBatch">The spritebatch to use for drawing this object (sprite)</param>
-        public void Draw(SpriteBatch a_sprBatch)
-        {
-            a_sprBatch.Draw(Sprite.Sprite, Pos, Color.White);
         }
 
         /// <summary>

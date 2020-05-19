@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using BattleshipOOP.Engine.Objects;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -31,7 +32,10 @@ namespace Battleship.Engine.Rendering
         public void Draw(Scene a_scene, GraphicsDeviceManager a_graphics)
         {
             m_spriteBatch.Begin();
-            a_scene.GameObjects.ForEach(obj => { obj.Draw(m_spriteBatch); });
+            a_scene.GameObjects.ForEach(obj => { 
+                if (obj is IRenderable) 
+                    ((IRenderable)obj).Draw(m_spriteBatch);
+            });
             m_spriteBatch.End();
         }
     }
