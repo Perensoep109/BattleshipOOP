@@ -11,7 +11,7 @@ namespace Battleship.Engine
     /// <summary>
     /// A scene is a collection of game objects
     /// </summary>
-    class Scene
+    abstract class Scene
     {
         /// <summary>
         /// All gameobjects in this scene
@@ -22,6 +22,8 @@ namespace Battleship.Engine
         {
             GameObjects = new List<GameObject>();
         }
+
+        public abstract void Update();
 
         /// <summary>
         /// Add a game object to the scene

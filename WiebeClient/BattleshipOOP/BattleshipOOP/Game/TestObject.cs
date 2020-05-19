@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Battleship.Engine;
 using Battleship.Engine.Events;
 using Battleship.Engine.Graphics;
-using BattleshipOOP.Engine.Events;
+using BattleshipOOP.Engine.Objects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -32,7 +32,7 @@ namespace Battleship.MainGame
 
         public void Draw(SpriteBatch a_sprBatch)
         {
-            a_sprBatch.Draw(Sprite.Sprite, Pos);
+            a_sprBatch.Draw(Sprite.Sprite, m_pos);
         }
     }
 }

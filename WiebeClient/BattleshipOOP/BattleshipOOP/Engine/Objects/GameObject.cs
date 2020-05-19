@@ -1,7 +1,7 @@
 ﻿using Battleship.Engine.Events;
 using Battleship.Engine.Events.EventListeners;
 using Battleship.Engine.Graphics;
-using BattleshipOOP.Engine.Events;
+using BattleshipOOP.Engine.Objects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -17,14 +17,11 @@ namespace Battleship.Engine
     /// </summary>
     abstract class GameObject : IDisposable
     {
-        /// <summary>
-        /// The position of this object
-        /// </summary>
-        public Vector2 Pos { get; protected set; }
+        public Vector2 m_pos;
 
         public GameObject(Vector2 a_pos)
         {
-            Pos = a_pos;
+            m_pos = a_pos;
         }
 
         /// <summary>

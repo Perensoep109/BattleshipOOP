@@ -55,7 +55,8 @@
     <Compile Include="Engine\Events\EventListeners\BaseEventListener.cs" />
     <Compile Include="Engine\Events\EventListeners\ClickableListener.cs" />
     <Compile Include="Engine\Events\IBaseEvent.cs" />
-    <Compile Include="Engine\Events\IRenderable.cs" />
+    <Compile Include="Engine\Networking\ServerConnection.cs" />
+    <Compile Include="Engine\Objects\IRenderable.cs" />
     <Compile Include="Game\BattleshipGame.cs" />
     <Compile Include="Engine\Events\IClickable.cs" />
     <Compile Include="Engine\Objects\GameObject.cs" />
@@ -73,7 +74,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Engine\Networking\" />
     <Folder Include="Game\Art\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

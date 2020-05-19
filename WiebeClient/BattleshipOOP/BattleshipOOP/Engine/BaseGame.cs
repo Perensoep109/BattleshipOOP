@@ -34,6 +34,7 @@ namespace Battleship.Engine
         {
             if (m_lastMouseState.LeftButton != Mouse.GetState().LeftButton)
                 OnMouseInput(Mouse.GetState());
+            m_currentScene?.Update();
             base.Update(a_gameTime);
         }
 
