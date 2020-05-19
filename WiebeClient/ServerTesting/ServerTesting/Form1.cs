@@ -12,6 +12,13 @@ using System.Windows.Forms;
 
 namespace ServerTesting
 {
+    internal class StateObject
+    {
+        public Socket m_socket;
+        public const int m_bufferSize = 32;
+        public byte[] m_buffer = new byte[m_bufferSize];
+    }
+
     public partial class Form1 : Form
     {
         TcpListener m_server;
@@ -30,8 +37,44 @@ namespace ServerTesting
             TcpListener server = (TcpListener)a_result.AsyncState;
             m_client = server.EndAcceptTcpClient(a_result);
 
-            Console.WriteLine("Server connected to {0}",
+            Console.WriteLine("SERVER::CONNECTION Server connected to {0}",
                 m_client.Client.RemoteEndPoint.ToString());
+            StartReceive();
+        }
+
+        public void StartReceive()
+        {
+            try
+            {
+                StateObject state = new StateObject();
+                state.m_socket = m_client.Client;
+                m_client.Client.BeginReceive(state.m_buffer, 0, StateObject.m_bufferSize, 0, ReceiveCallback, state);
+            }
+            catch (Exception a_e)
+            {
+                Console.WriteLine(a_e);
+            }
+        }
+
+        public void ReceiveCallback(IAsyncResult a_result)
+        {
+            try
+            {
+                StateObject state = (StateObject)a_result.AsyncState;
+                Socket client = state.m_socket;
+                int bytesRead = client.EndReceive(a_result);
+
+#if DEBUG
+                Console.WriteLine("SERVER::CONNECTION Read {0} bytes from {1}", bytesRead, client.RemoteEndPoint.ToString());
+#endif
+                if (bytesRead > 0)
+                    Send(state.m_buffer);
+                m_client.Client.BeginReceive(state.m_buffer, 0, StateObject.m_bufferSize, 0, ReceiveCallback, state);
+            }
+            catch (Exception a_e)
+            {
+                Console.WriteLine(a_e);
+            }
         }
 
         private void btnYeetPackage_Click(object sender, EventArgs e)

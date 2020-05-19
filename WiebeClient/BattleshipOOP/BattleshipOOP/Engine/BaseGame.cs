@@ -37,6 +37,7 @@ namespace Battleship.Engine
                 OnMouseInput(Mouse.GetState());
             if(m_currentScene != null)
             {
+                // Check for network synchronization before updating
                 if (m_currentScene is INetworkScene)
                 {
                     INetworkScene scene = ((INetworkScene)m_currentScene);

@@ -71,7 +71,7 @@ namespace BattleshipOOP.Engine.Networking
 
             int bytesSend = client.EndSend(a_result);
 #if DEBUG
-            Console.WriteLine("NETWORK::CONNECTION Sent {0} bytes to {1}", client.RemoteEndPoint.ToString());
+            Console.WriteLine("NETWORK::CONNECTION Sent {0} bytes to {1}", bytesSend, client.RemoteEndPoint.ToString());
 #endif
         }
 

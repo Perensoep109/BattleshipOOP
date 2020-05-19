@@ -3,6 +3,7 @@ using Battleship.Engine.Graphics;
 using Battleship.MainGame;
 using BattleshipOOP.Engine.Networking;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,7 +48,8 @@ namespace BattleshipOOP.Game.Scenes
 
         public override void Update()
         {
-            
+            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+                m_connection.Send(new Packet(new byte[] { 0x7, 0x8, 0x9, 0x10}));
         }
     }
 }

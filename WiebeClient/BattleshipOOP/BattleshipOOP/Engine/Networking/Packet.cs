@@ -19,5 +19,10 @@ namespace BattleshipOOP.Engine.Networking
         {
             m_buffer = new byte[a_bufferSize];
         }
+
+        public Packet(byte[] a_buffer)
+        {
+            m_buffer = a_buffer;
+        }
     }
 }
