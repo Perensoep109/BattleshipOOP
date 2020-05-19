@@ -26,7 +26,6 @@ namespace Battleship.MainGame
         protected override void Draw(GameTime gameTime)
         {
             base.Draw(gameTime);
-                     
         }
 
         protected override void Initialize()

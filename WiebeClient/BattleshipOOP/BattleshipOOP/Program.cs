@@ -1,4 +1,4 @@
-﻿using Battleship.Engine;
+﻿using Battleship.MainGame;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
