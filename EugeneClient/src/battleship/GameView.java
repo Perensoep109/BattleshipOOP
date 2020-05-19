@@ -67,6 +67,7 @@ public class GameView extends GridPane implements IEventPane
 
     @Override
     public void onClick(MouseEvent a_event) {
+        
         //when a element is clicked set it on true so no new object will be made
       boolean _clickedObject = false;
       //loop though all gameobjects to test for colissions
