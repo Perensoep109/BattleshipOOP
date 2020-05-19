@@ -55,6 +55,7 @@
     <Compile Include="Engine\Events\EventListeners\BaseEventListener.cs" />
     <Compile Include="Engine\Events\EventListeners\ClickableListener.cs" />
     <Compile Include="Engine\Events\IBaseEvent.cs" />
+    <Compile Include="Engine\Networking\INetworkScene.cs" />
     <Compile Include="Engine\Networking\ServerConnection.cs" />
     <Compile Include="Engine\Objects\IRenderable.cs" />
     <Compile Include="Game\BattleshipGame.cs" />
@@ -64,6 +65,8 @@
     <Compile Include="Engine\Graphics\SpriteResource.cs" />
     <Compile Include="Engine\Rendering\SceneRenderer.cs" />
     <Compile Include="Engine\Scene.cs" />
+    <Compile Include="Game\Scenes\MainScene.cs" />
+    <Compile Include="Game\Scenes\MultiplayerScene.cs" />
     <Compile Include="Game\TestObject.cs" />
     <Compile Include="Game\TestScene.cs" />
     <Compile Include="Program.cs" />

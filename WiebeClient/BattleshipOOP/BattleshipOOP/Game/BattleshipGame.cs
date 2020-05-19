@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework.Input;
 using Battleship.Engine;
+using BattleshipOOP.Game.Scenes;
 
 namespace Battleship.MainGame
 {
@@ -18,27 +19,12 @@ namespace Battleship.MainGame
         protected override void BeginRun()
         {
             base.BeginRun();
-            m_currentScene = new TestScene();
-        }
-
-        protected override void Draw(GameTime gameTime)
-        {
-            base.Draw(gameTime);
-        }
-
-        protected override void Initialize()
-        {
-            base.Initialize();
+            m_currentScene = new MultiplayerScene();
         }
 
         protected override void LoadContent()
         {
             ResourcePool.LoadSprite(Texture2D.FromStream(m_graphics.GraphicsDevice, File.OpenRead("tile.png")), "tile");
-        }
-
-        protected override void Update(GameTime gameTime)
-        {
-            base.Update(gameTime);
         }
     }
 }

@@ -9,9 +9,10 @@ namespace BattleshipOOP.Engine.Networking
 {
     interface INetworkScene
     {
-        bool NetworkSyc { get; set; }
+        bool NetworkResync { get; set; }
         Scene NetworkScene { get; set; }
 
         void Sync();
+        void ProcessPacket(object a_sender, byte[] a_packet);
     }
 }

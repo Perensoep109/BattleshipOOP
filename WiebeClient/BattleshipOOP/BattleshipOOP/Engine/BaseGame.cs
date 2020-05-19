@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BattleshipOOP.Engine.Networking;
 
 namespace Battleship.Engine
 {
@@ -34,7 +35,18 @@ namespace Battleship.Engine
         {
             if (m_lastMouseState.LeftButton != Mouse.GetState().LeftButton)
                 OnMouseInput(Mouse.GetState());
-            m_currentScene?.Update();
+            if(m_currentScene != null)
+            {
+                if (m_currentScene is INetworkScene)
+                {
+                    INetworkScene scene = ((INetworkScene)m_currentScene);
+
+                    if (scene.NetworkResync)
+                        scene.Sync();
+                }
+                m_currentScene.Update();
+            }
+            
             base.Update(a_gameTime);
         }
 
@@ -48,7 +60,6 @@ namespace Battleship.Engine
         protected override void BeginRun()
         {
             m_sceneRenderer = new SceneRenderer(new SpriteBatch(m_graphics.GraphicsDevice));
-            m_currentScene = new TestScene();
             MouseInput += ((ClickableListener)ClickableListener.Instance).Update;
         }
 
