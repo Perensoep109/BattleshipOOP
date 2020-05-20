@@ -1,4 +1,5 @@
-﻿using Battleship.Engine.Events;
+﻿using Battleship.Engine;
+using Battleship.Engine.Events;
 using Battleship.Engine.Events.EventListeners;
 using System;
 using System.Collections.Generic;
@@ -6,19 +7,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Battleship.Engine
+namespace BattleshipOOP.Engine
 {
-    /// <summary>
-    /// A scene is a collection of game objects
-    /// </summary>
-    abstract class Scene
+    abstract class GameScene : BaseScene
     {
         /// <summary>
         /// All gameobjects in this scene
         /// </summary>
         public List<GameObject> GameObjects { get; private set; }
 
-        public Scene()
+        public GameScene()
         {
             GameObjects = new List<GameObject>();
         }
@@ -32,7 +30,7 @@ namespace Battleship.Engine
         /// <param name="a_object">The new GameObject</param>
         public void AddGameObject(GameObject a_object)
         {
-            if (a_object is IClickable) 
+            if (a_object is IClickable)
                 ClickableListener.Instance.Attach((IClickable)a_object);
             GameObjects.Add(a_object);
         }

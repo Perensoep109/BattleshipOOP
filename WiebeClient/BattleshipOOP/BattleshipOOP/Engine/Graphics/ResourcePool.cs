@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using BattleshipOOP.Engine.Graphics;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -22,7 +23,7 @@ namespace Battleship.Engine.Graphics
         /// <summary>
         /// A dictionary of all the textures in this pool
         /// </summary>
-        private Dictionary<string, SpriteResource> m_textures;
+        private Dictionary<string, BaseResource> m_resources;
 
         /// <summary>
         /// The static singleton constructor
@@ -37,7 +38,7 @@ namespace Battleship.Engine.Graphics
         /// </summary>
         private ResourcePool()
         {
-            m_textures = new Dictionary<string, SpriteResource>();
+            m_resources = new Dictionary<string, BaseResource>();
         }
 
         /// <summary>
@@ -47,20 +48,23 @@ namespace Battleship.Engine.Graphics
         /// <returns>The requested sprite. If it was not found, it throws a FileNotFoundException</returns>
         public static SpriteResource GetSprite(string a_name)
         {
-            SpriteResource sprite;
-            if (!Resources.m_textures.TryGetValue(a_name, out sprite))
+            BaseResource resource;
+            if (!Resources.m_resources.TryGetValue(a_name, out resource))
                 throw new FileNotFoundException("File not found: " + a_name);
-            return sprite;
+            return (SpriteResource)resource;
         }
 
-        /// <summary>
-        /// Convert a Texture2D to a sprite and add it to the pool
-        /// </summary>
-        /// <param name="a_texture">The Texture2D to load</param>
-        /// <param name="a_name">The name to store this sprite with</param>
-        public static void LoadSprite(Texture2D a_texture, string a_name)
+        public static SpriteFontResource GetSpriteFont(string a_name)
         {
-            Resources.m_textures.Add(a_name, new SpriteResource(a_texture));
+            BaseResource resource;
+            if (!Resources.m_resources.TryGetValue(a_name, out resource))
+                throw new FileNotFoundException("File not found: " + a_name);
+            return (SpriteFontResource)resource;
+        }
+
+        public static void LoadResource(BaseResource a_resource, string a_name)
+        {
+            Resources.m_resources.Add(a_name, a_resource);
         }
     }
 }

@@ -24,7 +24,7 @@ namespace Battleship.MainGame
 
         protected override void LoadContent()
         {
-            ResourcePool.LoadSprite(Texture2D.FromStream(m_graphics.GraphicsDevice, File.OpenRead("tile.png")), "tile");
+            //ResourcePool.LoadResource(Texture2D.FromStream(m_graphics.GraphicsDevice, File.OpenRead("tile.png")), "tile");
         }
     }
 }

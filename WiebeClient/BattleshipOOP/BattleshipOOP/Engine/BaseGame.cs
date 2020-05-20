@@ -11,6 +11,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BattleshipOOP.Engine.Networking;
+using BattleshipOOP.Engine.Rendering;
+using BattleshipOOP.Engine;
+using BattleshipOOP.Engine.UI;
 
 namespace Battleship.Engine
 {
@@ -22,8 +25,9 @@ namespace Battleship.Engine
 
         protected GraphicsDeviceManager m_graphics;
 
-        protected Scene m_currentScene;
-        protected SceneRenderer m_sceneRenderer;
+        protected BaseScene m_currentScene;
+        protected GameSceneRenderer m_sceneRenderer;
+        protected UISceneRenderer m_uiSceneRenderer;
 
         public BaseGame()
         {
@@ -45,7 +49,8 @@ namespace Battleship.Engine
                     if (scene.NetworkResync)
                         scene.Sync();
                 }
-                m_currentScene.Update();
+                if(m_currentScene is GameScene)
+                    ((GameScene)m_currentScene).Update();
             }
             
             base.Update(a_gameTime);
@@ -60,7 +65,8 @@ namespace Battleship.Engine
 
         protected override void BeginRun()
         {
-            m_sceneRenderer = new SceneRenderer(new SpriteBatch(m_graphics.GraphicsDevice));
+            m_sceneRenderer = new GameSceneRenderer(new SpriteBatch(m_graphics.GraphicsDevice));
+            m_uiSceneRenderer = new UISceneRenderer(new SpriteBatch(m_graphics.GraphicsDevice));
             MouseInput += ((ClickableListener)ClickableListener.Instance).Update;
         }
 
@@ -68,8 +74,13 @@ namespace Battleship.Engine
         {
             base.Draw(a_gameTime);
             m_graphics.GraphicsDevice.Clear(Color.Teal);
-            if(m_currentScene != null)
-                m_sceneRenderer.Draw(m_currentScene, m_graphics);
+            if (m_currentScene != null)
+            {
+                if (m_currentScene is GameScene)
+                    m_sceneRenderer.Draw((GameScene)m_currentScene, m_graphics);
+                if (m_currentScene is UIScene)
+                    m_uiSceneRenderer.Draw((UIScene)m_currentScene, m_graphics);
+            }
         }
         #endregion
 

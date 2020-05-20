@@ -18,9 +18,9 @@ namespace Battleship.Engine.Events
         /// The bounds of the clickable area
         /// </summary>
         Rectangle? Bounds { get; set; }
-        /// <summary>
-        /// The method to execute when this object is clicked
-        /// </summary>
-        void OnClick(MouseState a_state);
+
+        void BaseOnClick(MouseState a_state);
+
+        event EventHandler<MouseState> OnClick;
     }
 }

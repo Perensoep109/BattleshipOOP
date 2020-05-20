@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
+using BattleshipOOP.Engine.Graphics;
 
 namespace Battleship.Engine.Graphics
 {
@@ -14,7 +15,7 @@ namespace Battleship.Engine.Graphics
     /// A SpriteResource is a 2D sprite which is loaded from the file system
     /// It stores the width, height and area bounds of a sprite
     /// </summary>
-    class SpriteResource
+    class SpriteResource : BaseResource
     {
         /// <summary>
         /// The 2D texture which represents this sprite

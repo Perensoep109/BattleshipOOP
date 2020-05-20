@@ -1,6 +1,7 @@
 ﻿using Battleship.Engine;
 using Battleship.Engine.Graphics;
 using Battleship.MainGame;
+using BattleshipOOP.Engine;
 using BattleshipOOP.Engine.Networking;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -13,10 +14,10 @@ using System.Threading.Tasks;
 
 namespace BattleshipOOP.Game.Scenes
 {
-    class MultiplayerScene : Scene, INetworkScene
+    class MultiplayerScene : GameScene, INetworkScene
     {
         public bool NetworkResync { get; set; }
-        public Scene NetworkScene { get; set; }
+        public GameScene NetworkScene { get; set; }
 
         private ServerConnection m_connection;
 
@@ -25,8 +26,6 @@ namespace BattleshipOOP.Game.Scenes
             m_connection = new ServerConnection();
             m_connection.Connect(IPAddress.Parse("127.0.0.1"), 69);
             m_connection.ReceivedPacket += ProcessPacket;
-
-            AddGameObject(new TestObject(new Vector2(0, 0), ResourcePool.GetSprite("tile")));
         }
 
         public void ProcessPacket(object a_sender, Packet a_packet)
