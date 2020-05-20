@@ -1,6 +1,6 @@
 package battleship;
 
-import Networking.client;
+import Networking.NetworkSingleton;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import sceneswitcher.View;
@@ -15,6 +15,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception
     {
+        NetworkSingleton.getInstance();
 
 
 

@@ -1,8 +1,6 @@
 package Networking;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -15,34 +13,43 @@ import java.net.UnknownHostException;
 public class client extends Thread {
     private String hostname;
     private int port;
-    public Thread t;
+    private InputStreamReader isr;
+    private OutputStreamWriter osw;
+
 
     public client(String a_hostname, int a_port){
 
         this.hostname = a_hostname;
         this.port = a_port;
-        run();
     }
 
     public void start(){
-        System.out.println("Starting " );
-        if (t == null) {
-            t = new Thread (this);
-            t.start ();
+        System.out.println("Starting" );
+
+
+
+    }
+    public void sendData(String data) throws IOException {
+        if (osw != null){
+            osw.write(data);
         }
+
     }
 
 
-    public void run() {
-        System.out.println("MyThread running");
 
+
+    public void run() {
+        System.out.println("thread running");
 
         try (Socket socket = new Socket(hostname, port)) {
 
             InputStream input = socket.getInputStream();
-            InputStreamReader reader = new InputStreamReader(input);
+            isr = new InputStreamReader(input);
+            OutputStream output = socket.getOutputStream();
+            osw = new OutputStreamWriter(output);
             while (true) {
-                System.out.println(reader.read());
+                System.out.println(isr.read());
             }
         } catch (UnknownHostException ex) {
 

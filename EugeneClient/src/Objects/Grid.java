@@ -1,7 +1,12 @@
 package Objects;
 
+import Networking.NetworkSingleton;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import sun.nio.ch.Net;
+
+import javax.imageio.IIOException;
+import java.io.IOException;
 
 public class Grid extends BaseGameObject {
     private class Cell extends BaseGameObject implements IClickable
@@ -26,6 +31,12 @@ public class Grid extends BaseGameObject {
         public void onClick() {
             this.sprite = new Image("land.png");
             System.out.println("clicked cell at: " + this.getPosX()+ " " + this.getPosY());
+            try{
+                NetworkSingleton.getInstance().sendData("E");
+            } catch (IOException e){
+
+            }
+
         }
     }
     private Cell[][] cells;

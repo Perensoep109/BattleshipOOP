@@ -1,10 +1,9 @@
 package battleship;
 
-import Networking.client;
+import Networking.NetworkSingleton;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import sceneswitcher.IEventPane;
@@ -15,22 +14,24 @@ public class LoginView extends GridPane implements IEventPane
     Button btn_switch;
     TextField txt_ip, txt_port;
     Label lbl_ip, lbl_port;
-    public client c;
-    public Thread networkthread;
 
 
     public LoginView()
     {
+        NetworkSingleton.getInstance();
         lbl_port = new Label("server port");
         lbl_ip = new Label("server adress");
         txt_ip = new TextField();
         txt_port = new TextField();
 
+
         btn_switch = new Button("login");
 
         btn_switch.setOnAction(click -> {
-            networkthread = new Thread(new client("localhost", 69));
-            ViewController.show("GameView", txt_ip.getText(),txt_port.getText());
+            NetworkSingleton.getInstance().connect(txt_ip.getText(),Integer.valueOf(txt_port.getText()));
+
+            ViewController.show("GameView", txt_ip.getText(),txt_port.getText()); //gonna try doing this asoon it connects
+
         });
         this.add(lbl_ip,0,0);
         this.add(lbl_port,1,0);
