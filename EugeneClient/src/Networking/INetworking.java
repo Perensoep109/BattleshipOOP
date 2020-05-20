@@ -1,5 +1,5 @@
 package Networking;
 
 public interface INetworking {
-    public void onRecieveRequest();
+    public void OnRecievePacket(String packet);
 }

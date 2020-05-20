@@ -1,5 +1,6 @@
 package battleship;
 
+import Networking.INetworking;
 import Networking.NetworkSingleton;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -14,10 +15,12 @@ public class LoginView extends GridPane implements IEventPane
     Button btn_switch;
     TextField txt_ip, txt_port;
     Label lbl_ip, lbl_port;
+    INetworking eventHandeler;
 
 
     public LoginView()
     {
+
         NetworkSingleton.getInstance();
         lbl_port = new Label("server port");
         lbl_ip = new Label("server adress");

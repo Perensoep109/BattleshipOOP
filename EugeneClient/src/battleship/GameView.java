@@ -1,6 +1,8 @@
 package battleship;
 
 
+import Networking.INetworking;
+import Networking.Packet;
 import Networking.client;
 import Objects.BaseGameObject;
 import Objects.Grid;
@@ -16,7 +18,7 @@ import sceneswitcher.IEventPane;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameView extends GridPane implements IEventPane
+public class GameView extends GridPane implements IEventPane, INetworking
 {
     Canvas canvas;
     GraphicsContext gc;
@@ -63,7 +65,6 @@ public class GameView extends GridPane implements IEventPane
 
     @Override
     public void onStop() {
-        System.out.println();
         //TODO i guess i can put network closing stuff here
     }
 
@@ -92,4 +93,9 @@ public class GameView extends GridPane implements IEventPane
 
     }
 
+    @Override
+    public void OnRecievePacket(String packet) {
+        System.out.println("YEET");
+
+    }
 }

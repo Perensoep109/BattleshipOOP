@@ -1,8 +1,13 @@
 package Networking;
 
+import com.sun.xml.internal.bind.v2.runtime.reflect.Lister;
+import sceneswitcher.IEventPane;
+
 import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This program is a socket client application that connects to a time server
@@ -14,10 +19,14 @@ public class client extends Thread {
     private String hostname;
     private int port;
     private InputStreamReader isr;
-    private OutputStreamWriter osw;
+    private DataOutputStream dos;
+    private List<Packet> packetBuffer;
 
+    private INetworking eventHandeler;
 
-    public client(String a_hostname, int a_port){
+    public client(String a_hostname, int a_port, INetworking eventHandeler){
+        this.eventHandeler = eventHandeler;
+        packetBuffer = new ArrayList<>();
 
         this.hostname = a_hostname;
         this.port = a_port;
@@ -29,9 +38,10 @@ public class client extends Thread {
 
 
     }
-    public void sendData(String data) throws IOException {
-        if (osw != null){
-            osw.write(data);
+    public void sendData(Packet packet) throws IOException {
+        if (dos != null){
+            dos.writeInt(packet.getData().length);
+            dos.write(packet.getData());
         }
 
     }
@@ -47,8 +57,10 @@ public class client extends Thread {
             InputStream input = socket.getInputStream();
             isr = new InputStreamReader(input);
             OutputStream output = socket.getOutputStream();
-            osw = new OutputStreamWriter(output);
+            dos = new DataOutputStream(output);
+
             while (true) {
+                this.eventHandeler.OnRecievePacket("yeet");
                 System.out.println(isr.read());
             }
         } catch (UnknownHostException ex) {
