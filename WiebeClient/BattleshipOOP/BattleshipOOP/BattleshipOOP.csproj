@@ -76,6 +76,7 @@
     <Compile Include="Game\BattleshipGame.cs" />
     <Compile Include="Engine\Events\IClickable.cs" />
     <Compile Include="Engine\Objects\GameObject.cs" />
+    <Compile Include="Game\Scenes\MainMenuScene.cs" />
     <Compile Include="Game\Scenes\MultiplayerScene.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -85,9 +86,7 @@
     <None Include="Content\Content.mgcb" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Game\Art\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\MonoGame.Framework.DesktopGL.3.7.1.189\build\MonoGame.Framework.DesktopGL.targets" Condition="Exists('..\packages\MonoGame.Framework.DesktopGL.3.7.1.189\build\MonoGame.Framework.DesktopGL.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -1,4 +1,5 @@
 ﻿using Battleship.Engine;
+using Battleship.Engine.Events.EventListeners;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,12 @@ namespace BattleshipOOP.Engine.UI
         {
             UIComponents = new List<UIComponent>();
             m_graphics = a_graphics;
+        }
+
+        public void AddElement(UIComponent a_component)
+        {
+            ClickableListener.Instance.Attach(a_component);
+            UIComponents.Add(a_component);
         }
     }
 }

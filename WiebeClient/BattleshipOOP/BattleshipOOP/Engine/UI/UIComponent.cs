@@ -24,7 +24,6 @@ namespace BattleshipOOP.Engine.UI
         public UIComponent(GraphicsDevice a_graphics)
         {
             m_graphicsDevice = a_graphics;
-            ClickableListener.Instance.Attach(this);
         }
 
         public void SetBackColor(Color a_value)
