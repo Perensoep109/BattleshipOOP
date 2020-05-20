@@ -8,21 +8,18 @@ namespace BattleshipOOP.Engine.Networking
 {
     enum PacketType
     {
-
+        Ping = 0
     }
 
     struct Packet
     {
         public byte[] m_buffer;
+        public PacketType m_type;
 
-        public Packet(int a_bufferSize)
-        {
-            m_buffer = new byte[a_bufferSize];
-        }
-
-        public Packet(byte[] a_buffer)
+        public Packet(byte[] a_buffer, PacketType a_type)
         {
             m_buffer = a_buffer;
+            m_type = a_type;
         }
     }
 }

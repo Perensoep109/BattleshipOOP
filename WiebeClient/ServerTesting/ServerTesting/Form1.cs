@@ -12,13 +12,6 @@ using System.Windows.Forms;
 
 namespace ServerTesting
 {
-    internal class StateObject
-    {
-        public Socket m_socket;
-        public const int m_bufferSize = 32;
-        public byte[] m_buffer = new byte[m_bufferSize];
-    }
-
     public partial class Form1 : Form
     {
         TcpListener m_server;
@@ -28,8 +21,6 @@ namespace ServerTesting
         {
             InitializeComponent();
             m_server = new TcpListener(IPAddress.Parse("127.0.0.1"), 69);
-            m_server.Start();
-            m_server.BeginAcceptTcpClient(ClientConnected, m_server);
         }
 
         public void ClientConnected(IAsyncResult a_result)
@@ -37,9 +28,9 @@ namespace ServerTesting
             TcpListener server = (TcpListener)a_result.AsyncState;
             m_client = server.EndAcceptTcpClient(a_result);
 
-            Console.WriteLine("SERVER::CONNECTION Server connected to {0}",
-                m_client.Client.RemoteEndPoint.ToString());
+            Console.WriteLine("SERVER::CONNECTION Server connected to {0}", m_client.Client.RemoteEndPoint.ToString());
             StartReceive();
+            StartPing();
         }
 
         public void StartReceive()
@@ -97,5 +88,34 @@ namespace ServerTesting
             Console.WriteLine("SERVER::CONNECTION Sent {0} bytes to {1}", bytesSend, client.RemoteEndPoint.ToString());
 #endif
         }
+
+        private async Task StartPing()
+        {
+            while(true)
+            {
+                await Task.Delay(10000);
+                if (m_client.Connected)
+                    Send(new byte[] { 0x0 });
+            }
+        }
+
+        private void btnStart_Click(object sender, EventArgs e)
+        {
+            m_server.Start();
+            m_server.BeginAcceptTcpClient(ClientConnected, m_server);
+            Console.WriteLine("SERVER Started server");
+        }
+
+        private void btnStop_Click(object sender, EventArgs e)
+        {
+            m_server.Stop();
+        }
+    }
+
+    internal class StateObject
+    {
+        public Socket m_socket;
+        public const int m_bufferSize = 32;
+        public byte[] m_buffer = new byte[m_bufferSize];
     }
 }

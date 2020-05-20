@@ -53,7 +53,7 @@ namespace BattleshipOOP.Engine.Networking
                 int bytesRead = client.EndReceive(a_result);
 
 #if DEBUG
-                Console.WriteLine("NETWORK::CONNECTION Read {0} bytes from {1}", bytesRead, client.RemoteEndPoint.ToString());
+                Console.WriteLine("CLIENT::CONNECTION Read {0} bytes from {1}", bytesRead, client.RemoteEndPoint.ToString());
 #endif
                 if(bytesRead > 0)
                     ReceivedPacket?.Invoke(this, PacketInterpreter.InterpretPacket(state.m_buffer));
@@ -71,19 +71,30 @@ namespace BattleshipOOP.Engine.Networking
 
             int bytesSend = client.EndSend(a_result);
 #if DEBUG
-            Console.WriteLine("NETWORK::CONNECTION Sent {0} bytes to {1}", bytesSend, client.RemoteEndPoint.ToString());
+            Console.WriteLine("CLIENT::CONNECTION Sent {0} bytes to {1}", bytesSend, client.RemoteEndPoint.ToString());
 #endif
         }
 
         private void ConnectionStateCallback(IAsyncResult a_result)
         {
-            m_client.EndConnect(a_result);
-
-            if (m_client.Connected)
+            try
             {
-                StateObject state = new StateObject();
-                state.m_socket = m_client;
-                m_client.BeginReceive(state.m_buffer, 0, StateObject.m_bufferSize, 0, ReceiveCallback, state);
+                m_client.EndConnect(a_result);
+
+                if (m_client.Connected)
+                {
+                    StateObject state = new StateObject();
+                    state.m_socket = m_client;
+                    m_client.BeginReceive(state.m_buffer, 0, StateObject.m_bufferSize, 0, ReceiveCallback, state);
+                }
+            }
+            catch(SocketException a_e)
+            {
+                Console.WriteLine("ERROR::CLIENT::CONNECTION::SOCKET::EXCEPTION {0}", a_e.Message);
+            }
+            catch(Exception a_e)
+            {
+                Console.WriteLine("ERROR::CLIENT::CONNECTION::GENERIC::EXCEPTION {0}", a_e.ToString());
             }
         }
         #endregion

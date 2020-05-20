@@ -31,9 +31,12 @@ namespace BattleshipOOP.Game.Scenes
 
         public void ProcessPacket(object a_sender, Packet a_packet)
         {
-            GameObjects[0].m_pos += new Vector2(10, 10);
-            NetworkResync = true;
-            NetworkScene = this;
+            if (a_packet.m_type != PacketType.Ping)
+            {
+                GameObjects[0].m_pos += new Vector2(10, 10);
+                NetworkResync = true;
+                NetworkScene = this;
+            }
         }
 
         public void Sync()
@@ -49,7 +52,7 @@ namespace BattleshipOOP.Game.Scenes
         public override void Update()
         {
             if (Mouse.GetState().LeftButton == ButtonState.Pressed)
-                m_connection.Send(new Packet(new byte[] { 0x7, 0x8, 0x9, 0x10}));
+                m_connection.Send(new Packet(new byte[] { 0x7, 0x8, 0x9, 0x10}, PacketType.Ping));
         }
     }
 }

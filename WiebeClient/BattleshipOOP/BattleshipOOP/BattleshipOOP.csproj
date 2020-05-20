@@ -60,6 +60,7 @@
     <Compile Include="Engine\Networking\PacketInterpreter.cs" />
     <Compile Include="Engine\Networking\ServerConnection.cs" />
     <Compile Include="Engine\Objects\IRenderable.cs" />
+    <Compile Include="Engine\UI\UIComponent.cs" />
     <Compile Include="Game\BattleshipGame.cs" />
     <Compile Include="Engine\Events\IClickable.cs" />
     <Compile Include="Engine\Objects\GameObject.cs" />

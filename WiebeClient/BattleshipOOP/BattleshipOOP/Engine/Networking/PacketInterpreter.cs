@@ -10,7 +10,7 @@ namespace BattleshipOOP.Engine.Networking
     {
         public static Packet InterpretPacket(byte[] a_buffer)
         {
-            Packet packet = new Packet(a_buffer.Length);
+            Packet packet = new Packet(a_buffer, PacketType.Ping);
 
             return packet;
         }
