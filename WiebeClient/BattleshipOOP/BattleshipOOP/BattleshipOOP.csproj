@@ -82,6 +82,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Content\Content.mgcb" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -94,5 +95,7 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\MonoGame.Framework.DesktopGL.3.7.1.189\build\MonoGame.Framework.DesktopGL.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MonoGame.Framework.DesktopGL.3.7.1.189\build\MonoGame.Framework.DesktopGL.targets'))" />
+    <Error Condition="!Exists('..\packages\JDG.MonoGame.Content.Builder.1.0.1\build\JDG.MonoGame.Content.Builder.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\JDG.MonoGame.Content.Builder.1.0.1\build\JDG.MonoGame.Content.Builder.targets'))" />
   </Target>
+  <Import Project="..\packages\JDG.MonoGame.Content.Builder.1.0.1\build\JDG.MonoGame.Content.Builder.targets" Condition="Exists('..\packages\JDG.MonoGame.Content.Builder.1.0.1\build\JDG.MonoGame.Content.Builder.targets')" />
 </Project>
