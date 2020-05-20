@@ -1,6 +1,9 @@
 package battleship;
 
 
+import Networking.INetworking;
+import Networking.Packet;
+import Networking.client;
 import Objects.BaseGameObject;
 import Objects.Grid;
 import Objects.IClickable;
@@ -15,15 +18,17 @@ import sceneswitcher.IEventPane;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameView extends GridPane implements IEventPane
+public class GameView extends GridPane implements IEventPane, INetworking
 {
     Canvas canvas;
     GraphicsContext gc;
     List<BaseGameObject> gameObjects;
     Grid grid;
     Render render;
+
     public GameView()
     {
+
 
         //create the canvas
         canvas = new Canvas( 1000,1000 );
@@ -88,4 +93,9 @@ public class GameView extends GridPane implements IEventPane
 
     }
 
+    @Override
+    public void OnRecievePacket(String packet) {
+        System.out.println("YEET");
+
+    }
 }

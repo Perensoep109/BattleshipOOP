@@ -1,22 +1,32 @@
 package battleship;
 
+import Networking.NetworkSingleton;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import sceneswitcher.View;
 import sceneswitcher.ViewController;
 
 
+
 public class Main extends Application {
+
 
 
     @Override
     public void start(Stage primaryStage) throws Exception
     {
+        NetworkSingleton.getInstance();
+
+
+
+
+
 //
         ViewController.setStage(primaryStage);
         ViewController.addView(new View(new LoginView(), 200, 200), "LoginView");
         ViewController.addView(new View(new GameView(), 1000, 1000), "GameView");
         ViewController.show("LoginView");
+
     }
 
     @Override
