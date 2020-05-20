@@ -1,5 +1,6 @@
 ﻿using Battleship.Engine;
 using Battleship.Engine.Events.EventListeners;
+using Battleship.Engine.Scenes;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,16 @@ namespace BattleshipOOP.Engine.UI
         {
             ClickableListener.Instance.Attach(a_component);
             UIComponents.Add(a_component);
+        }
+
+        protected override void OnSwitchTo()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void OnSwitchFrom()
+        {
+            throw new NotImplementedException();
         }
     }
 }

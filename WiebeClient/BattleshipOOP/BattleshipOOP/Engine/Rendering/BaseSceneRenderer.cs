@@ -1,4 +1,5 @@
 ﻿using Battleship.Engine;
+using Battleship.Engine.Scenes;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;

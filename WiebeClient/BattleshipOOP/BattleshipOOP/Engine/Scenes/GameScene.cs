@@ -1,13 +1,14 @@
 ﻿using Battleship.Engine;
 using Battleship.Engine.Events;
 using Battleship.Engine.Events.EventListeners;
+using Battleship.Engine.Scenes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BattleshipOOP.Engine
+namespace BattleshipOOP.Engine.Scenes
 {
     abstract class GameScene : BaseScene
     {
@@ -43,6 +44,27 @@ namespace BattleshipOOP.Engine
         {
             if (a_object is IClickable)
                 ClickableListener.Instance.Detach((IClickable)a_object);
+        }
+
+        protected override void OnSwitchTo()
+        {
+            GameObjects.ForEach(
+            obj =>
+            {
+                if (obj is IClickable)
+                    if (!ClickableListener.Instance.Contains((IClickable)obj))
+                        ClickableListener.Instance.Attach((IClickable)obj);
+            });
+        }
+
+        protected override void OnSwitchFrom()
+        {
+            GameObjects.ForEach(
+            obj =>
+            {
+                if (obj is IClickable)
+                    ClickableListener.Instance.Detach((IClickable)obj);
+            });
         }
     }
 }

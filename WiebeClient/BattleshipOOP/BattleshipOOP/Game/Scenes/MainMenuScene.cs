@@ -18,13 +18,12 @@ namespace BattleshipOOP.Game.Scenes
         public MainMenuScene(GraphicsDevice a_graphics) : base(a_graphics)
         {
             AddElement(m_testButton = new UIButton(new Vector2(0, 0), 50, 50, "Test", ResourcePool.GetSpriteFont("font").Font, a_graphics));
-
             m_testButton.OnClick += TestButton_OnClick;
         }
 
         private void TestButton_OnClick(object sender, MouseState e)
         {
-            
+            Console.WriteLine("Click");
         }
     }
 }

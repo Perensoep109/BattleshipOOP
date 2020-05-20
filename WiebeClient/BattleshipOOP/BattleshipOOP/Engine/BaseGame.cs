@@ -14,6 +14,8 @@ using BattleshipOOP.Engine.Networking;
 using BattleshipOOP.Engine.Rendering;
 using BattleshipOOP.Engine;
 using BattleshipOOP.Engine.UI;
+using Battleship.Engine.Scenes;
+using BattleshipOOP.Engine.Scenes;
 
 namespace Battleship.Engine
 {

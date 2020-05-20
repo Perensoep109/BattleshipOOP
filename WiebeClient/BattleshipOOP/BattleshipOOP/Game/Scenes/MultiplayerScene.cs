@@ -3,6 +3,7 @@ using Battleship.Engine.Graphics;
 using Battleship.MainGame;
 using BattleshipOOP.Engine;
 using BattleshipOOP.Engine.Networking;
+using BattleshipOOP.Engine.Scenes;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System;

@@ -41,5 +41,10 @@ namespace Battleship.Engine.Events.EventListeners
         {
             m_listeners.Remove(a_observable);
         }
+
+        public bool Contains(IObservesEvent a_observable)
+        {
+            return m_listeners.Contains(a_observable);
+        }
     }
 }
