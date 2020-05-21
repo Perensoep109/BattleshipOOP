@@ -14,7 +14,8 @@ namespace BattleshipOOP.Game
     {
         public MainMenuUI(GraphicsDevice a_graphicsDevice)
         {
-            AddUI(new UIButton(130, 50, "Launch game", ResourcePool.GetSpriteFont("font").Font, a_graphicsDevice), 0, 0);
+            AddUI(new UIButton(130, 30, "Launch game", ResourcePool.GetSpriteFont("font").Font, a_graphicsDevice), 0, 1);
+            AddUI(new UILabel(130, 30, "Multiplayer battleship", ResourcePool.GetSpriteFont("font").Font, a_graphicsDevice), 0, 0);
         }
     }
 }

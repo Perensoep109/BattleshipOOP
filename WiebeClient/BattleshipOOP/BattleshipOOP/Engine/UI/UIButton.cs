@@ -18,10 +18,8 @@ namespace BattleshipOOP.Engine.UI
         public SpriteFont Font { get; set; }
         public Rectangle? Bounds { get; set; }
 
-        public UIButton(int a_width, int a_height, string a_text, SpriteFont a_font, GraphicsDevice a_graphics) : base(a_graphics)
+        public UIButton(int a_width, int a_height, string a_text, SpriteFont a_font, GraphicsDevice a_graphics) : base(a_width, a_height, a_graphics)
         {
-            Width = a_width;
-            Height = a_height;
             Text = a_text;
             Font = a_font;
             BackColor = Color.White;

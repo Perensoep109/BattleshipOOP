@@ -23,9 +23,11 @@ namespace BattleshipOOP.Engine.UI
         protected Texture2D m_backTexture;
         private GraphicsDevice m_graphicsDevice;
 
-        public UIElementBase(GraphicsDevice a_graphicsDevice)
+        public UIElementBase(int a_width, int a_height, GraphicsDevice a_graphicsDevice)
         {
             m_graphicsDevice = a_graphicsDevice;
+            Width = a_width;
+            Height = a_height;
         }
 
         public void SetBackColor(Color a_value)
