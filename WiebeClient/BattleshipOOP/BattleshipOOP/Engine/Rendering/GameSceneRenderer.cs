@@ -18,9 +18,11 @@ namespace Battleship.Engine.Rendering
     /// </summary>
     class GameSceneRenderer : BaseSceneRenderer
     {
+        UIRenderer m_uiRenderer;
+
         public GameSceneRenderer(SpriteBatch a_spriteBatch) : base(a_spriteBatch)
         {
-            
+            m_uiRenderer = new UIRenderer();
         }
 
         public override void Draw(BaseScene a_scene, GraphicsDeviceManager a_graphics)
@@ -31,6 +33,8 @@ namespace Battleship.Engine.Rendering
                 if (obj is IRenderable)
                     ((IRenderable)obj).Draw(m_spriteBatch);
             });
+            if (scene.UI != null)
+                m_uiRenderer.Draw(scene.UI, m_spriteBatch);
             m_spriteBatch.End();
         }
     }

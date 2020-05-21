@@ -28,7 +28,7 @@ namespace Battleship.Engine
         protected GraphicsDeviceManager m_graphics;
 
         protected GameSceneRenderer m_sceneRenderer;
-        protected UISceneRenderer m_uiSceneRenderer;
+        protected UIRenderer m_uiSceneRenderer;
 
         public BaseGame()
         {
@@ -68,7 +68,7 @@ namespace Battleship.Engine
         protected override void BeginRun()
         {
             m_sceneRenderer = new GameSceneRenderer(new SpriteBatch(m_graphics.GraphicsDevice));
-            m_uiSceneRenderer = new UISceneRenderer(new SpriteBatch(m_graphics.GraphicsDevice));
+            m_uiSceneRenderer = new UIRenderer();
             MouseInput += ((ClickableListener)ClickableListener.Instance).Update;
         }
 
@@ -81,8 +81,6 @@ namespace Battleship.Engine
             {
                 if (çurScene is GameScene)
                     m_sceneRenderer.Draw((GameScene)çurScene, m_graphics);
-                if (çurScene is UIScene)
-                    m_uiSceneRenderer.Draw((UIScene)çurScene, m_graphics);
             }
         }
         #endregion

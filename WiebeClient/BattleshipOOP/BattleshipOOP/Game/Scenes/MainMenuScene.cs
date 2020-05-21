@@ -1,9 +1,5 @@
-﻿using Battleship.Engine.Graphics;
-using BattleshipOOP.Engine.Scenes;
-using BattleshipOOP.Engine.UI;
-using Microsoft.Xna.Framework;
+﻿using BattleshipOOP.Engine.Scenes;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,19 +8,16 @@ using System.Threading.Tasks;
 
 namespace BattleshipOOP.Game.Scenes
 {
-    class MainMenuScene : UIScene
+    class MainMenuScene : GameScene
     {
-        UIButton m_testButton;
-
-        public MainMenuScene(GraphicsDevice a_graphics) : base(a_graphics)
+        public MainMenuScene(GraphicsDevice a_graphicsDevice)
         {
-            AddElement(m_testButton = new UIButton(new Vector2(0, 0), 50, 50, "Test", ResourcePool.GetSpriteFont("font").Font, a_graphics));
-            m_testButton.OnClick += TestButton_OnClick;
+            UI = new MainMenuUI(a_graphicsDevice);
         }
 
-        private void TestButton_OnClick(object sender, MouseState e)
+        public override void Update()
         {
-            SceneSwitcher.LoadScene("GameScene");
+            
         }
     }
 }

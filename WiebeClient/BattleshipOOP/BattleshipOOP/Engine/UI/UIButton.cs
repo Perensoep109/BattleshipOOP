@@ -10,24 +10,32 @@ using System.Threading.Tasks;
 
 namespace BattleshipOOP.Engine.UI
 {
-    class UIButton : UIComponent
+    class UIButton : UIElementBase, IClickable
     {
+        public event EventHandler<MouseState> OnClick;
+
         public string Text { get; set; }
         public SpriteFont Font { get; set; }
+        public Rectangle? Bounds { get; set; }
 
-        public UIButton(Vector2 a_position, int a_width, int a_height, string a_text, SpriteFont a_font, GraphicsDevice a_graphics) : base(a_graphics)
+        public UIButton(int a_width, int a_height, string a_text, SpriteFont a_font, GraphicsDevice a_graphics) : base(a_graphics)
         {
-            Bounds = new Rectangle((int)a_position.X, (int)a_position.Y, a_width, a_height);
-            Pos = a_position;
+            Width = a_width;
+            Height = a_height;
             Text = a_text;
-            BackColor = Color.White;
             Font = a_font;
+            BackColor = Color.White;
         }
 
-        public override void Draw(SpriteBatch a_spriteBatch)
+        public void BaseOnClick(MouseState a_state)
         {
-            a_spriteBatch.Draw(m_backTexture, new Rectangle((int)Pos.X, (int)Pos.Y, Bounds.Value.Width, Bounds.Value.Height), Color.White);
-            a_spriteBatch.DrawString(Font, Text, Pos + new Vector2(5, 5), Color.Black);
+            OnClick?.Invoke(this, a_state);
+        }
+
+        public override void Draw(SpriteBatch a_sprb)
+        {
+            a_sprb.Draw(m_backTexture, new Rectangle(GridX * Width, GridY * Height, Width, Height), Color.White);
+            a_sprb.DrawString(Font, Text, new Vector2(GridX * Width, GridY * Height), Color.Black);
         }
     }
 }

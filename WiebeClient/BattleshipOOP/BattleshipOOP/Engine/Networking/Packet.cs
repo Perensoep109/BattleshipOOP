@@ -11,7 +11,7 @@ namespace BattleshipOOP.Engine.Networking
         Ping = 0
     }
 
-    struct Packet
+    class Packet
     {
         public byte[] m_buffer;
         public PacketType m_type;

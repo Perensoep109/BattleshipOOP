@@ -2,6 +2,7 @@
 using Battleship.Engine.Events;
 using Battleship.Engine.Events.EventListeners;
 using Battleship.Engine.Scenes;
+using BattleshipOOP.Engine.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,7 @@ namespace BattleshipOOP.Engine.Scenes
         /// All gameobjects in this scene
         /// </summary>
         public List<GameObject> GameObjects { get; private set; }
+        public UILayer UI { get; set; }
 
         public GameScene()
         {
@@ -55,6 +57,8 @@ namespace BattleshipOOP.Engine.Scenes
                     if (!ClickableListener.Instance.Contains((IClickable)obj))
                         ClickableListener.Instance.Attach((IClickable)obj);
             });
+            if (UI != null)
+                UI.Activate();
         }
 
         public override void OnSwitchFrom()
@@ -65,6 +69,9 @@ namespace BattleshipOOP.Engine.Scenes
                 if (obj is IClickable)
                     ClickableListener.Instance.Detach((IClickable)obj);
             });
+
+            if (UI != null)
+                UI.Deactivate();
         }
     }
 }
