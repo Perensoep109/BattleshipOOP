@@ -70,8 +70,7 @@ namespace ServerTesting
 
         private void btnYeetPackage_Click(object sender, EventArgs e)
         {
-            byte[] buffer = new byte[4] { 0x8, 0x1, 0x5, 0x4 };
-            Send(buffer);
+            
         }
 
         public void Send(byte[] a_packet)
@@ -95,7 +94,7 @@ namespace ServerTesting
             {
                 await Task.Delay(10000);
                 if (m_client.Connected)
-                    Send(new byte[] { 0x0 });
+                    Send(new byte[5] { 0x0, 0x1, 0x0, 0x0, 0x0 });
             }
         }
 
