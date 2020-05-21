@@ -1,26 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace ServerTesting
 {
-    public partial class Form1 : Form
+    class Server
     {
         TcpListener m_server;
         TcpClient m_client;
 
-        public Form1()
+        public Server()
         {
-            InitializeComponent();
             m_server = new TcpListener(IPAddress.Parse("127.0.0.1"), 69);
+            Start();
         }
 
         public void ClientConnected(IAsyncResult a_result)
@@ -68,11 +64,6 @@ namespace ServerTesting
             }
         }
 
-        private void btnYeetPackage_Click(object sender, EventArgs e)
-        {
-            
-        }
-
         public void Send(byte[] a_packet)
         {
             m_client.Client.BeginSend(a_packet, 0, a_packet.Length, 0, SendCallback, m_client.Client);
@@ -90,7 +81,7 @@ namespace ServerTesting
 
         private async Task StartPing()
         {
-            while(true)
+            while (true)
             {
                 await Task.Delay(10000);
                 if (m_client.Connected)
@@ -98,7 +89,7 @@ namespace ServerTesting
             }
         }
 
-        private void btnStart_Click(object sender, EventArgs e)
+        private void Start()
         {
             m_server.Start();
             m_server.BeginAcceptTcpClient(ClientConnected, m_server);

@@ -11,12 +11,19 @@ namespace ServerTesting
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
-        [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Server server = new Server();
+            while (true)
+            {
+                //Console.WriteLine("wait");
+                //await Task.Delay(1000);
+            }
+        }
+
+        static async void Start()
+        {
+            
         }
     }
 }
