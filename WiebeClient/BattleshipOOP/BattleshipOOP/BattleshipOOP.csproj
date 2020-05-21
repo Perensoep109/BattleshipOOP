@@ -79,6 +79,7 @@
     <Compile Include="Engine\Objects\GameObject.cs" />
     <Compile Include="Game\Scenes\MainMenuScene.cs" />
     <Compile Include="Game\Scenes\MultiplayerScene.cs" />
+    <Compile Include="Game\TestGameObject.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

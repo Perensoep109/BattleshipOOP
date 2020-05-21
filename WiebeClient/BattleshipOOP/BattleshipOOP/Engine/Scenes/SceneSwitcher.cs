@@ -49,7 +49,7 @@ namespace BattleshipOOP.Engine.Scenes
             try
             {
                 BaseScene newScene = GetScene(a_name);
-                //newScene.OnSwitchTo();
+                newScene.OnSwitchTo();
                 Instance.CurrentScene = newScene;
             }
             catch (KeyNotFoundException a_e)

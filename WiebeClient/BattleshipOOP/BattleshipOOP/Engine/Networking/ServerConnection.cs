@@ -19,7 +19,7 @@ namespace BattleshipOOP.Engine.Networking
 
         public event EventHandler<Packet> ReceivedPacket;
 
-        Socket m_client;
+        private Socket m_client;
 
         public ServerConnection()
         {
@@ -28,7 +28,8 @@ namespace BattleshipOOP.Engine.Networking
 
         public void Send(Packet a_packet)
         {
-            m_client.BeginSend(a_packet.m_buffer, 0, a_packet.m_buffer.Length, 0, SendCallback, m_client);
+            if(m_client.Connected)
+                m_client.BeginSend(a_packet.m_buffer, 0, a_packet.m_buffer.Length, 0, SendCallback, m_client);
         }
 
         public void Connect(IPAddress a_to, int a_port)

@@ -31,7 +31,6 @@ namespace Battleship.Engine.Events.EventListeners
         {
             if (a_state.LeftButton == ButtonState.Pressed)
             {
-                Console.WriteLine("UPDATE MOUSE");
                 for(int i = 0; i < m_listeners.Count; i++)
                 {
                     IClickable obj = m_listeners[i];

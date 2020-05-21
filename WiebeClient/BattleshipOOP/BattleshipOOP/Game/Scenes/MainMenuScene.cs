@@ -24,7 +24,6 @@ namespace BattleshipOOP.Game.Scenes
 
         private void TestButton_OnClick(object sender, MouseState e)
         {
-            Console.WriteLine("CLICK");
             SceneSwitcher.LoadScene("GameScene");
         }
     }

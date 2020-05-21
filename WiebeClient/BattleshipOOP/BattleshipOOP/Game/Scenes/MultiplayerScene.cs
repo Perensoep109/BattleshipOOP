@@ -27,11 +27,12 @@ namespace BattleshipOOP.Game.Scenes
             m_connection = new ServerConnection();
             m_connection.Connect(IPAddress.Parse("127.0.0.1"), 69);
             m_connection.ReceivedPacket += ProcessPacket;
+            GameObjects.Add(new TestGameObject(Vector2.Zero));
         }
 
         public void ProcessPacket(object a_sender, Packet a_packet)
         {
-            if (a_packet.m_type != PacketType.Ping)
+            if (a_packet.m_type == PacketType.Ping)
             {
                 GameObjects[0].m_pos += new Vector2(10, 10);
                 NetworkResync = true;
