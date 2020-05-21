@@ -15,6 +15,11 @@ namespace BattleshipOOP.Game.Scenes
             UI = new MainMenuUI(a_graphicsDevice);
         }
 
+        public override void Initialize()
+        {
+            
+        }
+
         public override void Update()
         {
             

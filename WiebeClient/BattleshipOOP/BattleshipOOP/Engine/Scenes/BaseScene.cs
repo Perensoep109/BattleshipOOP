@@ -10,8 +10,12 @@ namespace Battleship.Engine.Scenes
 {
     abstract class BaseScene : IDisposable
     {
+        public bool Initialized { get; protected set; }
+
         public abstract void OnSwitchTo();
         public abstract void OnSwitchFrom();
+
+        public abstract void Initialize();
 
         public void Dispose()
         {

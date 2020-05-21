@@ -22,14 +22,6 @@ namespace BattleshipOOP.Game.Scenes
 
         private ServerConnection m_connection;
 
-        public MultiplayerScene()
-        {
-            m_connection = new ServerConnection();
-            m_connection.Connect(IPAddress.Parse("127.0.0.1"), 69);
-            m_connection.ReceivedPacket += ProcessPacket;
-            GameObjects.Add(new TestGameObject(Vector2.Zero));
-        }
-
         public void ProcessPacket(object a_sender, Packet a_packet)
         {
             if (a_packet.m_type == PacketType.Ping)
@@ -52,8 +44,15 @@ namespace BattleshipOOP.Game.Scenes
 
         public override void Update()
         {
-            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
-                m_connection.Send(new Packet(new byte[] { 0x7, 0x8, 0x9, 0x10}, PacketType.Ping));
+            
+        }
+
+        public override void Initialize()
+        {
+            m_connection = new ServerConnection();
+            m_connection.Connect(IPAddress.Parse("127.0.0.1"), 69);
+            m_connection.ReceivedPacket += ProcessPacket;
+            GameObjects.Add(new TestGameObject(Vector2.Zero));
         }
     }
 }

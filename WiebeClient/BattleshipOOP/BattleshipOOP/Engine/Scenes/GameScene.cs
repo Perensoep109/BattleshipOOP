@@ -50,6 +50,9 @@ namespace BattleshipOOP.Engine.Scenes
 
         public override void OnSwitchTo()
         {
+            if (!Initialized)
+                Initialize();
+
             GameObjects.ForEach(
             obj =>
             {
