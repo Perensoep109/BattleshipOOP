@@ -27,7 +27,6 @@ namespace Battleship.Engine
 
         protected GraphicsDeviceManager m_graphics;
 
-        protected BaseScene m_currentScene;
         protected GameSceneRenderer m_sceneRenderer;
         protected UISceneRenderer m_uiSceneRenderer;
 
@@ -41,18 +40,19 @@ namespace Battleship.Engine
         {
             if (m_lastMouseState.LeftButton != Mouse.GetState().LeftButton)
                 OnMouseInput(Mouse.GetState());
-            if(m_currentScene != null)
+            BaseScene çurScene = SceneSwitcher.Instance.CurrentScene;
+            if (çurScene != null)
             {
                 // Check for network synchronization before updating
-                if (m_currentScene is INetworkScene)
+                if (çurScene is INetworkScene)
                 {
-                    INetworkScene scene = ((INetworkScene)m_currentScene);
+                    INetworkScene scene = ((INetworkScene)SceneSwitcher.Instance.CurrentScene);
 
                     if (scene.NetworkResync)
                         scene.Sync();
                 }
-                if(m_currentScene is GameScene)
-                    ((GameScene)m_currentScene).Update();
+                if(çurScene is GameScene)
+                    ((GameScene)çurScene).Update();
             }
             
             base.Update(a_gameTime);
@@ -76,12 +76,13 @@ namespace Battleship.Engine
         {
             base.Draw(a_gameTime);
             m_graphics.GraphicsDevice.Clear(Color.Teal);
-            if (m_currentScene != null)
+            BaseScene çurScene = SceneSwitcher.Instance.CurrentScene;
+            if (çurScene != null)
             {
-                if (m_currentScene is GameScene)
-                    m_sceneRenderer.Draw((GameScene)m_currentScene, m_graphics);
-                if (m_currentScene is UIScene)
-                    m_uiSceneRenderer.Draw((UIScene)m_currentScene, m_graphics);
+                if (çurScene is GameScene)
+                    m_sceneRenderer.Draw((GameScene)çurScene, m_graphics);
+                if (çurScene is UIScene)
+                    m_uiSceneRenderer.Draw((UIScene)çurScene, m_graphics);
             }
         }
         #endregion

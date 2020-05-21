@@ -1,4 +1,5 @@
 ﻿using Battleship.Engine.Graphics;
+using BattleshipOOP.Engine.Scenes;
 using BattleshipOOP.Engine.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -23,7 +24,8 @@ namespace BattleshipOOP.Game.Scenes
 
         private void TestButton_OnClick(object sender, MouseState e)
         {
-            Console.WriteLine("Click");
+            Console.WriteLine("CLICK");
+            SceneSwitcher.LoadScene("GameScene");
         }
     }
 }

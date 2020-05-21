@@ -30,7 +30,8 @@ namespace Battleship.Engine.Events.EventListeners
         /// <param name="a_observable">The instance of the event observer to attach</param>
         public void Attach(IObservesEvent a_observable)
         {
-            m_listeners.Add(a_observable);
+            if(!m_listeners.Contains(a_observable))
+                m_listeners.Add(a_observable);
         }
 
         /// <summary>

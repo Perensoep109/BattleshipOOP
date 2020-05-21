@@ -46,7 +46,7 @@ namespace BattleshipOOP.Engine.Scenes
                 ClickableListener.Instance.Detach((IClickable)a_object);
         }
 
-        protected override void OnSwitchTo()
+        public override void OnSwitchTo()
         {
             GameObjects.ForEach(
             obj =>
@@ -57,7 +57,7 @@ namespace BattleshipOOP.Engine.Scenes
             });
         }
 
-        protected override void OnSwitchFrom()
+        public override void OnSwitchFrom()
         {
             GameObjects.ForEach(
             obj =>

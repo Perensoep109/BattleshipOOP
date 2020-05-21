@@ -8,9 +8,14 @@ using System.Threading.Tasks;
 
 namespace Battleship.Engine.Scenes
 {
-    abstract class BaseScene
+    abstract class BaseScene : IDisposable
     {
-        protected abstract void OnSwitchTo();
-        protected abstract void OnSwitchFrom();
+        public abstract void OnSwitchTo();
+        public abstract void OnSwitchFrom();
+
+        public void Dispose()
+        {
+            OnSwitchFrom();
+        }
     }
 }

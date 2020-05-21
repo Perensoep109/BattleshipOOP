@@ -6,6 +6,7 @@ using System.IO;
 using Battleship.Engine;
 using BattleshipOOP.Game.Scenes;
 using BattleshipOOP.Engine.Graphics;
+using BattleshipOOP.Engine.Scenes;
 
 namespace Battleship.MainGame
 {
@@ -14,7 +15,9 @@ namespace Battleship.MainGame
         protected override void BeginRun()
         {
             base.BeginRun();
-            m_currentScene = new MainMenuScene(m_graphics.GraphicsDevice);
+            SceneSwitcher.AddScene(new MainMenuScene(m_graphics.GraphicsDevice), "MainMenu");
+            SceneSwitcher.AddScene(new MultiplayerScene(), "GameScene");
+            SceneSwitcher.LoadScene("MainMenu");
         }
 
         protected override void LoadContent()

@@ -30,10 +30,15 @@ namespace Battleship.Engine.Events.EventListeners
         public void Update(object a_sender, MouseState a_state)
         {
             if (a_state.LeftButton == ButtonState.Pressed)
-                foreach (IClickable obj in m_listeners)
+            {
+                Console.WriteLine("UPDATE MOUSE");
+                for(int i = 0; i < m_listeners.Count; i++)
+                {
+                    IClickable obj = m_listeners[i];
                     if (obj.Bounds.Value.Contains(new Point(a_state.X, a_state.Y)))
                         obj.BaseOnClick(a_state);
-                        
+                }  
+            }
         }
     }
 }
