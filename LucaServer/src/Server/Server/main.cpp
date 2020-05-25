@@ -9,7 +9,7 @@
 
 int main()
 {
-	std::cout << "Hello, world" << std::endl;
+	std::cout << "STARTING SERVER..." << std::endl;
 
 	WSADATA wsaData;
 	int iResult;
@@ -25,12 +25,15 @@ int main()
 	int recvbuflen = DEFAULT_BUFLEN;
 
 	// Initialize Winsock.
+	std::cout << "WINSOCK ";
 	iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
 	if (iResult != 0)
 	{
-		printf("WSAStartup failed with error: %d\n", iResult);
+		std::cout << "ERROR: " << iResult << std::endl;
 		return 1;
 	}
+	else
+		std::cout << "OK" << std::endl;
 
 	ZeroMemory(&hints, sizeof(hints));
 	hints.ai_family = AF_INET;
@@ -38,80 +41,98 @@ int main()
 	hints.ai_protocol = IPPROTO_TCP;
 	hints.ai_flags = AI_PASSIVE;
 
-	// Resolve the server address and port.
+	// Resolve the server address and port (host).
+	std::cout << "RESOLVE HOST ";
 	iResult = getaddrinfo(NULL, PORT, &hints, &result);
 	if (iResult != 0)
 	{
-		printf("getaddrinfo failed with error: %d\n", iResult);
+		std::cout << "ERROR: " << iResult << std::endl;
 	}
+	else
+		std::cout << "OK" << std::endl;
 
 	// Create a SOCKET for connecting to server.
+	std::cout << "CREATE SOCKET ";
 	ListenSocket = socket(result->ai_family, result->ai_socktype, result->ai_protocol);
 	if (ListenSocket == INVALID_SOCKET)
 	{
-		printf("Socket failed with error: %ld\n", WSAGetLastError());
+		std::cout << "ERROR: " << WSAGetLastError() << std::endl;
 		freeaddrinfo(result);
 		WSACleanup();
 		return 1;
 	}
+	else
+		std::cout << "OK" << std::endl;
 
 	// Setup the TCP listening socket.
+	std::cout << "BIND SOCKET ";
 	iResult = bind(ListenSocket, result->ai_addr, (int)result->ai_addrlen);
 	if (iResult == SOCKET_ERROR)
 	{
-		printf("Bind failed with error: %d\n", WSAGetLastError());
+		std::cout << "ERROR: " << WSAGetLastError() << std::endl;;
 		freeaddrinfo(result);
 		closesocket(ListenSocket);
 		WSACleanup();
 		return 1;
 	}
+	else
+		std::cout << "OK" << std::endl;
 
 	freeaddrinfo(result);
 
+	std::cout << "SET LISTENER ";
 	iResult = listen(ListenSocket, SOMAXCONN);
 	if (iResult == SOCKET_ERROR)
 	{
-		printf("Listen failed with error: %d\n", WSAGetLastError());
+		std::cout << "ERROR: " << WSAGetLastError() << std::endl;
 		closesocket(ListenSocket);
 		WSACleanup();
 		return 1;
 	}
+	else
+		std::cout << "OK" << std::endl;
 
 	// Accept the cliet socket.
+	std::cout << "ACCEPT ";
 	ClientSocket = accept(ListenSocket, NULL, NULL);
-	if (ClientSocket = INVALID_SOCKET)
+	if (ClientSocket == INVALID_SOCKET)
 	{
-		printf("Accept failed with error: %d\n", WSAGetLastError());
+		std::cout << "ERROR: " << WSAGetLastError() << std::endl;
 		closesocket(ListenSocket);
 		WSACleanup();
 		return 1;
 	}
+	else
+		std::cout << "OK" << std::endl;
 
 	// No longer need server socket, yeet it.
 	closesocket(ListenSocket);
+
+	std::cout << "SERVER OK" << std::endl;
 
 	// Receive until the peer shuts down the connection.
 	do {
 		iResult = recv(ClientSocket, recvbuf, recvbuflen, 0);
 		if (iResult > 0)
 		{
-			printf("<client> %d\n", iResult);
+			std::cout << "<client> " << iResult << std::endl;
 
 			// Echo result back to sender.
+			std::cout << "ECHO ";
 			iSendResult = send(ClientSocket, recvbuf, iResult, 0);
 			if (iSendResult == SOCKET_ERROR)
 			{
-				printf("Send failed with error: %d\n", WSAGetLastError());
+				std::cout << "ERROR: " << WSAGetLastError() << std::endl;
 				WSACleanup();
 				return 1;
 			}
-			printf("Respose sent.");
+			std::cout << "OK" << std::endl;
 		}
-		else if (iResult = 0)
-			printf("Connection closing...\n");
+		else if (iResult == 0)
+			std::cout << "CLIENT DISCONNECTED" << std::endl;
 		else 
 		{
-			printf("Recv failed with error: %d\n", WSAGetLastError());
+			std::cout << "RECEIVE FAILED" << WSAGetLastError() << std::endl;
 			closesocket(ClientSocket);
 			WSACleanup();
 			return 1;
@@ -119,10 +140,11 @@ int main()
 	} while (iResult > 0);
 
 	// Shutdown connection.
+	std::cout << "SHUTDOWN ";
 	iResult = shutdown(ClientSocket, SD_SEND);
 	if (iResult == SOCKET_ERROR)
 	{
-		printf("Shutdown failed with error: I'm sorry, Dave. I'm afraid I can't do that.");
+		std::cout << "ERROR: I'm sorry, Dave. I'm afraid I can't do that." << std::endl;
 		closesocket(ClientSocket);
 		WSACleanup();
 		return 1;
@@ -132,5 +154,6 @@ int main()
 	closesocket(ClientSocket);
 	WSACleanup();
 
+	std::cout << "OK" << std::endl;
 	return 0;
 }
