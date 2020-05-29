@@ -2,6 +2,7 @@ package battleship;
 
 
 import Networking.INetworking;
+import Networking.NetworkSingleton;
 import Networking.Packet;
 import Networking.client;
 import Objects.BaseGameObject;
@@ -11,14 +12,18 @@ import Renderer.Render;
 import javafx.scene.canvas.Canvas;
 
 import javafx.scene.canvas.GraphicsContext;
+
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import sceneswitcher.IEventPane;
+import sun.nio.ch.Net;
 
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-public class GameView extends GridPane implements IEventPane, INetworking
+public class GameView extends GridPane implements IEventPane
 {
     Canvas canvas;
     GraphicsContext gc;
@@ -30,13 +35,14 @@ public class GameView extends GridPane implements IEventPane, INetworking
     {
 
 
+
         //create the canvas
         canvas = new Canvas( 1000,1000 );
         gc = canvas.getGraphicsContext2D();
         //create a renderer
         render = new Render(gc);
         //create a grid
-        grid = new Grid(0,0,20,20);
+        grid = new Grid(0,0,80,80);
         //greate the arraylist with gameobjects
         gameObjects = new ArrayList<>();
         //add the grid to the gameobjects to be rendered
@@ -45,8 +51,6 @@ public class GameView extends GridPane implements IEventPane, INetworking
         render.draw(gameObjects);
         //add the canvas to the panel
         this.add(canvas,0,0);
-
-
     }
 
     @Override
@@ -55,6 +59,18 @@ public class GameView extends GridPane implements IEventPane, INetworking
         //make the canvas the size of the app
         canvas.setHeight(getHeight());
         canvas.setWidth(getWidth());
+
+        if(NetworkSingleton.getInstance().getC().eventHandeler == null)
+            NetworkSingleton.getInstance().getC().eventHandeler = new INetworking() {
+                @Override
+                public void OnRecievePacket(Packet packet) {
+
+                    System.out.println(Arrays.toString(packet.getData()));
+                    grid.getCell(packet.getData()[0],packet.getData()[1]).changeTile();
+
+                }
+
+            };
     }
 
     @Override
@@ -90,12 +106,6 @@ public class GameView extends GridPane implements IEventPane, INetworking
 
         //draw the gameobjects
         render.draw(gameObjects);
-
-    }
-
-    @Override
-    public void OnRecievePacket(String packet) {
-        System.out.println("YEET");
 
     }
 }

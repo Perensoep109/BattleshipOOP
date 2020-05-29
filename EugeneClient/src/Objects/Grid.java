@@ -11,13 +11,13 @@ import javax.imageio.IIOException;
 import java.io.IOException;
 
 public class Grid extends BaseGameObject {
-    private class Cell extends BaseGameObject implements IClickable
+    public class Cell extends BaseGameObject implements IClickable
     {
-        private int xGridPos;
-        private int yGridPos;
+        private double xGridPos;
+        private double yGridPos;
 
-        private static final int cellWidth = 32;
-        private static final int cellHeight = 32;
+        private static final int cellWidth = 10;
+        private static final int cellHeight = 10;
 
         public Cell(double xGridPos, double yGridPos, Image sprite, double offsetX, double offsetY) {
             super(xGridPos * cellWidth + offsetY, yGridPos * cellHeight + offsetX);
@@ -31,10 +31,10 @@ public class Grid extends BaseGameObject {
 
         @Override
         public void onClick() {
-            this.sprite = new Image("land.png");
-            System.out.println("clicked cell at: " + (int)this.getPosX()/32+ " " + (int) this.getPosY()/32);
+
+            System.out.println("clicked cell at: " + (int)this.getPosX()/cellWidth+ " " + (int) this.getPosY()/cellHeight);
             try{
-                byte[] b = { Byte.valueOf((byte) (this.getPosX()/32)),Byte.valueOf((byte) (this.getPosY()/32))};
+                byte[] b = { Byte.valueOf((byte) (this.getPosX() /cellWidth)),Byte.valueOf((byte) (this.getPosY()/cellHeight))};
                 Packet p = new Packet(b);
                 NetworkSingleton.getInstance().sendData(p);
             } catch (IOException e){
@@ -42,6 +42,7 @@ public class Grid extends BaseGameObject {
             }
 
         }
+
     }
     private Cell[][] cells;
     private int gridWidth = 10;
@@ -56,13 +57,13 @@ public class Grid extends BaseGameObject {
         {
             for (int j = 0; j < cells[i].length; j++)
             {
-                cells[i][j] = new Cell(i, j,new Image("sea.png"), this.getPosX(), this.getPosY());
+                cells[i][j] = new Cell(i, j,new Image("sea.png",10,10,false,true), this.getPosX(), this.getPosY());
             }
         }
     }
-
-
-
+    public Cell getCell(int y, int x) {
+        return cells[x][y];
+    }
 
     public void getClickedCell(double clickposX, double clickposY){
         for(int i = 0; i < cells.length; i++)

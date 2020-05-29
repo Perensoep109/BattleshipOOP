@@ -11,6 +11,8 @@ public class BaseGameObject {
     public double posY;
     public double posX;
     public Image sprite;
+    public int imageWidth;
+    public int imageHeight;
     public boolean deleteOnNextDraw = false;
     public int rotation;
     public BaseGameObject(double posY, double posX, Image sprite, int rotation) {
@@ -76,6 +78,9 @@ public class BaseGameObject {
         deleteOnNextDraw = true;
     }
 
+    public void changeTile(){
+        this.sprite = new Image("land.png");
+    }
 
 
 //draw the object

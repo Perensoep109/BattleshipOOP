@@ -18,36 +18,31 @@ import java.util.List;
 public class client extends Thread {
     private String hostname;
     private int port;
-    private InputStreamReader isr;
+    private DataInputStream dis;
     private DataOutputStream dos;
     private List<Packet> packetBuffer;
 
-    private INetworking eventHandeler;
+    public INetworking eventHandeler;
 
-    public client(String a_hostname, int a_port, INetworking eventHandeler){
-        this.eventHandeler = eventHandeler;
+    public INetworking getEventHandeler() {
+        return eventHandeler;
+    }
+
+    public client(String a_hostname, int a_port){
         packetBuffer = new ArrayList<>();
 
         this.hostname = a_hostname;
         this.port = a_port;
     }
 
-    public void start(){
-        System.out.println("Starting" );
-
-
-
+    public void start() {
     }
     public void sendData(Packet packet) throws IOException {
         if (dos != null){
-            dos.writeInt(packet.getData().length);
             dos.write(packet.getData());
         }
 
     }
-
-
-
 
     public void run() {
         System.out.println("thread running");
@@ -55,13 +50,17 @@ public class client extends Thread {
         try (Socket socket = new Socket(hostname, port)) {
 
             InputStream input = socket.getInputStream();
-            isr = new InputStreamReader(input);
+            dis = new DataInputStream(input);
             OutputStream output = socket.getOutputStream();
             dos = new DataOutputStream(output);
-
+            byte[] data;
+            byte[] reading;
             while (true) {
-                this.eventHandeler.OnRecievePacket("yeet");
-                System.out.println(isr.read());
+
+                data = new byte[32];
+                for(int i = 0; i < data.length; i++)
+                    data[i] = dis.readByte();
+                eventHandeler.OnRecievePacket( new Packet(data));
             }
         } catch (UnknownHostException ex) {
 

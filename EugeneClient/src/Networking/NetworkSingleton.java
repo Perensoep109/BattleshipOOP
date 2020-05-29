@@ -8,34 +8,22 @@ public class NetworkSingleton extends Thread {
     private String ip;
     private int port;
     private Thread networkthread;
-    private INetworking eventHandeler;
-
-    public INetworking getEventHandeler() {
-        return eventHandeler;
-    }
 
     private NetworkSingleton(){
-
+        System.out.println("Init");
     }
     public void connect(String a_ip, int a_port){
-        eventHandeler = new INetworking() {
-            @Override
-            public void OnRecievePacket(String packet) {
-
-            }
-        };
         this.ip = a_ip;
         this.port = a_port;
-        c = new client(ip, port, this.eventHandeler );
+        c = new client(ip, port );
         networkthread = new Thread(c);
         networkthread.start();
     }
-    public Thread getNetworkthread(){
-        return networkthread;
-    }
-    public client getClient(){
+
+    public client getC() {
         return c;
     }
+
     public void sendData(Packet packet) throws IOException {
         c.sendData(packet);
     }

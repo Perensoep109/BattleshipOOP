@@ -26,6 +26,8 @@ public class LoginView extends GridPane implements IEventPane
         lbl_ip = new Label("server adress");
         txt_ip = new TextField();
         txt_port = new TextField();
+        txt_ip.setText("localhost");
+        txt_port.setText("69");
 
 
         btn_switch = new Button("login");
