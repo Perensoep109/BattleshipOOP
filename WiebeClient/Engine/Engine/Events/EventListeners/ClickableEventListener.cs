@@ -11,7 +11,7 @@ namespace Engine.Events.EventListeners
     /// <summary>
     /// The clickable event listener is an eventlistener which registers and manages all game objects which extend the IClickable event
     /// </summary>
-    public class ClickableListener : BaseEventListener<IClickable>
+    public class ClickableEventListener : BaseEventListener<IClickableEvent>
     {
         /// <summary>
         /// Initialize the singleton event listener
@@ -19,10 +19,10 @@ namespace Engine.Events.EventListeners
         public static void Initialize()
         {
             if (Instance == null)
-                Instance = new ClickableListener();
+                Instance = new ClickableEventListener();
         }
 
-        private ClickableListener()
+        private ClickableEventListener()
         {
 
         }
@@ -33,7 +33,7 @@ namespace Engine.Events.EventListeners
             {
                 for(int i = 0; i < m_listeners.Count; i++)
                 {
-                    IClickable obj = m_listeners[i];
+                    IClickableEvent obj = m_listeners[i];
                     if (obj.Bounds.Value.Contains(new Point(a_state.X, a_state.Y)))
                         obj.BaseOnClick(a_state);
                 }  

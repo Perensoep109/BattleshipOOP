@@ -11,7 +11,8 @@ namespace Engine.Scenes
     abstract public class BaseScene : IDisposable
     {
         public bool Initialized { get; protected set; }
-
+        public int PreferredWindowWidth { get; set; } = 640;
+        public int PreferredWindowHeight { get; set; } = 480;
         public abstract void OnSwitchTo();
         public abstract void OnSwitchFrom();
 

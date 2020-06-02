@@ -15,14 +15,18 @@ namespace Battleship
         {
             base.BeginRun();
             SceneSwitcher.AddScene(new MainMenuScene(m_graphics.GraphicsDevice), "MainMenu");
-            SceneSwitcher.AddScene(new MultiplayerScene(), "GameScene");
+            SceneSwitcher.AddScene(new MultiplayerGameScene(), "GameScene");
             SceneSwitcher.LoadScene("MainMenu");
+            this.IsMouseVisible = true;
         }
 
         protected override void LoadContent()
         {
             ResourcePool.LoadResource(new SpriteFontResource(Content.Load<SpriteFont>("Content/Fonts/Font")), "font");
             ResourcePool.LoadResource(new SpriteResource(Content.Load<Texture2D>("Content/Sprites/tile")), "tile");
+            ResourcePool.LoadResource(new SpriteResource(Content.Load<Texture2D>("Content/Sprites/line")), "line");
+            ResourcePool.LoadResource(new SpriteResource(Content.Load<Texture2D>("Content/Sprites/hit")), "hit");
+            ResourcePool.LoadResource(new SpriteResource(Content.Load<Texture2D>("Content/Sprites/miss")), "miss");
         }
     }
 }

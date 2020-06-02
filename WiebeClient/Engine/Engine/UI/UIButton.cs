@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Engine.UI
 {
-    public class UIButton : UIElementBase, IClickable
+    public class UIButton : UIElementBase, IClickableEvent
     {
         public event EventHandler<MouseState> OnClick;
 

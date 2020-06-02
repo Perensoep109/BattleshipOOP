@@ -12,7 +12,7 @@ namespace Engine.Events
     /// IClickable is an public interface which manages clicking on an object.
     /// The attached EventListener is ClickableEventListener
     /// </summary>
-    public interface IClickable : IBaseEvent
+    public interface IClickableEvent : IBaseEvent
     {
         /// <summary>
         /// The bounds of the clickable area

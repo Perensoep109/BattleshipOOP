@@ -1,6 +1,8 @@
-﻿using Engine.Events;
+﻿using Engine.Engine.Events;
+using Engine.Events;
 using Engine.Events.EventListeners;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +27,13 @@ namespace Engine.UI
         {
             a_element.GridX = a_gridX;
             a_element.GridY = a_gridY;
+            if(a_element is IClickableEvent)
+            {
+                a_element.Width = CellWidth;
+                a_element.Height = CellHeight;
+                ((IClickableEvent)a_element).Bounds = new Rectangle(a_element.GridX * CellWidth, a_element.GridY * CellHeight, CellWidth, CellHeight);
+            }
+
             UIElements.Add(a_element);
 
             if (a_element.Width > CellWidth || a_element.Height > CellHeight)
@@ -41,8 +50,8 @@ namespace Engine.UI
             {
                 ui.Width = CellWidth;
                 ui.Height = CellHeight;
-                if (ui is IClickable)
-                    ((IClickable)ui).Bounds = new Rectangle(ui.GridX * CellWidth, ui.GridY * CellHeight, CellWidth, CellHeight);
+                if (ui is IClickableEvent)
+                    ((IClickableEvent)ui).Bounds = new Rectangle(ui.GridX * CellWidth, ui.GridY * CellHeight, CellWidth, CellHeight);
             });
         }
 
@@ -50,8 +59,10 @@ namespace Engine.UI
         {
             foreach(UIElementBase ui in UIElements)
             {
-                if (ui is IClickable)
-                    ClickableListener.Instance.Attach((IClickable)ui);
+                if (ui is IClickableEvent)
+                    ClickableEventListener.Instance.Attach((IClickableEvent)ui);
+                if (ui is IKeyboardEvent)
+                    KeyboardEventListener.Instance.Attach((IKeyboardEvent)ui);
             }
         }
 
@@ -59,8 +70,10 @@ namespace Engine.UI
         {
             foreach (UIElementBase ui in UIElements)
             {
-                if (ui is IClickable)
-                    ClickableListener.Instance.Detach((IClickable)ui);
+                if (ui is IClickableEvent)
+                    ClickableEventListener.Instance.Detach((IClickableEvent)ui);
+                if (ui is IKeyboardEvent)
+                    KeyboardEventListener.Instance.Attach((IKeyboardEvent)ui);
             }
         }
     }

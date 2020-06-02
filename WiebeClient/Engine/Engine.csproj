@@ -53,9 +53,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Engine\BaseGame.cs" />
+    <Compile Include="Engine\Events\EventListeners\KeyboardEventListener.cs" />
+    <Compile Include="Engine\Events\IKeyboardEvent.cs" />
     <Compile Include="Engine\Scenes\BaseScene.cs" />
     <Compile Include="Engine\Events\EventListeners\BaseEventListener.cs" />
-    <Compile Include="Engine\Events\EventListeners\ClickableListener.cs" />
+    <Compile Include="Engine\Events\EventListeners\ClickableEventListener.cs" />
     <Compile Include="Engine\Events\IBaseEvent.cs" />
     <Compile Include="Engine\Scenes\GameScene.cs" />
     <Compile Include="Engine\Graphics\BaseResource.cs" />
@@ -73,10 +75,12 @@
     <Compile Include="Engine\Scenes\SceneSwitcher.cs" />
     <Compile Include="Engine\UI\UIButton.cs" />
     <Compile Include="Engine\UI\UIElementBase.cs" />
+    <Compile Include="Engine\UI\UIInputTextBox.cs" />
     <Compile Include="Engine\UI\UILabel.cs" />
     <Compile Include="Engine\UI\UILayer.cs" />
-    <Compile Include="Engine\Events\IClickable.cs" />
+    <Compile Include="Engine\Events\IClickableEvent.cs" />
     <Compile Include="Engine\Objects\GameObject.cs" />
+    <Compile Include="Engine\UI\UIMultiTextBox.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -33,8 +33,8 @@ namespace Engine.Scenes
         /// <param name="a_object">The new GameObject</param>
         public void AddGameObject(GameObject a_object)
         {
-            if (a_object is IClickable)
-                ClickableListener.Instance.Attach((IClickable)a_object);
+            if (a_object is IClickableEvent)
+                ClickableEventListener.Instance.Attach((IClickableEvent)a_object);
             GameObjects.Add(a_object);
         }
 
@@ -44,8 +44,8 @@ namespace Engine.Scenes
         /// <param name="a_object">The GameObject to remove</param>
         public void DestroyGameObject(GameObject a_object)
         {
-            if (a_object is IClickable)
-                ClickableListener.Instance.Detach((IClickable)a_object);
+            if (a_object is IClickableEvent)
+                ClickableEventListener.Instance.Detach((IClickableEvent)a_object);
         }
 
         public override void OnSwitchTo()
@@ -56,9 +56,9 @@ namespace Engine.Scenes
             GameObjects.ForEach(
             obj =>
             {
-                if (obj is IClickable)
-                    if (!ClickableListener.Instance.Contains((IClickable)obj))
-                        ClickableListener.Instance.Attach((IClickable)obj);
+                if (obj is IClickableEvent)
+                    if (!ClickableEventListener.Instance.Contains((IClickableEvent)obj))
+                        ClickableEventListener.Instance.Attach((IClickableEvent)obj);
             });
             if (UI != null)
                 UI.Activate();
@@ -69,8 +69,8 @@ namespace Engine.Scenes
             GameObjects.ForEach(
             obj =>
             {
-                if (obj is IClickable)
-                    ClickableListener.Instance.Detach((IClickable)obj);
+                if (obj is IClickableEvent)
+                    ClickableEventListener.Instance.Detach((IClickableEvent)obj);
             });
 
             if (UI != null)

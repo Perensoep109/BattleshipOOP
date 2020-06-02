@@ -5,15 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Engine.Networking;
-using Engine.Rendering;
-using Engine;
-using Engine.UI;
-using Engine.Scenes;
 using Engine.Scenes;
 
 namespace Engine
@@ -21,8 +13,10 @@ namespace Engine
     public class BaseGame : Game
     {
         public event EventHandler<MouseState> MouseInput;
+        public event EventHandler<KeyboardState> KeyboardInput;
 
         private MouseState m_lastMouseState = new MouseState();
+        private KeyboardState m_lastKeyboardState = new KeyboardState();
 
         protected GraphicsDeviceManager m_graphics;
 
@@ -39,6 +33,9 @@ namespace Engine
         {
             if (m_lastMouseState.LeftButton != Mouse.GetState().LeftButton)
                 OnMouseInput(Mouse.GetState());
+            if (m_lastKeyboardState != Keyboard.GetState())
+                OnKeyInput(Keyboard.GetState());
+
             BaseScene çurScene = SceneSwitcher.Instance.CurrentScene;
             if (çurScene != null)
             {
@@ -60,7 +57,9 @@ namespace Engine
         protected override void Initialize()
         {
             base.Initialize();
-            ClickableListener.Initialize();
+            SceneSwitcher.Initialize(m_graphics);
+            ClickableEventListener.Initialize();
+            KeyboardEventListener.Initialize();
             Mouse.WindowHandle = Window.Handle;
         }
 
@@ -68,7 +67,8 @@ namespace Engine
         {
             m_sceneRenderer = new GameSceneRenderer(new SpriteBatch(m_graphics.GraphicsDevice));
             m_uiSceneRenderer = new UIRenderer();
-            MouseInput += ((ClickableListener)ClickableListener.Instance).Update;
+            MouseInput += ((ClickableEventListener)ClickableEventListener.Instance).Update;
+            KeyboardInput += ((KeyboardEventListener)KeyboardEventListener.Instance).Update;
         }
 
         protected override void Draw(GameTime a_gameTime)
@@ -89,6 +89,12 @@ namespace Engine
         {
             m_lastMouseState = a_state;
             MouseInput?.Invoke(this, a_state);
+        }
+
+        private void OnKeyInput(KeyboardState a_state)
+        {
+            m_lastKeyboardState = a_state;
+            KeyboardInput?.Invoke(this, a_state);
         }
         #endregion
     }

@@ -30,8 +30,8 @@ namespace Engine
         /// </summary>
         public void Dispose()
         {
-            if (this is IClickable)
-                ClickableListener.Instance.Detach((IClickable)this);
+            if (this is IClickableEvent)
+                ClickableEventListener.Instance.Detach((IClickableEvent)this);
         }
     }
 }

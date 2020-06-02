@@ -38,8 +38,8 @@ namespace Engine.UI
 
         public void Dispose()
         {
-            if (this is IClickable)
-                ClickableListener.Instance.Detach((IClickable)this);
+            if (this is IClickableEvent)
+                ClickableEventListener.Instance.Detach((IClickableEvent)this);
         }
 
         public abstract void Draw(SpriteBatch a_sprb);

@@ -24,7 +24,7 @@ namespace ServerTesting
             TcpListener server = (TcpListener)a_result.AsyncState;
             m_client = server.EndAcceptTcpClient(a_result);
 
-            Console.WriteLine("SERVER::CONNECTION Server connected to {0}", m_client.Client.RemoteEndPoint.ToString());
+            Console.WriteLine("SERVER::CONNECTION Client connected, {0}", m_client.Client.RemoteEndPoint.ToString());
             StartReceive();
             StartPing();
         }
@@ -83,7 +83,7 @@ namespace ServerTesting
         {
             while (true)
             {
-                await Task.Delay(10000);
+                await Task.Delay(1000);
                 if (m_client.Connected)
                     Send(new byte[5] { 0x0, 0x1, 0x0, 0x0, 0x0 });
             }
