@@ -9,7 +9,9 @@ namespace Engine.Networking
     public enum PacketType : byte
     {
         Ping = 0,
-        UpdateGameState = 1
+        UpdateGameState = 1,
+        Shoot = 2,
+        Hit = 3
     }
 
     public class Packet
@@ -23,6 +25,16 @@ namespace Engine.Networking
         public Packet(byte[] a_buffer)
         {
             m_buffer = a_buffer;
+        }
+
+        /// <summary>
+        /// Overload the [] operator of this instance
+        /// </summary>
+        /// <param name="a_index">The index of the byte to return</param>
+        /// <returns>The </returns>
+        public byte this[uint a_index]
+        {
+            get => m_buffer[a_index];
         }
     }
 }

@@ -10,9 +10,9 @@ namespace Battleship.Game.Scenes
 {
     class MainMenuScene : GameScene
     {
-        public MainMenuScene(GraphicsDevice a_graphicsDevice)
+        public MainMenuScene(GraphicsDevice a_graphicsDevice) : base(a_graphicsDevice)
         {
-            UI = new MainMenuUI(a_graphicsDevice);
+            UI = new MainMenuUI(m_graphics);
         }
 
         public override void Initialize()

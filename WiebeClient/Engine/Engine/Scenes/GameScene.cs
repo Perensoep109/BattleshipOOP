@@ -3,6 +3,7 @@ using Engine.Events;
 using Engine.Events.EventListeners;
 using Engine.Scenes;
 using Engine.UI;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace Engine.Scenes
         public List<GameObject> GameObjects { get; private set; }
         public UILayer UI { get; set; }
 
-        public GameScene()
+        public GameScene(GraphicsDevice a_graphics) : base(a_graphics)
         {
             GameObjects = new List<GameObject>();
         }

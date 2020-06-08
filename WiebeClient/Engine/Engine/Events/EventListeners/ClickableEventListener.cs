@@ -27,15 +27,15 @@ namespace Engine.Events.EventListeners
 
         }
 
-        public void Update(object a_sender, MouseState a_state)
+        public void Update(object a_sender, MouseStateEventArgs a_state)
         {
-            if (a_state.LeftButton == ButtonState.Pressed)
+            if (a_state.m_newState.LeftButton == ButtonState.Pressed && a_state.m_oldState.LeftButton != ButtonState.Pressed)
             {
                 for(int i = 0; i < m_listeners.Count; i++)
                 {
                     IClickableEvent obj = m_listeners[i];
-                    if (obj.Bounds.Value.Contains(new Point(a_state.X, a_state.Y)))
-                        obj.BaseOnClick(a_state);
+                    if (obj.Bounds.Value.Contains(new Point(a_state.m_newState.X, a_state.m_newState.Y)))
+                        obj.BaseOnClick(a_state.m_newState);
                 }  
             }
         }

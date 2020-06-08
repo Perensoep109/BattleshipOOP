@@ -8,8 +8,9 @@ namespace Battleship.Game
 {
     enum GameState
     {
-        ShipPlacement = 0,
-        Shoot = 1,
-        OtherPlayerTurn = 2
+        Invalid = 0,
+        ShipPlacement = 1,
+        Shoot = 2,
+        OtherPlayerTurn = 3
     }
 }

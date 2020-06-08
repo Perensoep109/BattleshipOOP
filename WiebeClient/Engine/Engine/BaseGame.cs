@@ -10,9 +10,22 @@ using Engine.Scenes;
 
 namespace Engine
 {
+    public class MouseStateEventArgs : EventArgs
+    {
+        public MouseState m_newState;
+        public MouseState m_oldState;
+
+        public MouseStateEventArgs(MouseState a_newState, MouseState a_oldState)
+        {
+            m_newState = a_newState;
+            m_oldState = a_oldState;
+        }
+    }
+
     public class BaseGame : Game
     {
-        public event EventHandler<MouseState> MouseInput;
+        public event EventHandler<MouseStateEventArgs> MouseInput;
+        public event EventHandler<MouseStateEventArgs> MouseMoved;
         public event EventHandler<KeyboardState> KeyboardInput;
 
         private MouseState m_lastMouseState = new MouseState();
@@ -31,11 +44,15 @@ namespace Engine
         #region Base public class overrides
         protected override void Update(GameTime a_gameTime)
         {
-            if (m_lastMouseState.LeftButton != Mouse.GetState().LeftButton)
-                OnMouseInput(Mouse.GetState());
+            // Check for event updates
+            MouseState newMousestate = Mouse.GetState();
+
+            if (m_lastMouseState != newMousestate)
+                OnMouseInput(new MouseStateEventArgs(newMousestate, m_lastMouseState));
             if (m_lastKeyboardState != Keyboard.GetState())
                 OnKeyInput(Keyboard.GetState());
 
+            // Update the current scene
             BaseScene çurScene = SceneSwitcher.Instance.CurrentScene;
             if (çurScene != null)
             {
@@ -85,9 +102,9 @@ namespace Engine
         #endregion
 
         #region Event Throwing
-        private void OnMouseInput(MouseState a_state)
+        private void OnMouseInput(MouseStateEventArgs a_state)
         {
-            m_lastMouseState = a_state;
+            m_lastMouseState = a_state.m_newState;
             MouseInput?.Invoke(this, a_state);
         }
 

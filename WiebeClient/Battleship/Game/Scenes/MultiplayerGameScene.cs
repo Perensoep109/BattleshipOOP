@@ -1,7 +1,11 @@
 ﻿using Battleship.Game.Objects;
+using Battleship.Game.UI;
+using Engine;
 using Engine.Networking;
 using Engine.Scenes;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Net;
 
@@ -18,6 +22,10 @@ namespace Battleship.Game.Scenes
         private EnemyShipGrid m_enemyShipGrid;
         private ShipGrid m_shipGrid;
 
+        public MultiplayerGameScene(GraphicsDevice a_graphics) : base(a_graphics)
+        {
+        }
+
         public void ProcessPacket(object a_sender, Packet a_packet)
         {
             if (a_packet.m_type == PacketType.Ping)
@@ -28,7 +36,14 @@ namespace Battleship.Game.Scenes
 
             if(a_packet.m_type == PacketType.UpdateGameState)
             {
-                m_gameState = (GameState)a_packet.m_buffer[Packet.BODY_START_POS];
+                m_gameState = (GameState)a_packet[Packet.BODY_START_POS];
+                NetworkResync = true;
+                NetworkScene = this;
+            }
+
+            if(a_packet.m_type == PacketType.Hit)
+            {
+                m_shipGrid.CheckHit(a_packet[Packet.BODY_START_POS + 1], a_packet[Packet.BODY_START_POS + 2]);
                 NetworkResync = true;
                 NetworkScene = this;
             }
@@ -41,41 +56,55 @@ namespace Battleship.Game.Scenes
                 GameObjects[i] = NetworkScene.GameObjects[i];
             }
             m_gameState = ((MultiplayerGameScene)NetworkScene).m_gameState;
+            m_shipGrid = ((MultiplayerGameScene)NetworkScene).m_shipGrid;
+            m_enemyShipGrid = ((MultiplayerGameScene)NetworkScene).m_enemyShipGrid;
             NetworkScene = null;
             NetworkResync = false;
         }
 
         public override void Update()
         {
-            
         }
 
         public override void Initialize()
         {
-            PreferredWindowWidth = 16 * 16 + 1;
-            PreferredWindowHeight = 16 * 16 + 17 * 16 + 1;
+            PreferredWindowWidth = 25 * 16 + 1;
+            PreferredWindowHeight = 35 * 16 + 1;
+            UI = new MultiplayerGameUI(m_graphics);
 
             m_connection = new ServerConnection();
             m_connection.Connect(IPAddress.Parse("127.0.0.1"), 69);
             m_connection.ReceivedPacket += ProcessPacket;
 
-            GameObjects.Add(m_shipGrid = new ShipGrid(new Vector2(0, 17 * 16), 16, 16, 16, 16));
-            GameObjects.Add(m_enemyShipGrid = new EnemyShipGrid(new Vector2(0, 0), 16, 16, 16, 16));
+            GameObjects.Add(m_shipGrid = new ShipGrid(          new Vector2(16, 19 * 16),   16, 16, 16));
+            GameObjects.Add(m_enemyShipGrid = new EnemyShipGrid(new Vector2(16, 16),        16, 16, 16));
 
-            m_shipGrid.OnCellClick += shipGridOnCellClick;
-            m_enemyShipGrid.OnCellClick += enemyShipGridOnCellClick;
+            m_gameState = GameState.ShipPlacement;
+
+            m_shipGrid.OnCellClick += ShipGridOnCellClick;
+            m_enemyShipGrid.OnCellClick += EnemyShipGridOnCellClick;
         }
 
-        private void shipGridOnCellClick(object sender, ClickedCell e)
+        private void ShipGridOnCellClick(object sender, Cell e)
         {
-            Console.WriteLine("Clicked on ship grid {0}, {1}, Value {2}", e.m_xPos, e.m_yPos, e.m_data);
+            if (m_gameState == GameState.ShipPlacement)
+            {
+                m_shipGrid.CreateShip();
+                m_shipGrid.UpdateShipPreview(-16, -16, 0);
+                //m_gameState = GameState.Shoot;
+            }
         }
 
-        private void enemyShipGridOnCellClick(object sender, ClickedCell e)
+        private void EnemyShipGridOnCellClick(object sender, Cell e)
         {
-            Console.WriteLine("Clicked on enemy ship grid {0}, {1}, Value {2}", e.m_xPos, e.m_yPos, e.m_data);
             EnemyShipGrid grid = (EnemyShipGrid)sender;
             grid.SetCell(e.m_xPos, e.m_yPos, 1);
+        }
+
+        public void OnMouseInput(object sender, MouseStateEventArgs state)
+        {
+            if (m_gameState == GameState.ShipPlacement)
+                m_shipGrid.UpdateShipPreview(state.m_newState.X, state.m_newState.Y, (state.m_newState.ScrollWheelValue - state.m_oldState.ScrollWheelValue) / 120);
         }
     }
 }

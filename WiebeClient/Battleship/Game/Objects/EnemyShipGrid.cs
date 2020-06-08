@@ -14,7 +14,7 @@ namespace Battleship.Game.Objects
         private SpriteResource m_hitSprite;
         private SpriteResource m_missSprite;
 
-        public EnemyShipGrid(Vector2 a_pos, int a_width, int a_height, int a_tileWidth, int a_tileHeight) : base(a_pos, a_width, a_height, a_tileWidth, a_tileHeight)
+        public EnemyShipGrid(Vector2 a_pos, int a_width, int a_height, int a_tileDim) : base(a_pos, a_width, a_height, a_tileDim)
         {
             m_hitSprite = ResourcePool.GetSprite("hit");
             m_missSprite = ResourcePool.GetSprite("miss");
@@ -36,9 +36,9 @@ namespace Battleship.Game.Objects
                 for (int j = 0; j < GridHeight; j++)
                 {
                     if ((int)Data[i, j] == 1)
-                        a_sprBatch.Draw(m_hitSprite.Sprite, new Rectangle(new Point(i * TileWidth, j * TileHeight), new Point(TileWidth, TileHeight)), Color.White);
+                        a_sprBatch.Draw(m_hitSprite.Sprite, new Rectangle(new Point(i * TileDim + (int)m_pos.X, j * TileDim + (int)m_pos.Y), new Point(TileDim, TileDim)), Color.White);
                     if ((int)Data[i, j] == 2)
-                        a_sprBatch.Draw(m_hitSprite.Sprite, new Rectangle(new Point(i * TileWidth, j * TileHeight), new Point(TileWidth, TileHeight)), Color.White);
+                        a_sprBatch.Draw(m_hitSprite.Sprite, new Rectangle(new Point(i * TileDim + (int)m_pos.X, j * TileDim + (int)m_pos.Y), new Point(TileDim, TileDim)), Color.White);
                 }
             }
         }

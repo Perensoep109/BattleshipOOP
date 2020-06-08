@@ -15,9 +15,10 @@ namespace Battleship
         {
             base.BeginRun();
             SceneSwitcher.AddScene(new MainMenuScene(m_graphics.GraphicsDevice), "MainMenu");
-            SceneSwitcher.AddScene(new MultiplayerGameScene(), "GameScene");
+            SceneSwitcher.AddScene(new MultiplayerGameScene(m_graphics.GraphicsDevice), "GameScene");
             SceneSwitcher.LoadScene("MainMenu");
-            this.IsMouseVisible = true;
+            IsMouseVisible = true;
+            MouseInput += ((MultiplayerGameScene)SceneSwitcher.GetScene("GameScene")).OnMouseInput;
         }
 
         protected override void LoadContent()
@@ -27,6 +28,9 @@ namespace Battleship
             ResourcePool.LoadResource(new SpriteResource(Content.Load<Texture2D>("Content/Sprites/line")), "line");
             ResourcePool.LoadResource(new SpriteResource(Content.Load<Texture2D>("Content/Sprites/hit")), "hit");
             ResourcePool.LoadResource(new SpriteResource(Content.Load<Texture2D>("Content/Sprites/miss")), "miss");
+            ResourcePool.LoadResource(new SpriteResource(Content.Load<Texture2D>("Content/Sprites/ship")), "ship");
+            ResourcePool.LoadResource(new SpriteResource(Content.Load<Texture2D>("Content/Sprites/valid")), "valid");
+            ResourcePool.LoadResource(new SpriteResource(Content.Load<Texture2D>("Content/Sprites/invalid")), "invalid");
         }
     }
 }
