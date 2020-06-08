@@ -35,9 +35,10 @@ namespace Battleship.Game.Objects
             {
                 for (int j = 0; j < GridHeight; j++)
                 {
-                    if ((int)Data[i, j] == 1)
+                    int val = Convert.ToInt32(Data[i, j]);
+                    if (val == 1)
                         a_sprBatch.Draw(m_hitSprite.Sprite, new Rectangle(new Point(i * TileDim + (int)m_pos.X, j * TileDim + (int)m_pos.Y), new Point(TileDim, TileDim)), Color.White);
-                    if ((int)Data[i, j] == 2)
+                    if (val == 2)
                         a_sprBatch.Draw(m_hitSprite.Sprite, new Rectangle(new Point(i * TileDim + (int)m_pos.X, j * TileDim + (int)m_pos.Y), new Point(TileDim, TileDim)), Color.White);
                 }
             }

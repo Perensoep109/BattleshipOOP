@@ -55,7 +55,16 @@ namespace ServerTesting
                 Console.WriteLine("SERVER::CONNECTION Read {0} bytes from {1}", bytesRead, client.RemoteEndPoint.ToString());
 #endif
                 if (bytesRead > 0)
-                    Send(state.m_buffer);
+                {
+                    if (state.m_buffer[0] == 2)
+                    {
+                        // Send back the hit register
+                        Send(new byte[] { 0x2, 0x0, 0x0, 0x0, 0x0, 0x1, state.m_buffer[6], state.m_buffer[6 + 1], 0x1 });
+
+                        // Send back the hit to the hit player
+                        Send(new byte[] { 0x3, 0x0, 0x0, 0x0, 0x0, 0x1, state.m_buffer[6], state.m_buffer[6 + 1], 0x1 });
+                    }
+                }
                 m_client.Client.BeginReceive(state.m_buffer, 0, StateObject.m_bufferSize, 0, ReceiveCallback, state);
             }
             catch (Exception a_e)

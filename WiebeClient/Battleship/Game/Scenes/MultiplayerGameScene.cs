@@ -43,7 +43,15 @@ namespace Battleship.Game.Scenes
 
             if(a_packet.m_type == PacketType.Hit)
             {
-                m_shipGrid.CheckHit(a_packet[Packet.BODY_START_POS + 1], a_packet[Packet.BODY_START_POS + 2]);
+                m_shipGrid.CheckHit(a_packet[Packet.BODY_START_POS], a_packet[Packet.BODY_START_POS + 1]);
+                NetworkResync = true;
+                NetworkScene = this;
+            }
+
+            if (a_packet.m_type == PacketType.Shoot)
+            {
+                //m_shipGrid.CheckHit(a_packet[Packet.BODY_START_POS + 1], a_packet[Packet.BODY_START_POS + 2]);
+                m_enemyShipGrid.SetCell(a_packet[Packet.BODY_START_POS], a_packet[Packet.BODY_START_POS + 1], a_packet[Packet.BODY_START_POS + 2]);
                 NetworkResync = true;
                 NetworkScene = this;
             }
@@ -91,20 +99,29 @@ namespace Battleship.Game.Scenes
             {
                 m_shipGrid.CreateShip();
                 m_shipGrid.UpdateShipPreview(-16, -16, 0);
-                //m_gameState = GameState.Shoot;
             }
         }
 
         private void EnemyShipGridOnCellClick(object sender, Cell e)
         {
             EnemyShipGrid grid = (EnemyShipGrid)sender;
-            grid.SetCell(e.m_xPos, e.m_yPos, 1);
+            if(m_gameState == GameState.Shoot)
+                m_connection.Send(new Packet(new byte[] { 0x2, 0x0, 0x0, 0x0, 0x0, 0x1, (byte)e.m_xPos, (byte)e.m_yPos, 0x0}));  // Shoot
         }
 
         public void OnMouseInput(object sender, MouseStateEventArgs state)
         {
             if (m_gameState == GameState.ShipPlacement)
                 m_shipGrid.UpdateShipPreview(state.m_newState.X, state.m_newState.Y, (state.m_newState.ScrollWheelValue - state.m_oldState.ScrollWheelValue) / 120);
+        }
+
+        public void OnKeyboardInput(object sender, KeyboardState state)
+        {
+            if (state.IsKeyDown(Keys.Space) && m_gameState != GameState.Shoot)
+            {
+                m_gameState = GameState.Shoot;
+                m_shipGrid.UpdateShipPreview(-16, -16, 0);
+            }
         }
     }
 }

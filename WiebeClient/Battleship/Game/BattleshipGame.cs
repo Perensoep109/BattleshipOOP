@@ -19,6 +19,7 @@ namespace Battleship
             SceneSwitcher.LoadScene("MainMenu");
             IsMouseVisible = true;
             MouseInput += ((MultiplayerGameScene)SceneSwitcher.GetScene("GameScene")).OnMouseInput;
+            KeyboardInput += ((MultiplayerGameScene)SceneSwitcher.GetScene("GameScene")).OnKeyboardInput;
         }
 
         protected override void LoadContent()

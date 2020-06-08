@@ -25,7 +25,6 @@ namespace Engine
     public class BaseGame : Game
     {
         public event EventHandler<MouseStateEventArgs> MouseInput;
-        public event EventHandler<MouseStateEventArgs> MouseMoved;
         public event EventHandler<KeyboardState> KeyboardInput;
 
         private MouseState m_lastMouseState = new MouseState();
