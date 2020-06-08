@@ -8,6 +8,18 @@ using System.Threading.Tasks;
 
 namespace Engine.Events.EventListeners
 {
+    public class MouseStateEventArgs : EventArgs
+    {
+        public MouseState m_newState;
+        public MouseState m_oldState;
+
+        public MouseStateEventArgs(MouseState a_newState, MouseState a_oldState)
+        {
+            m_newState = a_newState;
+            m_oldState = a_oldState;
+        }
+    }
+
     /// <summary>
     /// The clickable event listener is an eventlistener which registers and manages all game objects which extend the IClickable event
     /// </summary>
@@ -35,7 +47,7 @@ namespace Engine.Events.EventListeners
                 {
                     IClickableEvent obj = m_listeners[i];
                     if (obj.Bounds.Value.Contains(new Point(a_state.m_newState.X, a_state.m_newState.Y)))
-                        obj.BaseOnClick(a_state.m_newState);
+                        obj.BaseOnClick(a_state);
                 }  
             }
         }

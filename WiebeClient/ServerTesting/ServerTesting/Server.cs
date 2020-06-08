@@ -58,7 +58,7 @@ namespace ServerTesting
                 {
                     if (state.m_buffer[0] == 2)
                     {
-                        // Send back the hit register
+                        // Send back the hit to the player who shot
                         Send(new byte[] { 0x2, 0x0, 0x0, 0x0, 0x0, 0x1, state.m_buffer[6], state.m_buffer[6 + 1], 0x1 });
 
                         // Send back the hit to the hit player

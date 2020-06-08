@@ -9,6 +9,7 @@ using Engine.Graphics;
 using Microsoft.Xna.Framework.Graphics;
 using Engine.Scenes;
 using Engine.Engine.UI;
+using Engine.Events.EventListeners;
 
 namespace Battleship.Game
 {
@@ -24,7 +25,7 @@ namespace Battleship.Game
             ((UIButton)UIElements[0]).OnClick += MainMenuUI_OnClick;
         }
 
-        private void MainMenuUI_OnClick(object sender, Microsoft.Xna.Framework.Input.MouseState e)
+        private void MainMenuUI_OnClick(object sender, MouseStateEventArgs e)
         {
             SceneSwitcher.LoadScene("GameScene");
         }

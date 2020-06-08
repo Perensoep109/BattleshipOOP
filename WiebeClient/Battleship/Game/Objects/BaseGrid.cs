@@ -1,5 +1,6 @@
 ﻿using Engine;
 using Engine.Events;
+using Engine.Events.EventListeners;
 using Engine.Graphics;
 using Engine.Objects;
 using Microsoft.Xna.Framework;
@@ -17,7 +18,7 @@ namespace Battleship.Game.Objects
     {
         public Rectangle? Bounds { get; set; }
 
-        public event EventHandler<MouseState> OnClick;
+        public event EventHandler<MouseStateEventArgs> OnClick;
         public event EventHandler<Cell> OnCellClick;
 
         public int GridWidth { get; private set; }
@@ -40,9 +41,9 @@ namespace Battleship.Game.Objects
 
         }
 
-        public void BaseOnClick(MouseState a_state)
+        public void BaseOnClick(MouseStateEventArgs a_state)
         {
-            OnCellClick?.Invoke(this, GetCell((int)Math.Floor((decimal)(a_state.X - m_pos.X) / TileDim), (int)Math.Floor((decimal)(a_state.Y - m_pos.Y) / TileDim)));
+            OnCellClick?.Invoke(this, GetCell((int)Math.Floor((decimal)(a_state.m_newState.X - m_pos.X) / TileDim), (int)Math.Floor((decimal)(a_state.m_newState.Y - m_pos.Y) / TileDim)));
         }
 
         public virtual void Draw(SpriteBatch a_sprBatch)

@@ -1,5 +1,6 @@
 ﻿using Engine.Engine.Events;
 using Engine.Events;
+using Engine.Events.EventListeners;
 using Engine.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -14,8 +15,8 @@ namespace Engine.Engine.UI
 {
     public class UIInputTextBox : UIElementBase, IKeyboardEvent, IClickableEvent
     {
-        public event EventHandler<KeyboardState> OnKeyInput;
-        public event EventHandler<MouseState> OnClick;
+        public event EventHandler<KeyboardStateEventArgs> OnKeyInput;
+        public event EventHandler<MouseStateEventArgs> OnClick;
 
         public string Text { get; set; } = "";
         public Rectangle? Bounds { get; set; }
@@ -34,23 +35,23 @@ namespace Engine.Engine.UI
             a_sprb.DrawString(Font, Text, new Vector2(GridX * Width + 5, GridY * Height + 5), Color.Black);
         }
 
-        public void BaseOnClick(MouseState a_state)
+        public void BaseOnClick(MouseStateEventArgs a_state)
         {
             Selected = !Selected;
         }
 
-        public void BaseOnKeyboard(KeyboardState a_state)
+        public void BaseOnKeyboard(KeyboardStateEventArgs a_state)
         {
             if(Selected)
             {
-                if (a_state.GetPressedKeys().Length == 0)
+                if (a_state.m_newState.GetPressedKeys().Length == 0)
                     return;
 
-                char ch = (char)a_state.GetPressedKeys()[0];
+                char ch = (char)a_state.m_newState.GetPressedKeys()[0];
                 if (ch >= 33 && ch <= 126)
                     Text += ch;
 
-                if (a_state.IsKeyDown(Keys.Back))
+                if (a_state.m_newState.IsKeyDown(Keys.Back))
                     if(Text.Length > 0)
                         Text = Text.Remove(Text.Length - 1);
             }

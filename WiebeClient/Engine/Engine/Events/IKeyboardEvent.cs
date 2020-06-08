@@ -1,4 +1,5 @@
 ﻿using Engine.Events;
+using Engine.Events.EventListeners;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace Engine.Engine.Events
 {
     public interface IKeyboardEvent : IBaseEvent
     {
-        event EventHandler<KeyboardState> OnKeyInput;
-        void BaseOnKeyboard(KeyboardState a_state);
+        event EventHandler<KeyboardStateEventArgs> OnKeyInput;
+        void BaseOnKeyboard(KeyboardStateEventArgs a_state);
     }
 }

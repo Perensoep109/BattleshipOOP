@@ -10,22 +10,10 @@ using Engine.Scenes;
 
 namespace Engine
 {
-    public class MouseStateEventArgs : EventArgs
-    {
-        public MouseState m_newState;
-        public MouseState m_oldState;
-
-        public MouseStateEventArgs(MouseState a_newState, MouseState a_oldState)
-        {
-            m_newState = a_newState;
-            m_oldState = a_oldState;
-        }
-    }
-
     public class BaseGame : Game
     {
         public event EventHandler<MouseStateEventArgs> MouseInput;
-        public event EventHandler<KeyboardState> KeyboardInput;
+        public event EventHandler<KeyboardStateEventArgs> KeyboardInput;
 
         private MouseState m_lastMouseState = new MouseState();
         private KeyboardState m_lastKeyboardState = new KeyboardState();
@@ -49,7 +37,7 @@ namespace Engine
             if (m_lastMouseState != newMousestate)
                 OnMouseInput(new MouseStateEventArgs(newMousestate, m_lastMouseState));
             if (m_lastKeyboardState != Keyboard.GetState())
-                OnKeyInput(Keyboard.GetState());
+                OnKeyInput(new KeyboardStateEventArgs(Keyboard.GetState(), m_lastKeyboardState));
 
             // Update the current scene
             BaseScene çurScene = SceneSwitcher.Instance.CurrentScene;
@@ -107,9 +95,9 @@ namespace Engine
             MouseInput?.Invoke(this, a_state);
         }
 
-        private void OnKeyInput(KeyboardState a_state)
+        private void OnKeyInput(KeyboardStateEventArgs a_state)
         {
-            m_lastKeyboardState = a_state;
+            m_lastKeyboardState = a_state.m_newState;
             KeyboardInput?.Invoke(this, a_state);
         }
         #endregion

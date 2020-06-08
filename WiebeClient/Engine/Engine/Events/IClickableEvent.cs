@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Engine.Events.EventListeners;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
@@ -19,8 +20,8 @@ namespace Engine.Events
         /// </summary>
         Rectangle? Bounds { get; set; }
 
-        void BaseOnClick(MouseState a_state);
+        void BaseOnClick(MouseStateEventArgs a_state);
 
-        event EventHandler<MouseState> OnClick;
+        event EventHandler<MouseStateEventArgs> OnClick;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Engine.Events;
+using Engine.Events.EventListeners;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -12,7 +13,7 @@ namespace Engine.UI
 {
     public class UIButton : UIElementBase, IClickableEvent
     {
-        public event EventHandler<MouseState> OnClick;
+        public event EventHandler<MouseStateEventArgs> OnClick;
 
         public string Text { get; set; }
         public SpriteFont Font { get; set; }
@@ -25,7 +26,7 @@ namespace Engine.UI
             BackColor = Color.White;
         }
 
-        public void BaseOnClick(MouseState a_state)
+        public void BaseOnClick(MouseStateEventArgs a_state)
         {
             OnClick?.Invoke(this, a_state);
         }

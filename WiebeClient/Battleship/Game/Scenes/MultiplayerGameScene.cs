@@ -1,6 +1,7 @@
 ﻿using Battleship.Game.Objects;
 using Battleship.Game.UI;
 using Engine;
+using Engine.Events.EventListeners;
 using Engine.Networking;
 using Engine.Scenes;
 using Microsoft.Xna.Framework;
@@ -60,9 +61,8 @@ namespace Battleship.Game.Scenes
         public void Sync()
         {
             for(int i = 0; i < NetworkScene.GameObjects.Count; i++)
-            {
                 GameObjects[i] = NetworkScene.GameObjects[i];
-            }
+
             m_gameState = ((MultiplayerGameScene)NetworkScene).m_gameState;
             m_shipGrid = ((MultiplayerGameScene)NetworkScene).m_shipGrid;
             m_enemyShipGrid = ((MultiplayerGameScene)NetworkScene).m_enemyShipGrid;
@@ -115,9 +115,9 @@ namespace Battleship.Game.Scenes
                 m_shipGrid.UpdateShipPreview(state.m_newState.X, state.m_newState.Y, (state.m_newState.ScrollWheelValue - state.m_oldState.ScrollWheelValue) / 120);
         }
 
-        public void OnKeyboardInput(object sender, KeyboardState state)
+        public void OnKeyboardInput(object sender, KeyboardStateEventArgs state)
         {
-            if (state.IsKeyDown(Keys.Space) && m_gameState != GameState.Shoot)
+            if (state.m_newState.IsKeyDown(Keys.Space) && m_gameState != GameState.Shoot)
             {
                 m_gameState = GameState.Shoot;
                 m_shipGrid.UpdateShipPreview(-16, -16, 0);
