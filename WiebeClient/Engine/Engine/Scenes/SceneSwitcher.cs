@@ -60,7 +60,7 @@ namespace Engine.Scenes
             return scene;
         }
 
-        public static void LoadScene(string a_name)
+        public static void LoadScene(string a_name, params object[] a_data)
         {
             if (!Instance.Initialized)
                 throw new Exception("Singleton instance not initialized");
@@ -70,7 +70,7 @@ namespace Engine.Scenes
             try
             {
                 BaseScene newScene = GetScene(a_name);
-                newScene.OnSwitchTo();
+                newScene.OnSwitchTo(a_data);
                 Instance.m_windowHost.PreferredBackBufferWidth = newScene.PreferredWindowWidth;
                 Instance.m_windowHost.PreferredBackBufferHeight = newScene.PreferredWindowHeight;
                 Instance.m_windowHost.ApplyChanges();

@@ -49,10 +49,10 @@ namespace Engine.Scenes
                 ClickableEventListener.Instance.Detach((IClickableEvent)a_object);
         }
 
-        public override void OnSwitchTo()
+        public override void OnSwitchTo(params object[] a_data)
         {
             if (!Initialized)
-                Initialize();
+                Initialize(a_data);
 
             GameObjects.ForEach(
             obj =>

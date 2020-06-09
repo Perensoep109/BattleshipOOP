@@ -17,15 +17,14 @@ namespace Engine.Scenes
 
         protected GraphicsDevice m_graphics;
 
-        public abstract void OnSwitchTo();
+        public abstract void OnSwitchTo(params object[] a_data);
         public abstract void OnSwitchFrom();
+        public abstract void Initialize(params object[] a_initialData);
 
         public BaseScene(GraphicsDevice a_device)
         {
             m_graphics = a_device;
         }
-
-        public abstract void Initialize();
 
         public void Dispose()
         {
