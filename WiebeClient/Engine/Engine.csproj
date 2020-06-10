@@ -75,12 +75,10 @@
     <Compile Include="Engine\Scenes\SceneSwitcher.cs" />
     <Compile Include="Engine\UI\UIButton.cs" />
     <Compile Include="Engine\UI\UIElementBase.cs" />
-    <Compile Include="Engine\UI\UIInputTextBox.cs" />
     <Compile Include="Engine\UI\UILabel.cs" />
     <Compile Include="Engine\UI\UILayer.cs" />
     <Compile Include="Engine\Events\IClickableEvent.cs" />
     <Compile Include="Engine\Objects\GameObject.cs" />
-    <Compile Include="Engine\UI\UIMultiTextBox.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

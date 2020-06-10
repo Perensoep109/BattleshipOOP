@@ -1,12 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Engine.Scenes;
+using Engine.UI;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Battleship.Game.Scenes
 {
-    class JoinGameScene
+    class JoinGameScene : GameScene
     {
+        private class UI : UILayer
+        {
+
+        }
+
+        public JoinGameScene(GraphicsDevice a_device) : base(a_device)
+        {
+        }
+
+        public override void Initialize(params object[] a_data)
+        {
+            
+        }
+
+        public override void OnSwitchFrom()
+        {
+           
+        }
+
+        public override void OnSwitchTo(params object[] a_data)
+        {
+           
+        }
+
+        public override void Update()
+        {
+            
+        }
     }
 }

@@ -33,8 +33,8 @@ namespace Engine.Rendering
                 if (obj is IRenderable)
                     ((IRenderable)obj).Draw(m_spriteBatch);
             });
-            if (scene.UI != null)
-                m_uiRenderer.Draw(scene.UI, m_spriteBatch);
+            if (scene.UiLayer != null)
+                m_uiRenderer.Draw(scene.UiLayer, m_spriteBatch);
             m_spriteBatch.End();
         }
     }

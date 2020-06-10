@@ -1,19 +1,28 @@
 ﻿using Battleship.Game.Objects;
-using Battleship.Game.UI;
-using Engine;
 using Engine.Events.EventListeners;
+using Engine.Graphics;
 using Engine.Networking;
 using Engine.Scenes;
+using Engine.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
-using System.Net;
 
 namespace Battleship.Game.Scenes
 {
     class MultiplayerGameScene : GameScene, INetworkScene
     {
+        private class UI : UILayer
+        {
+            public UILabel m_label;
+
+            public UI(GraphicsDevice a_graphics)
+            {
+                AddUI(m_label = new UILabel(50, 30, "Ships to place", ResourcePool.GetSpriteFont("font").Font, a_graphics), 6, 10);
+            }
+        }
+
         public bool NetworkResync { get; set; }
         public GameScene NetworkScene { get; set; }
 
@@ -51,10 +60,19 @@ namespace Battleship.Game.Scenes
 
             if (a_packet.m_type == PacketType.Shoot)
             {
-                //m_shipGrid.CheckHit(a_packet[Packet.BODY_START_POS + 1], a_packet[Packet.BODY_START_POS + 2]);
                 m_enemyShipGrid.SetCell(a_packet[Packet.BODY_START_POS], a_packet[Packet.BODY_START_POS + 1], a_packet[Packet.BODY_START_POS + 2]);
                 NetworkResync = true;
                 NetworkScene = this;
+            }
+
+            if (a_packet.m_type == PacketType.ShipPlacement)
+            {
+                if (Convert.ToBoolean(a_packet[Packet.BODY_START_POS + 5]))
+                {
+                    m_shipGrid.CreateShip();
+                    NetworkResync = true;
+                    NetworkScene = this;
+                }
             }
         }
 
@@ -74,14 +92,13 @@ namespace Battleship.Game.Scenes
         {
         }
 
-        public override void Initialize()
+        public override void Initialize(params object[] a_initialData)
         {
             PreferredWindowWidth = 25 * 16 + 1;
             PreferredWindowHeight = 35 * 16 + 1;
-            UI = new MultiplayerGameUI(m_graphics);
+            UiLayer = new UI(m_graphics);
 
-            m_connection = new ServerConnection();
-            m_connection.Connect(IPAddress.Parse("127.0.0.1"), 69);
+            m_connection = (ServerConnection)a_initialData[0];
             m_connection.ReceivedPacket += ProcessPacket;
 
             GameObjects.Add(m_shipGrid = new ShipGrid(          new Vector2(16, 19 * 16),   16, 16, 16));
@@ -96,17 +113,14 @@ namespace Battleship.Game.Scenes
         private void ShipGridOnCellClick(object sender, Cell e)
         {
             if (m_gameState == GameState.ShipPlacement)
-            {
-                m_shipGrid.CreateShip();
-                m_shipGrid.UpdateShipPreview(-16, -16, 0);
-            }
+                if (m_shipGrid.ShipPreview.m_validPos)
+                    m_connection.Send(Packet.CreateShipPlacementPackage((byte)e.m_xPos, (byte)e.m_yPos, 1, 0, 5));
         }
 
         private void EnemyShipGridOnCellClick(object sender, Cell e)
         {
-            EnemyShipGrid grid = (EnemyShipGrid)sender;
             if(m_gameState == GameState.Shoot)
-                m_connection.Send(new Packet(new byte[] { 0x2, 0x0, 0x0, 0x0, 0x0, 0x1, (byte)e.m_xPos, (byte)e.m_yPos, 0x0}));  // Shoot
+                m_connection.Send(Packet.CreateShootPackage(e.m_xPos, e.m_yPos));  // Shoot
         }
 
         public void OnMouseInput(object sender, MouseStateEventArgs state)

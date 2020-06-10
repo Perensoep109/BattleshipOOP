@@ -6,6 +6,7 @@ using Battleship.Game.Scenes;
 using Engine;
 using Engine.Graphics;
 using Engine.Scenes;
+using Battleship.Game;
 
 namespace Battleship
 {
@@ -15,6 +16,9 @@ namespace Battleship
         {
             base.BeginRun();
             SceneSwitcher.AddScene(new MainMenuScene(m_graphics.GraphicsDevice), "MainMenu");
+            SceneSwitcher.AddScene(new JoinOrCreateScene(m_graphics.GraphicsDevice), "JoinCreate");
+            SceneSwitcher.AddScene(new CreateGameScene(m_graphics.GraphicsDevice), "CreateGame");
+            SceneSwitcher.AddScene(new JoinGameScene(m_graphics.GraphicsDevice), "JoinGame");
             SceneSwitcher.AddScene(new MultiplayerGameScene(m_graphics.GraphicsDevice), "GameScene");
             SceneSwitcher.LoadScene("MainMenu");
             IsMouseVisible = true;

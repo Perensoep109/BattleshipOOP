@@ -64,6 +64,11 @@ namespace ServerTesting
                         // Send back the hit to the hit player
                         Send(new byte[] { 0x3, 0x0, 0x0, 0x0, 0x0, 0x1, state.m_buffer[6], state.m_buffer[6 + 1], 0x1 });
                     }
+
+                    if(state.m_buffer[0] == 4)
+                    {
+                        Send(new byte[] { 0x4, 0x0, 0x0, 0x0, 0x0, 0x1, state.m_buffer[6 + 0], state.m_buffer[6 + 1], state.m_buffer[6 + 2], state.m_buffer[6 + 3], state.m_buffer[6 + 4], Convert.ToByte(true) });
+                    }
                 }
                 m_client.Client.BeginReceive(state.m_buffer, 0, StateObject.m_bufferSize, 0, ReceiveCallback, state);
             }

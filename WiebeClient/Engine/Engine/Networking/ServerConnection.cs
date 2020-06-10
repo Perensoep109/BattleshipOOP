@@ -18,8 +18,9 @@ namespace Engine.Networking
         }
 
         public event EventHandler<Packet> ReceivedPacket;
-
         private Socket m_client;
+
+        public bool Connected { get { return m_client.Connected; } }
 
         public ServerConnection()
         {

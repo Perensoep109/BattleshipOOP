@@ -18,7 +18,7 @@ namespace Engine.Scenes
         /// All gameobjects in this scene
         /// </summary>
         public List<GameObject> GameObjects { get; private set; }
-        public UILayer UI { get; set; }
+        public UILayer UiLayer { get; set; }
 
         public GameScene(GraphicsDevice a_graphics) : base(a_graphics)
         {
@@ -61,8 +61,8 @@ namespace Engine.Scenes
                     if (!ClickableEventListener.Instance.Contains((IClickableEvent)obj))
                         ClickableEventListener.Instance.Attach((IClickableEvent)obj);
             });
-            if (UI != null)
-                UI.Activate();
+            if (UiLayer != null)
+                UiLayer.Activate();
         }
 
         public override void OnSwitchFrom()
@@ -74,8 +74,8 @@ namespace Engine.Scenes
                     ClickableEventListener.Instance.Detach((IClickableEvent)obj);
             });
 
-            if (UI != null)
-                UI.Deactivate();
+            if (UiLayer != null)
+                UiLayer.Deactivate();
         }
     }
 }
