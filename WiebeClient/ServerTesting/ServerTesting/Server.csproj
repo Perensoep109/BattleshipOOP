@@ -7,7 +7,7 @@
     <ProjectGuid>{48B6D1C9-09F3-4BD4-BD3C-AAFF732070FA}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>ServerTesting</RootNamespace>
-    <AssemblyName>ServerTesting</AssemblyName>
+    <AssemblyName>Server</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

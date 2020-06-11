@@ -13,11 +13,13 @@ namespace ServerTesting
     {
         TcpListener m_server;
         TcpClient m_client;
+        bool m_verbose;
 
         const int BODY_START_POS = 6;
 
-        public Server()
+        public Server(bool a_verbose)
         {
+            m_verbose = a_verbose;
             m_server = new TcpListener(IPAddress.Parse("127.0.0.1"), 69);
             Start();
         }
@@ -41,7 +43,7 @@ namespace ServerTesting
             }
             catch (Exception a_e)
             {
-                Console.WriteLine(a_e);
+                Console.WriteLine("ERROR::SERVER::RECEIVE Could not receive data from client " + a_e.ToString());
             }
         }
 
@@ -53,9 +55,10 @@ namespace ServerTesting
                 Socket client = state.m_socket;
                 int bytesRead = client.EndReceive(a_result);
 
-#if DEBUG
                 Console.WriteLine("SERVER::CONNECTION Read {0} bytes from {1}", bytesRead, client.RemoteEndPoint.ToString());
-#endif
+                if (m_verbose)
+                    Console.WriteLine("BYTES::READ {0}", BitConverter.ToString(state.m_buffer).Replace('-', ' '));
+
                 if (bytesRead > 0)
                 {
                     if (state.m_buffer[1] == 0)
@@ -78,10 +81,7 @@ namespace ServerTesting
             catch(SocketException a_e)
             {
                 Console.WriteLine("SERVER::CONNECTION::LOST " + m_client.Client.RemoteEndPoint.ToString());
-                m_client.Close();
-                m_client.Dispose();
-                m_client = null;
-                m_server.BeginAcceptTcpClient(ClientConnected, m_server);
+                ConnectClients();
             }
             catch (Exception a_e)
             {
@@ -92,6 +92,8 @@ namespace ServerTesting
         public void Send(byte[] a_packet)
         {
             m_client.Client.BeginSend(a_packet, 0, a_packet.Length, 0, SendCallback, m_client.Client);
+            if (m_verbose)
+                Console.WriteLine("BYTES::SENT {0}", BitConverter.ToString(a_packet).Replace('-', ' '));
         }
 
         private void SendCallback(IAsyncResult a_result)
@@ -99,16 +101,26 @@ namespace ServerTesting
             Socket client = (Socket)a_result.AsyncState;
 
             int bytesSend = client.EndSend(a_result);
-#if DEBUG
             Console.WriteLine("SERVER::CONNECTION Sent {0} bytes to {1}", bytesSend, client.RemoteEndPoint.ToString());
-#endif
+        }
+
+        private void ConnectClients()
+        {
+            if (m_client != null)
+            {
+                m_client.Close();
+                m_client.Dispose();
+                m_client = null;
+            }
+            Console.WriteLine("SERVER::CONNECTION Waiting for client connection attempt");
+            m_server.BeginAcceptTcpClient(ClientConnected, m_server);
         }
 
         private void Start()
         {
             m_server.Start();
-            m_server.BeginAcceptTcpClient(ClientConnected, m_server);
-            Console.WriteLine("SERVER Started server");
+            Console.WriteLine("SERVER Started server, verbose logging: {0}, type 'help' to show commands", m_verbose);
+            ConnectClients();
         }
     }
 

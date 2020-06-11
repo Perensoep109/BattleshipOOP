@@ -11,19 +11,21 @@ namespace ServerTesting
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
-        static void Main()
+        static void Main(string[] args)
         {
-            Server server = new Server();
+            bool verbose = (args.Length > 0 && args[0] == "--verbose");
+
+            Server server = new Server(verbose);
             while (true)
             {
-                //Console.WriteLine("wait");
-                //await Task.Delay(1000);
+                string input = Console.ReadLine();
+                if (input == "stop")
+                    break;
+                if (input == "clear")
+                    Console.Clear();
+                if (input == "help" || input == "h")
+                    Console.WriteLine("Commands:\n'stop' stops the server\n'clear' clears the console\n'help' shows all commands");
             }
-        }
-
-        static async void Start()
-        {
-            
         }
     }
 }
