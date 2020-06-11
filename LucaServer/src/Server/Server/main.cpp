@@ -1,6 +1,7 @@
 #include <iostream>
 #include <sstream>
 #include <WS2tcpip.h>
+#include <vector>
 
 class Log
 {
@@ -90,6 +91,11 @@ public:
 			gameBoard[i] = receivedGameBoard[i];
 		}
 	}
+
+	std::vector<int> getBoat(/*data from boat packet*/)
+	{
+
+	}
 };
 
 class Game
@@ -97,10 +103,38 @@ class Game
 
 };
 
-int main()
+void Parse(char* data)
 {
 	Log log;
-	log.SetLogLevel("trace warning error fatal");
+
+	char* command;
+	command = data;
+
+
+
+	char packetSize = command[0];
+	char packetType = command[1];
+	char gameID[4] = { 0x00 };
+	for (int i = 0; i < 4; i++)
+		gameID[i] = command[i + 2];
+
+	std::cout << "Packet size: " << (int)packetSize << std::endl;
+	std::cout << "Packet type: " << (int)packetType << std::endl;
+	std::cout << "Game ID: ";
+	for (int i = 0; i < 4; i++)
+		std::cout << (int)gameID[i];
+	std::cout << "" << std::endl;
+
+}
+
+int main()
+{
+	Player player;
+	Game game;
+
+	Log log;
+
+	log.SetLogLevel("verbose");
 
 	/*log.Trace("This is a Trace message");
 	log.Warning("This is a Warning message");
@@ -127,7 +161,7 @@ int main()
 	struct addrinfo hints;
 
 	int iSendResult;
-	char recvbuf[DEFAULT_BUFLEN];
+	char recvbuf[DEFAULT_BUFLEN] = { 0x00 };
 	int recvbuflen = DEFAULT_BUFLEN;
 
 	// Initialize Winsock.
@@ -226,10 +260,10 @@ int main()
 		iResult = recv(ClientSocket, recvbuf, recvbuflen, 0);
 		if (iResult > 0)
 		{
-			std::cout << "<client> " << iResult << std::endl;
+			std::cout << "<client> " << recvbuf << std::endl;
 
 			// Echo result back to sender.
-			std::cout << "ECHO ";
+			/*std::cout << "ECHO ";
 			iSendResult = send(ClientSocket, recvbuf, iResult, 0);
 			if (iSendResult == SOCKET_ERROR)
 			{
@@ -237,7 +271,9 @@ int main()
 				WSACleanup();
 				return 1;
 			}
-			std::cout << "OK" << std::endl;
+			std::cout << "OK" << std::endl;*/
+
+			Parse(recvbuf);
 		}
 		else if (iResult == 0)
 			std::cout << "CLIENT DISCONNECTED" << std::endl;
