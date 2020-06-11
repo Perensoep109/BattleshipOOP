@@ -22,7 +22,7 @@ namespace Engine.Networking
         public PacketType m_type = PacketType.Ping;
         public uint m_gameID = 0;
 
-        public const uint BODY_START_POS = 7;
+        public const uint BODY_START_POS = 6;
 
         public Packet(byte[] a_buffer)
         {
@@ -46,7 +46,7 @@ namespace Engine.Networking
 
         public static Packet CreateShipPlacementPackage(int a_xPos, int a_yPos, int a_xDir, int a_yDir, int a_length)
         {
-            return new Packet(new byte[] { 0xE, 0x0, 0x0, 0x0, 0x0, 0x1, (byte)a_xPos, (byte)a_yPos, (byte)a_xDir, (byte)a_yDir, (byte)a_length, Convert.ToByte(false), 0xFF, 0xFF });
+            return new Packet(new byte[] { 0xF, 0x4, 0x0, 0x0, 0x0, 0x0, 0x1, (byte)a_xPos, (byte)a_yPos, (byte)a_xDir, (byte)a_yDir, (byte)a_length, Convert.ToByte(false), 0xFF, 0xFF });
         }
     }
 }

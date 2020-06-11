@@ -14,6 +14,8 @@ namespace ServerTesting
         TcpListener m_server;
         TcpClient m_client;
 
+        const int BODY_START_POS = 6;
+
         public Server()
         {
             m_server = new TcpListener(IPAddress.Parse("127.0.0.1"), 69);
@@ -57,21 +59,19 @@ namespace ServerTesting
                 if (bytesRead > 0)
                 {
                     if (state.m_buffer[1] == 0)
-                        Send(new byte[] { 0x8, 0x0, 0x0, 0x0, 0x0, 0x0, 0x1, 0xFF, 0xFF });
+                        Send(new byte[] { 0x7, 0x0, 0x0, 0x0, 0x0, 0x0, 0xFF, 0xFF });
 
                     if (state.m_buffer[1] == 2)
                     {
                         // Send back the hit to the player who shot
-                        Send(new byte[] { 0xC, 0x2, 0x0, 0x0, 0x0, 0x0, 0x1, state.m_buffer[6], state.m_buffer[6 + 1], 0x1, 0xFF, 0xFF });
+                        Send(new byte[] { 0xC, 0x2, 0x0, 0x0, 0x0, 0x0, state.m_buffer[BODY_START_POS], state.m_buffer[BODY_START_POS + 1], state.m_buffer[BODY_START_POS + 2], 0x1, 0xFF, 0xFF });
 
                         // Send back the hit to the hit player
-                        Send(new byte[] { 0xC, 0x3, 0x0, 0x0, 0x0, 0x0, 0x1, state.m_buffer[6], state.m_buffer[6 + 1], 0x1, 0xFF, 0xFF });
+                        Send(new byte[] { 0xC, 0x3, 0x0, 0x0, 0x0, 0x0, state.m_buffer[BODY_START_POS], state.m_buffer[BODY_START_POS + 1], state.m_buffer[BODY_START_POS + 2], 0x1, 0xFF, 0xFF });
                     }
 
                     if(state.m_buffer[1] == 4)
-                    {
-                        Send(new byte[] { 0xE, 0x4, 0x0, 0x0, 0x0, 0x0, 0x1, state.m_buffer[6 + 0], state.m_buffer[6 + 1], state.m_buffer[6 + 2], state.m_buffer[6 + 3], state.m_buffer[6 + 4], Convert.ToByte(true), 0xFF, 0xFF });
-                    }
+                        Send(new byte[] { 0xE, 0x4, 0x0, 0x0, 0x0, 0x0, state.m_buffer[BODY_START_POS], state.m_buffer[BODY_START_POS + 1], state.m_buffer[BODY_START_POS + 2], state.m_buffer[BODY_START_POS + 3], state.m_buffer[BODY_START_POS + 4], state.m_buffer[BODY_START_POS + 5], Convert.ToByte(true), 0xFF, 0xFF });
                 }
                 m_client.Client.BeginReceive(state.m_buffer, 0, StateObject.m_bufferSize, 0, ReceiveCallback, state);
             }

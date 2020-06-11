@@ -53,21 +53,21 @@ namespace Battleship.Game.Scenes
 
             if(a_packet.m_type == PacketType.Hit)
             {
-                m_shipGrid.CheckHit(a_packet[Packet.BODY_START_POS], a_packet[Packet.BODY_START_POS + 1]);
+                m_shipGrid.CheckHit(a_packet[Packet.BODY_START_POS + 1], a_packet[Packet.BODY_START_POS + 2]);
                 NetworkResync = true;
                 NetworkScene = this;
             }
 
             if (a_packet.m_type == PacketType.Shoot)
             {
-                m_enemyShipGrid.SetCell(a_packet[Packet.BODY_START_POS], a_packet[Packet.BODY_START_POS + 1], a_packet[Packet.BODY_START_POS + 2]);
+                m_enemyShipGrid.SetCell(a_packet[Packet.BODY_START_POS + 1], a_packet[Packet.BODY_START_POS + 2], a_packet[Packet.BODY_START_POS + 3]);
                 NetworkResync = true;
                 NetworkScene = this;
             }
 
             if (a_packet.m_type == PacketType.ShipPlacement)
             {
-                if (Convert.ToBoolean(a_packet[Packet.BODY_START_POS + 5]))
+                if (Convert.ToBoolean(a_packet[Packet.BODY_START_POS + 6]))
                 {
                     m_shipGrid.CreateShip();
                     NetworkResync = true;
