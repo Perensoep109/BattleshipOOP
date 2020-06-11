@@ -24,7 +24,9 @@ namespace ServerTesting
                 if (input == "clear")
                     Console.Clear();
                 if (input == "help" || input == "h")
-                    Console.WriteLine("Commands:\n'stop' stops the server\n'clear' clears the console\n'help' shows all commands");
+                    Console.WriteLine("Commands:\n'stop' stops the server\n'clear' clears the console\n'verbose' toggles verbose logging mode\n'help' shows all commands");
+                if (input == "verbose")
+                    server.ToggleVerbose();
             }
         }
     }

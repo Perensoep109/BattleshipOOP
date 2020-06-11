@@ -24,7 +24,7 @@ namespace ServerTesting
             Start();
         }
 
-        public void ClientConnected(IAsyncResult a_result)
+        private void ClientConnected(IAsyncResult a_result)
         {
             TcpListener server = (TcpListener)a_result.AsyncState;
             m_client = server.EndAcceptTcpClient(a_result);
@@ -33,7 +33,7 @@ namespace ServerTesting
             StartReceive();
         }
 
-        public void StartReceive()
+        private void StartReceive()
         {
             try
             {
@@ -47,7 +47,7 @@ namespace ServerTesting
             }
         }
 
-        public void ReceiveCallback(IAsyncResult a_result)
+        private void ReceiveCallback(IAsyncResult a_result)
         {
             try
             {
@@ -57,7 +57,7 @@ namespace ServerTesting
 
                 Console.WriteLine("SERVER::CONNECTION Read {0} bytes from {1}", bytesRead, client.RemoteEndPoint.ToString());
                 if (m_verbose)
-                    Console.WriteLine("BYTES::READ {0}", BitConverter.ToString(state.m_buffer).Replace('-', ' '));
+                    Console.WriteLine("BYTES::READ {0} from {1}", BitConverter.ToString(state.m_buffer).Replace('-', ' '), m_client.Client.RemoteEndPoint.ToString());
 
                 if (bytesRead > 0)
                 {
@@ -89,11 +89,11 @@ namespace ServerTesting
             }
         }
 
-        public void Send(byte[] a_packet)
+        private void Send(byte[] a_packet)
         {
             m_client.Client.BeginSend(a_packet, 0, a_packet.Length, 0, SendCallback, m_client.Client);
             if (m_verbose)
-                Console.WriteLine("BYTES::SENT {0}", BitConverter.ToString(a_packet).Replace('-', ' '));
+                Console.WriteLine("BYTES::SENT {0} to {1}", BitConverter.ToString(a_packet).Replace('-', ' '), m_client.Client.RemoteEndPoint.ToString());
         }
 
         private void SendCallback(IAsyncResult a_result)
@@ -121,6 +121,12 @@ namespace ServerTesting
             m_server.Start();
             Console.WriteLine("SERVER Started server, verbose logging: {0}, type 'help' to show commands", m_verbose);
             ConnectClients();
+        }
+
+        public void ToggleVerbose()
+        {
+            m_verbose = !m_verbose;
+            Console.WriteLine("SERVER Toggled verbose mode, current mode: {0}", m_verbose);
         }
     }
 
