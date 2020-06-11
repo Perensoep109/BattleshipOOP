@@ -17,10 +17,10 @@ namespace ServerTesting
 
         const int BODY_START_POS = 6;
 
-        public Server(bool a_verbose)
+        public Server(string a_ip, int a_port, bool a_verbose)
         {
             m_verbose = a_verbose;
-            m_server = new TcpListener(IPAddress.Parse("127.0.0.1"), 69);
+            m_server = new TcpListener(IPAddress.Parse(a_ip), a_port);
             Start();
         }
 
@@ -119,7 +119,7 @@ namespace ServerTesting
         private void Start()
         {
             m_server.Start();
-            Console.WriteLine("SERVER Started server, verbose logging: {0}, type 'help' to show commands", m_verbose);
+            Console.WriteLine("SERVER Started server on {0}, verbose logging: {1}, type 'help' to show commands", m_server.LocalEndpoint.ToString(), m_verbose);
             ConnectClients();
         }
 

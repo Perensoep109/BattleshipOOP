@@ -1,12 +1,8 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.IO;
+﻿using Microsoft.Xna.Framework.Graphics;
 using Battleship.Game.Scenes;
 using Engine;
 using Engine.Graphics;
 using Engine.Scenes;
-using Battleship.Game;
 using Engine.Networking;
 using System.Net;
 
@@ -25,7 +21,7 @@ namespace Battleship
         {
             // Connect to the server
             ServerConnection con = new ServerConnection();
-            con.Connect(IPAddress.Parse("127.0.0.1"), 69);
+            con.Connect(IPAddress.Parse("192.168.2.15"), 100);
 
             base.BeginRun();
             SceneSwitcher.AddScene(new MultiplayerGameScene(m_graphics.GraphicsDevice), "GameScene");

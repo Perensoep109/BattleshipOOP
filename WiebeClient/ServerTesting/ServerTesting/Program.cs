@@ -13,9 +13,15 @@ namespace ServerTesting
         /// </summary>
         static void Main(string[] args)
         {
-            bool verbose = (args.Length > 0 && args[0] == "--verbose");
+            string ip = "127.0.0.1";
+            int port = 69;
+            bool verbose = args.Contains("--verbose");
+            if (args.Contains("--ip"))
+                ip = args[Array.FindIndex(args, arg => arg == "--ip") + 1];
+            if (args.Contains("--port"))
+                port = Convert.ToInt32(args[Array.FindIndex(args, arg => arg == "--port") + 1]);
 
-            Server server = new Server(verbose);
+            Server server = new Server(ip, port, verbose);
             while (true)
             {
                 string input = Console.ReadLine();
