@@ -55,11 +55,7 @@
     <Compile Include="Game\Objects\ShipGrid.cs" />
     <Compile Include="Game\GameState.cs" />
     <Compile Include="Game\Objects\ShipPreview.cs" />
-    <Compile Include="Game\Scenes\JoinOrCreateScene.cs" />
     <Compile Include="Game\Objects\Ship.cs" />
-    <Compile Include="Game\Scenes\CreateGameScene.cs" />
-    <Compile Include="Game\Scenes\JoinGameScene.cs" />
-    <Compile Include="Game\Scenes\MainMenuScene.cs" />
     <Compile Include="Game\Scenes\MultiplayerGameScene.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

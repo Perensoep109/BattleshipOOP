@@ -7,20 +7,29 @@ using Engine;
 using Engine.Graphics;
 using Engine.Scenes;
 using Battleship.Game;
+using Engine.Networking;
+using System.Net;
 
 namespace Battleship
 {
     class BattleshipGame : BaseGame
     {
+        private string m_gameID;
+
+        public BattleshipGame(string a_gameID)
+        {
+            m_gameID = a_gameID;
+        }
+
         protected override void BeginRun()
         {
+            // Connect to the server
+            ServerConnection con = new ServerConnection();
+            con.Connect(IPAddress.Parse("127.0.0.1"), 69);
+
             base.BeginRun();
-            SceneSwitcher.AddScene(new MainMenuScene(m_graphics.GraphicsDevice), "MainMenu");
-            SceneSwitcher.AddScene(new JoinOrCreateScene(m_graphics.GraphicsDevice), "JoinCreate");
-            SceneSwitcher.AddScene(new CreateGameScene(m_graphics.GraphicsDevice), "CreateGame");
-            SceneSwitcher.AddScene(new JoinGameScene(m_graphics.GraphicsDevice), "JoinGame");
             SceneSwitcher.AddScene(new MultiplayerGameScene(m_graphics.GraphicsDevice), "GameScene");
-            SceneSwitcher.LoadScene("MainMenu");
+            SceneSwitcher.LoadScene("GameScene", con);
             IsMouseVisible = true;
             MouseInput += ((MultiplayerGameScene)SceneSwitcher.GetScene("GameScene")).OnMouseInput;
             KeyboardInput += ((MultiplayerGameScene)SceneSwitcher.GetScene("GameScene")).OnKeyboardInput;

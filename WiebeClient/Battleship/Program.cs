@@ -11,10 +11,23 @@ namespace Battleship
     {
         static void Main(string[] args)
         {
-            using (BattleshipGame game = new BattleshipGame())
+            if (args.Length > 0)
             {
-                game.Run();
+                Console.WriteLine("Args {0}", args);
+                using (BattleshipGame game = new BattleshipGame(args[0]))
+                {
+                    game.Run();
+                }
             }
+            else
+            {
+                Console.WriteLine("No command line arguments found, reverting to base settings");
+                using (BattleshipGame game = new BattleshipGame("0"))
+                {
+                    game.Run();
+                }
+            }
+            
         }
     }
 }

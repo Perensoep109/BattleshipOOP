@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ServerTesting
@@ -24,9 +25,8 @@ namespace ServerTesting
             TcpListener server = (TcpListener)a_result.AsyncState;
             m_client = server.EndAcceptTcpClient(a_result);
 
-            Console.WriteLine("SERVER::CONNECTION Client connected, {0}", m_client.Client.RemoteEndPoint.ToString());
+            Console.WriteLine("SERVER::CONNECTION::ESTABLISHED Client connected, {0}", m_client.Client.RemoteEndPoint.ToString());
             StartReceive();
-            StartPing();
         }
 
         public void StartReceive()
@@ -56,21 +56,32 @@ namespace ServerTesting
 #endif
                 if (bytesRead > 0)
                 {
-                    if (state.m_buffer[0] == 2)
+                    if (state.m_buffer[1] == 0)
+                        Send(new byte[] { 0x8, 0x0, 0x0, 0x0, 0x0, 0x0, 0x1, 0xFF, 0xFF });
+
+                    if (state.m_buffer[1] == 2)
                     {
                         // Send back the hit to the player who shot
-                        Send(new byte[] { 0x2, 0x0, 0x0, 0x0, 0x0, 0x1, state.m_buffer[6], state.m_buffer[6 + 1], 0x1 });
+                        Send(new byte[] { 0xC, 0x2, 0x0, 0x0, 0x0, 0x0, 0x1, state.m_buffer[6], state.m_buffer[6 + 1], 0x1, 0xFF, 0xFF });
 
                         // Send back the hit to the hit player
-                        Send(new byte[] { 0x3, 0x0, 0x0, 0x0, 0x0, 0x1, state.m_buffer[6], state.m_buffer[6 + 1], 0x1 });
+                        Send(new byte[] { 0xC, 0x3, 0x0, 0x0, 0x0, 0x0, 0x1, state.m_buffer[6], state.m_buffer[6 + 1], 0x1, 0xFF, 0xFF });
                     }
 
-                    if(state.m_buffer[0] == 4)
+                    if(state.m_buffer[1] == 4)
                     {
-                        Send(new byte[] { 0x4, 0x0, 0x0, 0x0, 0x0, 0x1, state.m_buffer[6 + 0], state.m_buffer[6 + 1], state.m_buffer[6 + 2], state.m_buffer[6 + 3], state.m_buffer[6 + 4], Convert.ToByte(true) });
+                        Send(new byte[] { 0xE, 0x4, 0x0, 0x0, 0x0, 0x0, 0x1, state.m_buffer[6 + 0], state.m_buffer[6 + 1], state.m_buffer[6 + 2], state.m_buffer[6 + 3], state.m_buffer[6 + 4], Convert.ToByte(true), 0xFF, 0xFF });
                     }
                 }
                 m_client.Client.BeginReceive(state.m_buffer, 0, StateObject.m_bufferSize, 0, ReceiveCallback, state);
+            }
+            catch(SocketException a_e)
+            {
+                Console.WriteLine("SERVER::CONNECTION::LOST " + m_client.Client.RemoteEndPoint.ToString());
+                m_client.Close();
+                m_client.Dispose();
+                m_client = null;
+                m_server.BeginAcceptTcpClient(ClientConnected, m_server);
             }
             catch (Exception a_e)
             {
@@ -93,26 +104,11 @@ namespace ServerTesting
 #endif
         }
 
-        private async Task StartPing()
-        {
-            while (true)
-            {
-                await Task.Delay(1000);
-                if (m_client.Connected)
-                    Send(new byte[5] { 0x0, 0x1, 0x0, 0x0, 0x0 });
-            }
-        }
-
         private void Start()
         {
             m_server.Start();
             m_server.BeginAcceptTcpClient(ClientConnected, m_server);
             Console.WriteLine("SERVER Started server");
-        }
-
-        private void btnStop_Click(object sender, EventArgs e)
-        {
-            m_server.Stop();
         }
     }
 
