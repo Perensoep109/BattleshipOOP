@@ -44,6 +44,16 @@ public class client extends Thread {
 
     }
 
+    public void fireShot(int player, int posy, int posx){
+        try{
+            byte[] b = { Byte.valueOf((byte) (player)),Byte.valueOf((byte) (posx)),Byte.valueOf((byte) (posy))};
+            Packet p = new Packet(b);
+            sendData(p);
+        } catch (IOException e){
+
+        }
+    }
+
     public void run() {
         System.out.println("thread running");
 

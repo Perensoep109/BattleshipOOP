@@ -1,5 +1,7 @@
 package sceneswitcher;
 
+import Objects.IClickable;
+import battleship.IKeyPress;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 
@@ -14,6 +16,9 @@ public class View
 
         if(a_pane instanceof IEventPane)
             m_scene.setOnMouseClicked(event -> { ((IEventPane)a_pane).onClick(event); });
+
+        if(a_pane instanceof IKeyPress)
+            m_scene.setOnKeyPressed(event -> { ((IKeyPress)a_pane).onKeyPress(event); });
 
         m_pane = a_pane;
     }

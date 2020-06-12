@@ -4,7 +4,6 @@ package battleship;
 import Networking.INetworking;
 import Networking.NetworkSingleton;
 import Networking.Packet;
-import Networking.client;
 import Objects.BaseGameObject;
 import Objects.Grid;
 import Objects.IClickable;
@@ -13,28 +12,27 @@ import javafx.scene.canvas.Canvas;
 
 import javafx.scene.canvas.GraphicsContext;
 
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import sceneswitcher.IEventPane;
-import sun.nio.ch.Net;
 
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class GameView extends GridPane implements IEventPane
+public class GameView extends GridPane implements IEventPane, IKeyPress
 {
+    GameManager gm;
     Canvas canvas;
     GraphicsContext gc;
     List<BaseGameObject> gameObjects;
-    Grid grid;
+    Grid enemyfield, playerfield;
     Render render;
 
     public GameView()
     {
-
-
+        gm = new GameManager();
+        gm.setGameView(this);
 
         //create the canvas
         canvas = new Canvas( 1000,1000 );
@@ -42,15 +40,20 @@ public class GameView extends GridPane implements IEventPane
         //create a renderer
         render = new Render(gc);
         //create a grid
-        grid = new Grid(0,0,80,80);
+        enemyfield = new Grid(20,20,16 ,16,1);
+        playerfield = new Grid(500,20,16 ,16,2);
+        gm.setEnemyfield(enemyfield);
+        gm.setPlayerfield(enemyfield);
         //greate the arraylist with gameobjects
         gameObjects = new ArrayList<>();
+
         //add the grid to the gameobjects to be rendered
-        gameObjects.add(grid);
+        gameObjects.add(enemyfield);
+        gameObjects.add(playerfield);
         //draw the gameobjects
         render.draw(gameObjects);
         //add the canvas to the panel
-        this.add(canvas,0,0);
+        this.add(canvas,0,1);
     }
 
     @Override
@@ -65,8 +68,10 @@ public class GameView extends GridPane implements IEventPane
                 @Override
                 public void OnRecievePacket(Packet packet) {
 
-                    System.out.println(Arrays.toString(packet.getData()));
-                    grid.getCell(packet.getData()[0],packet.getData()[1]).changeTile();
+//                    System.out.println(Arrays.toString(packet.getData()));
+//                    grid.getCell().changeTile();
+                    GameManager.getInstance().getShot(packet.getData()[0],packet.getData()[1],packet.getData()[1]);
+
 
                 }
 
@@ -102,10 +107,28 @@ public class GameView extends GridPane implements IEventPane
             }
         }
 
-        grid.getClickedCell(a_event.getX(), a_event.getY());
+        enemyfield.getClickedCell(a_event.getX(), a_event.getY());
+        playerfield.getClickedCell(a_event.getX(), a_event.getY());
 
         //draw the gameobjects
         render.draw(gameObjects);
 
+    }
+
+    @Override
+    public void onKeyPress(KeyEvent a_event) {
+        System.out.println("key pressed: " + a_event.getText());
+    }
+
+    public void registerShot(int gridID, int posY, int posX){
+        for (BaseGameObject gameObject : gameObjects) {
+            //test if it is clickable
+            if(gameObject instanceof Grid ){
+                Grid grid = (Grid) gameObject;
+                if(grid.getGridId() == gridID){
+                    grid.getCell(posY,posX).changeTile();
+                }
+            }
+        }
     }
 }
