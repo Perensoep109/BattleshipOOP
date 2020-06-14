@@ -16,8 +16,8 @@ namespace Battleship.Game.Objects
 
         public EnemyShipGrid(Vector2 a_pos, int a_width, int a_height, int a_tileDim) : base(a_pos, a_width, a_height, a_tileDim)
         {
-            m_hitSprite = ResourcePool.GetSprite("hit");
-            m_missSprite = ResourcePool.GetSprite("miss");
+            m_hitSprite = ResourcePool.GetSprite("valid");
+            m_missSprite = ResourcePool.GetSprite("invalid");
             Data = new object[a_width, a_height];
             for(int i = 0; i < a_width; i++)
             {
@@ -39,7 +39,7 @@ namespace Battleship.Game.Objects
                     if (val == 1)
                         a_sprBatch.Draw(m_hitSprite.Sprite, new Rectangle(new Point(i * TileDim + (int)m_pos.X, j * TileDim + (int)m_pos.Y), new Point(TileDim, TileDim)), Color.White);
                     if (val == 2)
-                        a_sprBatch.Draw(m_hitSprite.Sprite, new Rectangle(new Point(i * TileDim + (int)m_pos.X, j * TileDim + (int)m_pos.Y), new Point(TileDim, TileDim)), Color.White);
+                        a_sprBatch.Draw(m_missSprite.Sprite, new Rectangle(new Point(i * TileDim + (int)m_pos.X, j * TileDim + (int)m_pos.Y), new Point(TileDim, TileDim)), Color.White);
                 }
             }
         }

@@ -16,10 +16,12 @@ namespace Battleship.Game.Scenes
         private class UI : UILayer
         {
             public UILabel m_label;
+            public UILabel m_playerID;
 
             public UI(GraphicsDevice a_graphics)
             {
-                AddUI(m_label = new UILabel(0, 0, "Turn: ", ResourcePool.GetSpriteFont("font").Font, a_graphics), 6, 10);
+                AddUI(m_label = new UILabel(50, 0, "", ResourcePool.GetSpriteFont("font").Font, a_graphics), 0, 0);
+                //AddUI(m_playerID = new UILabel(50, 0, "", ResourcePool.GetSpriteFont("font").Font, a_graphics), 2, 0);
             }
         }
 
@@ -28,6 +30,8 @@ namespace Battleship.Game.Scenes
 
         private ServerConnection m_connection;
         private GameState m_gameState;
+        private uint m_gameID;
+        private byte m_playerID;
 
         private EnemyShipGrid m_enemyShipGrid;
         private ShipGrid m_shipGrid;
@@ -38,13 +42,7 @@ namespace Battleship.Game.Scenes
 
         public void ProcessPacket(object a_sender, Packet a_packet)
         {
-            if (a_packet.m_type == PacketType.Ping)
-            {
-                NetworkResync = true;
-                NetworkScene = this;
-            }
-
-            if(a_packet.m_type == PacketType.UpdateGameState)
+            if (a_packet.m_type == PacketType.UpdateGameState)
             {
                 if (m_gameState == GameState.ShipPlacement)
                     m_shipGrid.UpdateShipPreview(-16, -16, 0);
@@ -55,23 +53,16 @@ namespace Battleship.Game.Scenes
                 NetworkScene = this;
             }
 
-            if(a_packet.m_type == PacketType.Hit)
+            if(a_packet.m_type == PacketType.AssignPlayerID)
             {
-                m_shipGrid.CheckHit(a_packet[Packet.BODY_START_POS + 1], a_packet[Packet.BODY_START_POS + 2]);
-                NetworkResync = true;
-                NetworkScene = this;
-            }
-
-            if (a_packet.m_type == PacketType.Shoot)
-            {
-                m_enemyShipGrid.SetCell(a_packet[Packet.BODY_START_POS + 1], a_packet[Packet.BODY_START_POS + 2], a_packet[Packet.BODY_START_POS + 3]);
+                m_playerID = a_packet[Packet.BODY_START_POS];
                 NetworkResync = true;
                 NetworkScene = this;
             }
 
             if (a_packet.m_type == PacketType.ShipPlacement)
             {
-                if (Convert.ToBoolean(a_packet[Packet.BODY_START_POS + 6]))
+                if (Convert.ToBoolean(a_packet[Packet.BODY_START_POS]))
                 {
                     m_shipGrid.CreateShip();
                     NetworkResync = true;
@@ -85,6 +76,20 @@ namespace Battleship.Game.Scenes
                 NetworkResync = true;
                 NetworkScene = this;
             }
+
+            if (a_packet.m_type == PacketType.Hit)
+            {
+                m_shipGrid.CheckHit(a_packet[Packet.BODY_START_POS + 1], a_packet[Packet.BODY_START_POS + 2]);
+                NetworkResync = true;
+                NetworkScene = this;
+            }
+
+            if (a_packet.m_type == PacketType.Shoot)
+            {
+                m_enemyShipGrid.SetCell(a_packet[Packet.BODY_START_POS + 1], a_packet[Packet.BODY_START_POS + 2], (Convert.ToBoolean(a_packet[Packet.BODY_START_POS + 3]) == true ? 1 : 2));
+                NetworkResync = true;
+                NetworkScene = this;
+            }
         }
 
         public void Sync()
@@ -95,6 +100,8 @@ namespace Battleship.Game.Scenes
             m_gameState = ((MultiplayerGameScene)NetworkScene).m_gameState;
             m_shipGrid = ((MultiplayerGameScene)NetworkScene).m_shipGrid;
             m_enemyShipGrid = ((MultiplayerGameScene)NetworkScene).m_enemyShipGrid;
+            m_gameID = ((MultiplayerGameScene)NetworkScene).m_gameID;
+            m_playerID = ((MultiplayerGameScene)NetworkScene).m_playerID;
             UiLayer = ((MultiplayerGameScene)NetworkScene).UiLayer;
             NetworkScene = null;
             NetworkResync = false;
@@ -112,14 +119,14 @@ namespace Battleship.Game.Scenes
 
             m_connection = (ServerConnection)a_initialData[0];
             m_connection.ReceivedPacket += ProcessPacket;
+            m_gameID = Convert.ToByte(a_initialData[1]);
 
             GameObjects.Add(m_shipGrid = new ShipGrid(          new Vector2(16, 20 * 16),   16, 16, 16));
             GameObjects.Add(m_enemyShipGrid = new EnemyShipGrid(new Vector2(16, 32),        16, 16, 16));
 
             m_shipGrid.OnCellClick += ShipGridOnCellClick;
             m_enemyShipGrid.OnCellClick += EnemyShipGridOnCellClick;
-
-            m_connection.Send(new Packet(new byte[] { 0x8, 0x1, 0x0, 0x0, 0x0, 0x0, 0x0, 0xFF, 0xFF }));
+            m_connection.Send(Packet.CreateGameConnect(m_gameID));
         }
 
         public override void OnSwitchFrom()
@@ -131,13 +138,13 @@ namespace Battleship.Game.Scenes
         {
             if (m_gameState == GameState.ShipPlacement)
                 if (m_shipGrid.ShipPreview.m_validPos)
-                    m_connection.Send(Packet.CreateShipPlacementPackage((byte)e.m_xPos, (byte)e.m_yPos, 1, 0, 5));
+                    m_connection.Send(Packet.CreateShipPlacementPackage(m_gameID, (byte)e.m_xPos, (byte)e.m_yPos, (byte)m_shipGrid.ShipPreview.m_dir.X, (byte)m_shipGrid.ShipPreview.m_dir.Y, (byte)m_shipGrid.ShipPreview.m_length, m_playerID));
         }
 
         private void EnemyShipGridOnCellClick(object sender, Cell e)
         {
             if(m_gameState == GameState.YourTurn)
-                m_connection.Send(Packet.CreateShootPackage(e.m_xPos, e.m_yPos));  // Shoot
+                m_connection.Send(Packet.CreateShootPackage(m_gameID, e.m_xPos, e.m_yPos, m_playerID, (byte)(m_playerID == 1 ? 2 : 1)));  // Shoot
         }
 
         public void OnMouseInput(object sender, MouseStateEventArgs state)

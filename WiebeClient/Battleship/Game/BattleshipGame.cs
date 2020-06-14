@@ -29,7 +29,7 @@ namespace Battleship
 
             base.BeginRun();
             SceneSwitcher.AddScene(new MultiplayerGameScene(m_graphics.GraphicsDevice), "GameScene");
-            SceneSwitcher.LoadScene("GameScene", con);
+            SceneSwitcher.LoadScene("GameScene", con, m_gameID);
             IsMouseVisible = true;
             MouseInput += ((MultiplayerGameScene)SceneSwitcher.GetScene("GameScene")).OnMouseInput;
             KeyboardInput += ((MultiplayerGameScene)SceneSwitcher.GetScene("GameScene")).OnKeyboardInput;

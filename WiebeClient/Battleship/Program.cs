@@ -19,8 +19,8 @@ namespace Battleship
                 ip = args[Array.FindIndex(args, arg => arg == "--ip") + 1];
             if (args.Contains("--port"))
                 port = Convert.ToInt32(args[Array.FindIndex(args, arg => arg == "--port") + 1]);
-            if (args.Contains("--gameID"))
-                gameID = args[Array.FindIndex(args, arg => arg == "--gameID") + 1];
+            if (args.Contains("--gameid"))
+                gameID = args[Array.FindIndex(args, arg => arg == "--gameid") + 1];
             using (BattleshipGame game = new BattleshipGame(ip, port, gameID))
             {
                 game.Run();

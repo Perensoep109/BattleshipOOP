@@ -70,7 +70,7 @@
             this.txt_ip.Name = "txt_ip";
             this.txt_ip.Size = new System.Drawing.Size(100, 20);
             this.txt_ip.TabIndex = 3;
-            this.txt_ip.Text = "127.0.0.1";
+            this.txt_ip.Text = "77.170.95.78";
             // 
             // label1
             // 
@@ -96,7 +96,7 @@
             this.txt_port.Name = "txt_port";
             this.txt_port.Size = new System.Drawing.Size(100, 20);
             this.txt_port.TabIndex = 5;
-            this.txt_port.Text = "69";
+            this.txt_port.Text = "25565";
             // 
             // Form1
             // 

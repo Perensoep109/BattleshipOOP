@@ -13,7 +13,9 @@ namespace Engine.Networking
         Shoot = 2,
         Hit = 3,
         ShipPlacement = 4,
-        ShipPlacementLength = 5
+        ShipPlacementLength = 5,
+        GameConnect = 6,
+        AssignPlayerID = 7
     }
 
     public class Packet
@@ -23,7 +25,7 @@ namespace Engine.Networking
         public PacketType m_type = PacketType.Ping;
         public uint m_gameID = 0;
 
-        public const uint BODY_START_POS = 6;
+        public const uint BODY_START_POS = 7;
 
         public Packet(byte[] a_buffer)
         {
@@ -40,14 +42,21 @@ namespace Engine.Networking
             get => m_buffer[a_index];
         }
 
-        public static Packet CreateShootPackage(int a_xPos, int a_yPos)
+        public static Packet CreateShootPackage(uint a_gameID, int a_xPos, int a_yPos, byte a_playerID, byte a_toPlayerID)
         {
-            return new Packet(new byte[] { 0xC, 0x2, 0x0, 0x0, 0x0, 0x0, 0x1, (byte)a_xPos, (byte)a_yPos, 0x0, 0xFF, 0xFF});
+            byte[] gameID = BitConverter.GetBytes(a_gameID);
+            return new Packet(new byte[] { 0xD, 0x2, gameID[0], gameID[1], gameID[2], gameID[3], a_playerID, a_toPlayerID, (byte)a_xPos, (byte)a_yPos, 0x0, 0xFF, 0xFF});
         }
 
-        public static Packet CreateShipPlacementPackage(int a_xPos, int a_yPos, int a_xDir, int a_yDir, int a_length)
+        public static Packet CreateShipPlacementPackage(uint a_gameID, int a_xPos, int a_yPos, int a_xDir, int a_yDir, int a_length, byte a_playerID)
         {
-            return new Packet(new byte[] { 0xF, 0x4, 0x0, 0x0, 0x0, 0x0, 0x1, (byte)a_xPos, (byte)a_yPos, (byte)a_xDir, (byte)a_yDir, (byte)a_length, Convert.ToByte(false), 0xFF, 0xFF });
+            byte[] gameID = BitConverter.GetBytes(a_gameID);
+            return new Packet(new byte[] { 0xF, 0x4, gameID[0], gameID[1], gameID[2], gameID[3], a_playerID, (byte)a_xPos, (byte)a_yPos, (byte)a_xDir, (byte)a_yDir, (byte)a_length, Convert.ToByte(false), 0xFF, 0xFF });
+        }
+        public static Packet CreateGameConnect(uint a_gameID)
+        {
+            byte[] gameID = BitConverter.GetBytes(a_gameID);
+            return new Packet(new byte[] { 0xA, (byte)PacketType.GameConnect, gameID[0], gameID[1], gameID[2], gameID[3], 0x0, 0xFF, 0xFF });
         }
     }
 }
