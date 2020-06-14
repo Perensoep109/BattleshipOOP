@@ -11,23 +11,20 @@ namespace Battleship
     {
         static void Main(string[] args)
         {
-            if (args.Length > 0)
+            string ip = "127.0.0.1";
+            int port = 69;
+            string gameID = "0";
+
+            if (args.Contains("--ip"))
+                ip = args[Array.FindIndex(args, arg => arg == "--ip") + 1];
+            if (args.Contains("--port"))
+                port = Convert.ToInt32(args[Array.FindIndex(args, arg => arg == "--port") + 1]);
+            if (args.Contains("--gameID"))
+                gameID = args[Array.FindIndex(args, arg => arg == "--gameID") + 1];
+            using (BattleshipGame game = new BattleshipGame(ip, port, gameID))
             {
-                Console.WriteLine("Args {0}", args);
-                using (BattleshipGame game = new BattleshipGame(args[0]))
-                {
-                    game.Run();
-                }
+                game.Run();
             }
-            else
-            {
-                Console.WriteLine("No command line arguments found, reverting to base settings");
-                using (BattleshipGame game = new BattleshipGame("0"))
-                {
-                    game.Run();
-                }
-            }
-            
         }
     }
 }

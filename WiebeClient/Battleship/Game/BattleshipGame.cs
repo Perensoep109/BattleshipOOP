@@ -11,9 +11,13 @@ namespace Battleship
     class BattleshipGame : BaseGame
     {
         private string m_gameID;
+        private string m_ip;
+        private int m_port;
 
-        public BattleshipGame(string a_gameID)
+        public BattleshipGame(string a_ip, int a_port, string a_gameID)
         {
+            m_ip = a_ip;
+            m_port = a_port;
             m_gameID = a_gameID;
         }
 
@@ -21,7 +25,7 @@ namespace Battleship
         {
             // Connect to the server
             ServerConnection con = new ServerConnection();
-            con.Connect(IPAddress.Parse("192.168.2.15"), 100);
+            con.Connect(IPAddress.Parse(m_ip), m_port);
 
             base.BeginRun();
             SceneSwitcher.AddScene(new MultiplayerGameScene(m_graphics.GraphicsDevice), "GameScene");

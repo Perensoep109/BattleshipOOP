@@ -19,7 +19,7 @@ namespace Battleship.Game.Scenes
 
             public UI(GraphicsDevice a_graphics)
             {
-                AddUI(m_label = new UILabel(50, 30, "Ships to place", ResourcePool.GetSpriteFont("font").Font, a_graphics), 6, 10);
+                AddUI(m_label = new UILabel(0, 0, "Turn: ", ResourcePool.GetSpriteFont("font").Font, a_graphics), 6, 10);
             }
         }
 
@@ -46,7 +46,11 @@ namespace Battleship.Game.Scenes
 
             if(a_packet.m_type == PacketType.UpdateGameState)
             {
+                if (m_gameState == GameState.ShipPlacement)
+                    m_shipGrid.UpdateShipPreview(-16, -16, 0);
+
                 m_gameState = (GameState)a_packet[Packet.BODY_START_POS];
+                ((UI)UiLayer).m_label.Text = m_gameState.ToString();
                 NetworkResync = true;
                 NetworkScene = this;
             }
@@ -74,6 +78,13 @@ namespace Battleship.Game.Scenes
                     NetworkScene = this;
                 }
             }
+
+            if (a_packet.m_type == PacketType.ShipPlacementLength)
+            {
+                m_shipGrid.ShipPreview.m_length = a_packet[Packet.BODY_START_POS];
+                NetworkResync = true;
+                NetworkScene = this;
+            }
         }
 
         public void Sync()
@@ -84,6 +95,7 @@ namespace Battleship.Game.Scenes
             m_gameState = ((MultiplayerGameScene)NetworkScene).m_gameState;
             m_shipGrid = ((MultiplayerGameScene)NetworkScene).m_shipGrid;
             m_enemyShipGrid = ((MultiplayerGameScene)NetworkScene).m_enemyShipGrid;
+            UiLayer = ((MultiplayerGameScene)NetworkScene).UiLayer;
             NetworkScene = null;
             NetworkResync = false;
         }
@@ -94,20 +106,25 @@ namespace Battleship.Game.Scenes
 
         public override void Initialize(params object[] a_initialData)
         {
-            PreferredWindowWidth = 25 * 16 + 1;
-            PreferredWindowHeight = 35 * 16 + 1;
+            PreferredWindowWidth = 18 * 16 + 1;
+            PreferredWindowHeight = 36 * 16 + 1;
             UiLayer = new UI(m_graphics);
 
             m_connection = (ServerConnection)a_initialData[0];
             m_connection.ReceivedPacket += ProcessPacket;
 
-            GameObjects.Add(m_shipGrid = new ShipGrid(          new Vector2(16, 19 * 16),   16, 16, 16));
-            GameObjects.Add(m_enemyShipGrid = new EnemyShipGrid(new Vector2(16, 16),        16, 16, 16));
-
-            m_gameState = GameState.ShipPlacement;
+            GameObjects.Add(m_shipGrid = new ShipGrid(          new Vector2(16, 20 * 16),   16, 16, 16));
+            GameObjects.Add(m_enemyShipGrid = new EnemyShipGrid(new Vector2(16, 32),        16, 16, 16));
 
             m_shipGrid.OnCellClick += ShipGridOnCellClick;
             m_enemyShipGrid.OnCellClick += EnemyShipGridOnCellClick;
+
+            m_connection.Send(new Packet(new byte[] { 0x8, 0x1, 0x0, 0x0, 0x0, 0x0, 0x0, 0xFF, 0xFF }));
+        }
+
+        public override void OnSwitchFrom()
+        {
+            m_connection.Close();
         }
 
         private void ShipGridOnCellClick(object sender, Cell e)
@@ -119,7 +136,7 @@ namespace Battleship.Game.Scenes
 
         private void EnemyShipGridOnCellClick(object sender, Cell e)
         {
-            if(m_gameState == GameState.Shoot)
+            if(m_gameState == GameState.YourTurn)
                 m_connection.Send(Packet.CreateShootPackage(e.m_xPos, e.m_yPos));  // Shoot
         }
 
@@ -128,12 +145,12 @@ namespace Battleship.Game.Scenes
             if (m_gameState == GameState.ShipPlacement)
                 m_shipGrid.UpdateShipPreview(state.m_newState.X, state.m_newState.Y, (state.m_newState.ScrollWheelValue - state.m_oldState.ScrollWheelValue) / 120);
         }
-
+        
         public void OnKeyboardInput(object sender, KeyboardStateEventArgs state)
         {
-            if (state.m_newState.IsKeyDown(Keys.Space) && m_gameState != GameState.Shoot)
+            if (state.m_newState.IsKeyDown(Keys.Space) && m_gameState != GameState.YourTurn)
             {
-                m_gameState = GameState.Shoot;
+                m_gameState = GameState.YourTurn;
                 m_shipGrid.UpdateShipPreview(-16, -16, 0);
             }
         }

@@ -15,6 +15,8 @@ namespace ServerTesting
         TcpClient m_client;
         bool m_verbose;
 
+        private int m_length = 2;
+
         const int BODY_START_POS = 6;
 
         public Server(string a_ip, int a_port, bool a_verbose)
@@ -26,11 +28,19 @@ namespace ServerTesting
 
         private void ClientConnected(IAsyncResult a_result)
         {
-            TcpListener server = (TcpListener)a_result.AsyncState;
-            m_client = server.EndAcceptTcpClient(a_result);
+            try
+            {
+                TcpListener server = (TcpListener)a_result.AsyncState;
+                m_client = server.EndAcceptTcpClient(a_result);
 
-            Console.WriteLine("SERVER::CONNECTION::ESTABLISHED Client connected, {0}", m_client.Client.RemoteEndPoint.ToString());
-            StartReceive();
+                Console.WriteLine("SERVER::CONNECTION::ESTABLISHED Client connected, {0}", m_client.Client.RemoteEndPoint.ToString());
+                StartReceive();
+            }
+            catch(SocketException a_e)
+            {
+                Console.WriteLine("ERROR::SERVER::CONNECTION::ESTABLISHING " + a_e);
+                ConnectClients();
+            }
         }
 
         private void StartReceive()
@@ -47,7 +57,7 @@ namespace ServerTesting
             }
         }
 
-        private void ReceiveCallback(IAsyncResult a_result)
+        private async void ReceiveCallback(IAsyncResult a_result)
         {
             try
             {
@@ -55,6 +65,7 @@ namespace ServerTesting
                 Socket client = state.m_socket;
                 int bytesRead = client.EndReceive(a_result);
 
+                Console.WriteLine();
                 Console.WriteLine("SERVER::CONNECTION Read {0} bytes from {1}", bytesRead, client.RemoteEndPoint.ToString());
                 if (m_verbose)
                     Console.WriteLine("BYTES::READ {0} from {1}", BitConverter.ToString(state.m_buffer).Replace('-', ' '), m_client.Client.RemoteEndPoint.ToString());
@@ -64,6 +75,12 @@ namespace ServerTesting
                     if (state.m_buffer[1] == 0)
                         Send(new byte[] { 0x7, 0x0, 0x0, 0x0, 0x0, 0x0, 0xFF, 0xFF });
 
+                    if (state.m_buffer[1] == 1)
+                    {
+                        Send(new byte[] { 0x8, 0x1, 0x0, 0x0, 0x0, 0x0, 0x1, 0xFF, 0xFF });
+                        Send(new byte[] { 0x8, 0x5, 0x0, 0x0, 0x0, 0x0, 0x2, 0xFF, 0xFF });
+                    }
+
                     if (state.m_buffer[1] == 2)
                     {
                         // Send back the hit to the player who shot
@@ -71,10 +88,25 @@ namespace ServerTesting
 
                         // Send back the hit to the hit player
                         Send(new byte[] { 0xC, 0x3, 0x0, 0x0, 0x0, 0x0, state.m_buffer[BODY_START_POS], state.m_buffer[BODY_START_POS + 1], state.m_buffer[BODY_START_POS + 2], 0x1, 0xFF, 0xFF });
+
+                        _ = Task.Run(() =>
+                        {
+                            // Switch whose players turn it is
+                            Thread.Sleep(100);
+                            Send(new byte[] { 0x8, 0x1, 0x0, 0x0, 0x0, 0x0, 0x3, 0xFF, 0xFF });
+                            Thread.Sleep(3000);
+                            Send(new byte[] { 0x8, 0x1, 0x0, 0x0, 0x0, 0x0, 0x2, 0xFF, 0xFF });
+                        });
                     }
 
-                    if(state.m_buffer[1] == 4)
+                    if (state.m_buffer[1] == 4)
+                    {
                         Send(new byte[] { 0xE, 0x4, 0x0, 0x0, 0x0, 0x0, state.m_buffer[BODY_START_POS], state.m_buffer[BODY_START_POS + 1], state.m_buffer[BODY_START_POS + 2], state.m_buffer[BODY_START_POS + 3], state.m_buffer[BODY_START_POS + 4], state.m_buffer[BODY_START_POS + 5], Convert.ToByte(true), 0xFF, 0xFF });
+                        if (m_length != 5)
+                            Send(new byte[] { 0x8, 0x5, 0x0, 0x0, 0x0, 0x0, (byte)++m_length, 0xFF, 0xFF });
+                        else
+                            Send(new byte[] { 0x8, 0x1, 0x0, 0x0, 0x0, 0x0, 0x2, 0xFF, 0xFF });
+                    }
                 }
                 m_client.Client.BeginReceive(state.m_buffer, 0, StateObject.m_bufferSize, 0, ReceiveCallback, state);
             }
@@ -108,6 +140,7 @@ namespace ServerTesting
         {
             if (m_client != null)
             {
+                m_length = 2;
                 m_client.Close();
                 m_client.Dispose();
                 m_client = null;

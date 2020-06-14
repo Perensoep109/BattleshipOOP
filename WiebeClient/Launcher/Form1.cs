@@ -30,7 +30,7 @@ namespace Launcher
         private void btn_join_Click(object sender, EventArgs e)
         {
             ProcessStartInfo startInfo = new ProcessStartInfo(Directory.GetCurrentDirectory() + "\\Battleship.exe");
-            startInfo.Arguments = txt_gameID.Text;
+            startInfo.Arguments = String.Format("--ip {0} --port {1} --gameID {2}", txt_ip.Text, txt_port.Text, txt_gameID.Text);
             startInfo.UseShellExecute = false;
             m_proc = Process.Start(startInfo);
             m_proc.EnableRaisingEvents = true;

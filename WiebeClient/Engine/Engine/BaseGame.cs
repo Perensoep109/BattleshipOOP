@@ -62,9 +62,15 @@ namespace Engine
         {
             base.Initialize();
             SceneSwitcher.Initialize(m_graphics);
+            SceneSwitcher.Stop();
             ClickableEventListener.Initialize();
             KeyboardEventListener.Initialize();
             Mouse.WindowHandle = Window.Handle;
+        }
+
+        protected override void OnExiting(object sender, EventArgs args)
+        {
+            SceneSwitcher.LoadScene("null");
         }
 
         protected override void BeginRun()

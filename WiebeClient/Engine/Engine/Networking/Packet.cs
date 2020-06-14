@@ -12,7 +12,8 @@ namespace Engine.Networking
         UpdateGameState = 1,
         Shoot = 2,
         Hit = 3,
-        ShipPlacement = 4
+        ShipPlacement = 4,
+        ShipPlacementLength = 5
     }
 
     public class Packet
@@ -33,7 +34,7 @@ namespace Engine.Networking
         /// Overload the [] operator of this instance
         /// </summary>
         /// <param name="a_index">The index of the byte to return</param>
-        /// <returns>The </returns>
+        /// <returns>The buffer</returns>
         public byte this[uint a_index]
         {
             get => m_buffer[a_index];

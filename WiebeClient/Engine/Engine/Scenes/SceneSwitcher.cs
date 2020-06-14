@@ -50,6 +50,12 @@ namespace Engine.Scenes
             Instance.Scenes.Remove(a_name);
         }
 
+        public static void Stop()
+        {
+            if (Instance.CurrentScene != null)
+                Instance.CurrentScene.OnSwitchFrom();
+        }
+
         public static BaseScene GetScene(string a_name)
         {
             if (!Instance.Initialized)

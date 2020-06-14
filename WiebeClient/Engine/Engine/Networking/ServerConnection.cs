@@ -45,6 +45,18 @@ namespace Engine.Networking
             }
         }
 
+        public void Close()
+        {
+            try
+            {
+                m_client.Close();
+            }
+            catch(Exception a_e)
+            {
+                Console.WriteLine("ERROR::CLIENT::CONNECCTION::DISCONNECT Could not disconnect server connection");
+            }
+        }
+
         #region Callback functions
         private void ReceiveCallback(IAsyncResult a_result)
         {

@@ -10,7 +10,9 @@ namespace Battleship.Game
     {
         Invalid = 0,
         ShipPlacement = 1,
-        Shoot = 2,
-        OtherPlayerTurn = 3
+        YourTurn = 2,
+        OtherPlayerTurn = 3,
+        GameWon = 4,
+        GameLost = 5
     }
 }
