@@ -80,8 +80,8 @@ public:
 	int boardX;
 	int boardY;
 
-	// For now, work only with a 10x10 game board.
-	int gameBoard[100];
+	// For now, work only with a 16x16 game board.
+	int gameBoard[256];
 
 	void getBoard(int receivedGameBoard[])
 	{
@@ -92,15 +92,47 @@ public:
 		}
 	}
 
-	std::vector<int> getBoat(/*data from boat packet*/)
+	bool hit(int xPos, int yPos)
 	{
+		int finalPos = yPos * 16 + xPos;
 
+		// If hitting a ship tile.
+		if (gameBoard[finalPos] > 0 && gameBoard[finalPos] < 5)
+			return true;
+		else
+			return false;
 	}
-};
 
-class Game
-{
+	void placeBoat(byte xPos, byte yPos, byte xDir, byte yDir, byte length, int type)
+	{
+		int _xPos = xPos;
+		int _yPos = yPos;
 
+		int _xDir = xDir;
+		int _yDir = yDir;
+
+		int _type = type;
+
+
+		int finalPos = _yPos * 16 + _xPos;
+
+		gameBoard[finalPos] = _type;
+
+		if (_xDir == 1)
+		{
+			for (int i = 0; i < length; i++)
+			{
+				gameBoard[finalPos + i * 16];
+			}
+		}
+		else if (_yDir == 1)
+		{
+			for (int i = 0; i < length; i++)
+			{
+				gameBoard[finalPos + i * 16];
+			}
+		}
+	}
 };
 
 void Parse(char* data)
@@ -125,21 +157,36 @@ void Parse(char* data)
 		std::cout << (int)gameID[i];
 	std::cout << "" << std::endl;
 
+	//////
+	// Shoot packet
+	// 0xC, 0x2, 0x0, 0x0, 0x0, 0x0, 0x1, (byte)a_xPos, (byte)a_yPos, 0x0, 0xFF, 0xFF
+
+	// Create ship packet
+	// 0xF, 0x4, 0x0, 0x0, 0x0, 0x0, 0x1, (byte)a_xPos, (byte)a_yPos, (byte)a_xDir, (byte)a_yDir, (byte)a_length, Convert.ToByte(false), 0xFF, 0xFF 
+
+	// Shoot packet
+	if (command[1] == 0x2)
+	{
+		// create game of right board size
+
+		// send board size to other player
+	}
+
 }
 
 int main()
 {
-	Player player;
-	Game game;
+	Player player1;
+	Player player2;
 
 	Log log;
 
 	log.SetLogLevel("verbose");
 
-	/*log.Trace("This is a Trace message");
+	log.Trace("This is a Trace message");
 	log.Warning("This is a Warning message");
 	log.Error("This is an Error message");
-	log.Fatal("This is a Fatal message");*/
+	log.Fatal("This is a Fatal message");
 
 	log.Trace("STARTING SERVER...");
 
